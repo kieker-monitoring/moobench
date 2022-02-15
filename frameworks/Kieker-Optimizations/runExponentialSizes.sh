@@ -8,5 +8,5 @@ do
 	export RECURSION_DEPTH=$depth
 	echo "Running $depth"
 	./benchmark.sh &> $RESULTS_DIR/$depth.txt
-	mv $RESULTS_DIR/results.zip $RESULTS_DIR/results-$RECURSION_DEPTH.zip
+	mv $RESULTS_DIR/results.tar.xz $RESULTS_DIR/results-$RECURSION_DEPTH.tar.xz
 done
