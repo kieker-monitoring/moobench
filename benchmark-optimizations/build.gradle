@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     implementation 'net.kieker-monitoring.moobench:moobench-application:1.0-SNAPSHOT'
-    implementation 'de.dagere.kopeme:kopeme-core:0.14-SNAPSHOT'
+    implementation 'de.dagere.kopeme:kopeme-core:0.17.4'
 }
 
 jar {
