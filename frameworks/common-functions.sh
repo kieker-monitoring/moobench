@@ -6,7 +6,7 @@ function getSum {
 
 ## Clean up raw results
 function cleanup-results() {
-  tar -I xz -cf ${RESULTS_DIR}/results.tar.xz ${RAWFN}*
+  (cd $RESULTS_DIR && tar -I xz -cf results.tar.xz raw*)
   rm -f ${RAWFN}*
   [ -f ${DATA_DIR}/nohup.out ] && cp ${DATA_DIR}/nohup.out ${RESULTS_DIR}
   [ -f ${DATA_DIR}/nohup.out ] && > ${DATA_DIR}/nohup.out
