@@ -68,8 +68,7 @@ rm -f ${DATA_DIR}/kieker.log
 touch ${DATA_DIR}/kieker.log
 
 # general server arguments
-JAVA_ARGS="-server"
-JAVA_ARGS="${JAVA_ARGS} -Xms1G -Xmx2G"
+JAVA_ARGS="-Xms1G -Xmx2G"
 
 LTW_ARGS="-javaagent:${AGENT} -Dorg.aspectj.weaver.showWeaveInfo=true -Daj.weaving.verbose=true -Dkieker.monitoring.skipDefaultAOPConfiguration=true -Dorg.aspectj.weaver.loadtime.configuration=${AOP}"
 
