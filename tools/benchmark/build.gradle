@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation 'com.beust:jcommander:1.72'
+    implementation 'net.kieker-monitoring:kieker:1.15.2'
 }
 
 application {
