@@ -9,4 +9,5 @@ dependencies {
     implementation 'net.sourceforge.teetime:teetime:3.0'
     implementation 'org.slf4j:slf4j-api:1.7.+'
     implementation 'ch.qos.logback:logback-classic:1.2.3'  
+    implementation 'org.apache.commons:commons-collections4:4.4'
 }
