@@ -1,19 +1,20 @@
-/***************************************************************************
- * Copyright 2014 Kieker Project (http://kieker-monitoring.net)
+/**
+ * ************************************************************************
+ *  Copyright 2014 Kieker Project (http://kieker-monitoring.net)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ***************************************************************************/
-
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ * *************************************************************************
+ */
 package moobench.benchmark;
 
 import java.lang.management.GarbageCollectorMXBean;
@@ -21,94 +22,183 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-
 import moobench.application.MonitoredClass;
+import kieker.monitoring.core.controller.MonitoringController;
+import kieker.monitoring.core.registry.ControlFlowRegistry;
+import kieker.monitoring.core.registry.SessionRegistry;
+import de.dagere.kopeme.kieker.record.DurationRecord;
 
 /**
  * @author Jan Waller, Aike Sass, Christian Wulf
  */
 public final class BenchmarkingThreadNano implements BenchmarkingThread {
 
-  private final MonitoredClass mc;
-  private final CountDownLatch doneSignal;
-  private final int totalCalls;
-  private final long methodTime;
-  private final int recursionDepth;
+    private static final kieker.monitoring.core.controller.IMonitoringController _kieker_sourceInstrumentation_controller = kieker.monitoring.core.controller.MonitoringController.getInstance();
 
-  private final long[] executionTimes;
+    private static final kieker.monitoring.timer.ITimeSource _kieker_sourceInstrumentation_TIME_SOURCE = _kieker_sourceInstrumentation_controller.getTimeSource();
 
-  private final MemoryMXBean memory;
-  private final long[] usedHeapMemory;
+    private final MonitoredClass mc;
 
-  private final long[] gcCollectionCountDiffs;
-  private final List<GarbageCollectorMXBean> collector;
+    private final CountDownLatch doneSignal;
 
-  public BenchmarkingThreadNano(final MonitoredClass mc, final int totalCalls,
-      final long methodTime, final int recursionDepth, final CountDownLatch doneSignal) {
-    this.mc = mc;
-    this.doneSignal = doneSignal;
-    this.totalCalls = totalCalls;
-    this.methodTime = methodTime;
-    this.recursionDepth = recursionDepth;
-    // for monitoring execution times
-    this.executionTimes = new long[totalCalls];
-    // for monitoring memory consumption
-    this.memory = ManagementFactory.getMemoryMXBean();
-    this.usedHeapMemory = new long[totalCalls];
-    // for monitoring the garbage collector
-    this.gcCollectionCountDiffs = new long[totalCalls];
-    this.collector = ManagementFactory.getGarbageCollectorMXBeans();
-  }
+    private final int totalCalls;
 
-  public String print(final int index, final String separatorString) {
-    return String.format("%d%s%d%s%d",
-        this.executionTimes[index], separatorString,
-        this.usedHeapMemory[index], separatorString,
-        this.gcCollectionCountDiffs[index]);
-  }
+    private final long methodTime;
 
-  public final void run() {
-    long start_ns;
-    long stop_ns;
-    long lastGcCount = this.computeGcCollectionCount();
-    long currentGcCount;
+    private final int recursionDepth;
 
-    for (int i = 0; i < this.totalCalls; i++) {
-      start_ns = this.getCurrentTimestamp();
+    private final long[] executionTimes;
 
-      this.mc.monitoredMethod(this.methodTime, this.recursionDepth);
+    private final MemoryMXBean memory;
 
-      stop_ns = this.getCurrentTimestamp();
-      currentGcCount = this.computeGcCollectionCount();
+    private final long[] usedHeapMemory;
 
-      // save execution time
-      this.executionTimes[i] = stop_ns - start_ns;
-      // save heap memory
-      this.usedHeapMemory[i] = this.memory.getHeapMemoryUsage().getUsed();
-      // save gc collection count
-      this.gcCollectionCountDiffs[i] = currentGcCount - lastGcCount;
-      lastGcCount = currentGcCount;
-      // print progress
-      if ((i % 100000) == 0) {
-        System.out.println(i); // NOPMD (System.out)
-      }
+    private final long[] gcCollectionCountDiffs;
+
+    private final List<GarbageCollectorMXBean> collector;
+
+    public BenchmarkingThreadNano(final MonitoredClass mc, final int totalCalls, final long methodTime, final int recursionDepth, final CountDownLatch doneSignal) {
+              final long _kieker_sourceInstrumentation_tin = _kieker_sourceInstrumentation_TIME_SOURCE.getTime();;
+        try {
+            this.mc = mc;
+            this.doneSignal = doneSignal;
+            this.totalCalls = totalCalls;
+            this.methodTime = methodTime;
+            this.recursionDepth = recursionDepth;
+            // for monitoring execution times
+            this.executionTimes = new long[totalCalls];
+            // for monitoring memory consumption
+            this.memory = ManagementFactory.getMemoryMXBean();
+            this.usedHeapMemory = new long[totalCalls];
+            // for monitoring the garbage collector
+            this.gcCollectionCountDiffs = new long[totalCalls];
+            this.collector = ManagementFactory.getGarbageCollectorMXBeans();
+        } finally {
+            // measure after
+         final long _kieker_sourceInstrumentation_tout = _kieker_sourceInstrumentation_TIME_SOURCE.getTime();
+        _kieker_sourceInstrumentation_initSum0+=_kieker_sourceInstrumentation_tout-_kieker_sourceInstrumentation_tin;
+if (_kieker_sourceInstrumentation_initCounter0++%1000==0){
+final String _kieker_sourceInstrumentation_signature = "public new moobench.benchmark.BenchmarkingThreadNano.<init>(moobench.application.MonitoredClass,int,long,int,java.util.concurrent.CountDownLatch)";
+final long _kieker_sourceInstrumentation_calculatedTout=_kieker_sourceInstrumentation_tin+_kieker_sourceInstrumentation_initSum0;
+_kieker_sourceInstrumentation_controller.newMonitoringRecord(new DurationRecord(_kieker_sourceInstrumentation_signature, _kieker_sourceInstrumentation_tin, _kieker_sourceInstrumentation_calculatedTout));
+_kieker_sourceInstrumentation_initSum0=0;}
+;
+        }
     }
 
-    this.doneSignal.countDown();
-  }
-
-  private long computeGcCollectionCount() {
-    long count = 0;
-    for (final GarbageCollectorMXBean bean : this.collector) {
-      count += bean.getCollectionCount();
-      // bean.getCollectionTime()
+    public String print(final int index, final String separatorString) {
+              final long _kieker_sourceInstrumentation_tin = _kieker_sourceInstrumentation_TIME_SOURCE.getTime();;
+        try {
+            return String.format("%d%s%d%s%d", this.executionTimes[index], separatorString, this.usedHeapMemory[index], separatorString, this.gcCollectionCountDiffs[index]);
+        } finally {
+            // measure after
+         final long _kieker_sourceInstrumentation_tout = _kieker_sourceInstrumentation_TIME_SOURCE.getTime();
+        _kieker_sourceInstrumentation_printSum1+=_kieker_sourceInstrumentation_tout-_kieker_sourceInstrumentation_tin;
+if (_kieker_sourceInstrumentation_printCounter1++%1000==0){
+final String _kieker_sourceInstrumentation_signature = "public java.lang.String moobench.benchmark.BenchmarkingThreadNano.print(int,java.lang.String)";
+final long _kieker_sourceInstrumentation_calculatedTout=_kieker_sourceInstrumentation_tin+_kieker_sourceInstrumentation_printSum1;
+_kieker_sourceInstrumentation_controller.newMonitoringRecord(new DurationRecord(_kieker_sourceInstrumentation_signature, _kieker_sourceInstrumentation_tin, _kieker_sourceInstrumentation_calculatedTout));
+_kieker_sourceInstrumentation_printSum1=0;}
+;
+        }
     }
-    return count;
-  }
 
-  private long getCurrentTimestamp() {
-    // alternatively: System.currentTimeMillis();
-    return System.nanoTime();
-  }
+    public final void run() {
+              final long _kieker_sourceInstrumentation_tin = _kieker_sourceInstrumentation_TIME_SOURCE.getTime();;
+        try {
+            long start_ns;
+            long stop_ns;
+            long lastGcCount = this.computeGcCollectionCount();
+            long currentGcCount;
+            for (int i = 0; i < this.totalCalls; i++) {
+                start_ns = this.getCurrentTimestamp();
+                this.mc.monitoredMethod(this.methodTime, this.recursionDepth);
+                stop_ns = this.getCurrentTimestamp();
+                currentGcCount = this.computeGcCollectionCount();
+                // save execution time
+                this.executionTimes[i] = stop_ns - start_ns;
+                // save heap memory
+                this.usedHeapMemory[i] = this.memory.getHeapMemoryUsage().getUsed();
+                // save gc collection count
+                this.gcCollectionCountDiffs[i] = currentGcCount - lastGcCount;
+                lastGcCount = currentGcCount;
+                // print progress
+                if ((i % 100000) == 0) {
+                    // NOPMD (System.out)
+                    System.out.println(i);
+                }
+            }
+            this.doneSignal.countDown();
+        } finally {
+            // measure after
+         final long _kieker_sourceInstrumentation_tout = _kieker_sourceInstrumentation_TIME_SOURCE.getTime();
+        _kieker_sourceInstrumentation_runSum2+=_kieker_sourceInstrumentation_tout-_kieker_sourceInstrumentation_tin;
+if (_kieker_sourceInstrumentation_runCounter2++%1000==0){
+final String _kieker_sourceInstrumentation_signature = "public final void moobench.benchmark.BenchmarkingThreadNano.run()";
+final long _kieker_sourceInstrumentation_calculatedTout=_kieker_sourceInstrumentation_tin+_kieker_sourceInstrumentation_runSum2;
+_kieker_sourceInstrumentation_controller.newMonitoringRecord(new DurationRecord(_kieker_sourceInstrumentation_signature, _kieker_sourceInstrumentation_tin, _kieker_sourceInstrumentation_calculatedTout));
+_kieker_sourceInstrumentation_runSum2=0;}
+;
+        }
+    }
 
+    private long computeGcCollectionCount() {
+              final long _kieker_sourceInstrumentation_tin = _kieker_sourceInstrumentation_TIME_SOURCE.getTime();;
+        try {
+            long count = 0;
+            for (final GarbageCollectorMXBean bean : this.collector) {
+                count += bean.getCollectionCount();
+                // bean.getCollectionTime()
+            }
+            return count;
+        } finally {
+            // measure after
+         final long _kieker_sourceInstrumentation_tout = _kieker_sourceInstrumentation_TIME_SOURCE.getTime();
+        _kieker_sourceInstrumentation_computeGcCollectionCountSum3+=_kieker_sourceInstrumentation_tout-_kieker_sourceInstrumentation_tin;
+if (_kieker_sourceInstrumentation_computeGcCollectionCountCounter3++%1000==0){
+final String _kieker_sourceInstrumentation_signature = "private long moobench.benchmark.BenchmarkingThreadNano.computeGcCollectionCount()";
+final long _kieker_sourceInstrumentation_calculatedTout=_kieker_sourceInstrumentation_tin+_kieker_sourceInstrumentation_computeGcCollectionCountSum3;
+_kieker_sourceInstrumentation_controller.newMonitoringRecord(new DurationRecord(_kieker_sourceInstrumentation_signature, _kieker_sourceInstrumentation_tin, _kieker_sourceInstrumentation_calculatedTout));
+_kieker_sourceInstrumentation_computeGcCollectionCountSum3=0;}
+;
+        }
+    }
+
+    private long getCurrentTimestamp() {
+              final long _kieker_sourceInstrumentation_tin = _kieker_sourceInstrumentation_TIME_SOURCE.getTime();;
+        try {
+            // alternatively: System.currentTimeMillis();
+            return System.nanoTime();
+        } finally {
+            // measure after
+         final long _kieker_sourceInstrumentation_tout = _kieker_sourceInstrumentation_TIME_SOURCE.getTime();
+        _kieker_sourceInstrumentation_getCurrentTimestampSum4+=_kieker_sourceInstrumentation_tout-_kieker_sourceInstrumentation_tin;
+if (_kieker_sourceInstrumentation_getCurrentTimestampCounter4++%1000==0){
+final String _kieker_sourceInstrumentation_signature = "private long moobench.benchmark.BenchmarkingThreadNano.getCurrentTimestamp()";
+final long _kieker_sourceInstrumentation_calculatedTout=_kieker_sourceInstrumentation_tin+_kieker_sourceInstrumentation_getCurrentTimestampSum4;
+_kieker_sourceInstrumentation_controller.newMonitoringRecord(new DurationRecord(_kieker_sourceInstrumentation_signature, _kieker_sourceInstrumentation_tin, _kieker_sourceInstrumentation_calculatedTout));
+_kieker_sourceInstrumentation_getCurrentTimestampSum4=0;}
+;
+        }
+    }
+
+    private static int _kieker_sourceInstrumentation_initCounter0;
+
+    private static int _kieker_sourceInstrumentation_printCounter1;
+
+    private static int _kieker_sourceInstrumentation_runCounter2;
+
+    private static int _kieker_sourceInstrumentation_computeGcCollectionCountCounter3;
+
+    private static int _kieker_sourceInstrumentation_getCurrentTimestampCounter4;
+
+    private static long _kieker_sourceInstrumentation_initSum0;
+
+    private static long _kieker_sourceInstrumentation_printSum1;
+
+    private static long _kieker_sourceInstrumentation_runSum2;
+
+    private static long _kieker_sourceInstrumentation_computeGcCollectionCountSum3;
+
+    private static long _kieker_sourceInstrumentation_getCurrentTimestampSum4;
 }
