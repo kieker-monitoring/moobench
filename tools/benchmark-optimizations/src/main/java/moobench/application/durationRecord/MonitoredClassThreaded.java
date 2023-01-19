@@ -20,6 +20,7 @@ package moobench.application.durationRecord;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 
+import moobench.application.MonitoredClass;
 import de.dagere.kopeme.kieker.record.DurationRecord;
 
 /**

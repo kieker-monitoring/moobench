@@ -17,6 +17,7 @@
  */
 package moobench.application.sourceInstrumentation;
 
+import moobench.application.MonitoredClass;
 import de.dagere.kopeme.kieker.record.DurationRecord;
 
 /**
