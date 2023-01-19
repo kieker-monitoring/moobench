@@ -11,6 +11,9 @@
 /build/
 /benchmark/**
 
+# Ignore eclipse project files
+.project
+
 # Do not store compile results
 compile-results/
 

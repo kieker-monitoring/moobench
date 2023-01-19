@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+dependencies {
+    implementation 'com.beust:jcommander:1.72'
+    implementation 'de.dagere.kopeme:kopeme-core:1.2.2'
+}
+
+application {
+    mainClass = 'moobench.benchmark.BenchmarkMain'
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Moobench Benchmark',
+                   'Implementation-Version': '0.1-SNAPSHOT',
+                   'Main-Class': 'moobench.benchmark.BenchmarkMain'
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE    
+
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+}
