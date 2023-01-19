@@ -54,7 +54,7 @@ function executeExperiment() {
 
     echo "Finally Runing: $benchmarkMain LTW: $ltwArgs"
 
-    "${MOOBENCH_BIN}" \
+    java -jar ../../tools/benchmark-optimizations/build/libs/benchmark-optimizations.jar \
 	--application $benchmarkMain \
         --output-filename "${RAWFN}-${loop}-${recursion}-${index}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
