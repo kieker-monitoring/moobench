@@ -112,7 +112,7 @@ declare -a RECEIVER
 declare -a TITLE
 
 FILE_WRITER="-Dkieker.monitoring.enabled=true -Dkieker.monitoring.writer.filesystem.FileWriter.bufferSize=8192 -Dkieker.monitoring.writer=kieker.monitoring.writer.filesystem.FileWriter -Dkieker.monitoring.writer.filesystem.FileWriter.logStreamHandler=kieker.monitoring.writer.filesystem.BinaryLogStreamHandler"
-CIRCULAR_QUEUE="-Dkieker.monitoring.core.controller.WriterController.RecordQueueFQN=org.apache.commons.collections4.queue.CircularFifoQueue -Dkieker.monitoring.core.controller.WriterController.QueuePutStrategy=kieker.monitoring.queue.putstrategy.YieldPutStrategy -Dkieker.monitoring.core.controller.WriterController.QueueTakeStrategy=kieker.monitoring.queue.takestrategy.YieldTakeStrategy"
+CIRCULAR_QUEUE="-Dkieker.monitoring.core.controller.WriterController.RecordQueueFQN=de.dagere.kopeme.collections.SynchronizedCircularFifoQueue -Dkieker.monitoring.core.controller.WriterController.QueuePutStrategy=kieker.monitoring.queue.putstrategy.YieldPutStrategy -Dkieker.monitoring.core.controller.WriterController.QueueTakeStrategy=kieker.monitoring.queue.takestrategy.YieldTakeStrategy"
 #
 # Different writer setups
 #
@@ -122,8 +122,8 @@ WRITER_CONFIG[2]="$FILE_WRITER -Dkieker.monitoring.writer.filesystem.FileWriter.
 WRITER_CONFIG[3]="$FILE_WRITER $CIRCULAR_QUEUE -Dkieker.monitoring.writer.filesystem.FileWriter.customStoragePath=${DATA_DIR}/"
 WRITER_CONFIG[4]="$FILE_WRITER -Dkieker.monitoring.writer.filesystem.FileWriter.customStoragePath=${DATA_DIR}/"
 WRITER_CONFIG[5]="$FILE_WRITER $CIRCULAR_QUEUE -Dkieker.monitoring.writer.filesystem.FileWriter.customStoragePath=${DATA_DIR}/"
-WRITER_CONFIG[6]="-Dkieker.monitoring.enabled=true -Dkieker.monitoring.writer=de.dagere.kopeme.kieker.writer.AggregatedTreeWriter -Dkieker.monitoring.writer.filesystem.FileWriter.bufferSize=8192 -Dkieker.monitoring.writer.filesystem.FileWriter.customStoragePath=${DATA_DIR}/"
-WRITER_CONFIG[7]="-Dkieker.monitoring.enabled=true $CIRCULAR_QUEUE -Dkieker.monitoring.writer=de.dagere.kopeme.kieker.writer.AggregatedTreeWriter -Dkieker.monitoring.writer.filesystem.FileWriter.bufferSize=8192 -Dkieker.monitoring.writer.filesystem.FileWriter.customStoragePath=${DATA_DIR}/"
+WRITER_CONFIG[6]="-Dkieker.monitoring.enabled=true -Dkieker.monitoring.writer=de.dagere.kopeme.kieker.writer.AggregatedTreeWriter -Dkieker.monitoring.writer.filesystem.FileWriter.bufferSize=8192 -Dde.dagere.kopeme.kieker.writer.AggregatedTreeWriter.customStoragePath=${DATA_DIR}/"
+WRITER_CONFIG[7]="-Dkieker.monitoring.enabled=true $CIRCULAR_QUEUE -Dkieker.monitoring.writer=de.dagere.kopeme.kieker.writer.AggregatedTreeWriter -Dkieker.monitoring.writer.filesystem.FileWriter.bufferSize=8192 -Dde.dagere.kopeme.kieker.writer.AggregatedTreeWriter.customStoragePath==${DATA_DIR}/"
 
 BENCHMARK_MAIN[0]="moobench.application.MonitoredClassSimple"
 BENCHMARK_MAIN[1]="moobench.application.MonitoredClassSimple"
