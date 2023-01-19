@@ -38,6 +38,8 @@ function executeExperiment() {
     index="$3"
     title="$4"
     kieker_parameters="$5"
+    ltwArgs=${LTW_ARGS[$index]}
+    benchmarkMain=${BENCHMARK_MAIN[$index]}
 
     info " # ${loop}.${recursion}.${index} ${title}"
     echo " # ${loop}.${recursion}.${index} ${title}" >> "${DATA_DIR}/kieker.log"
@@ -45,13 +47,15 @@ function executeExperiment() {
     if [  "${kieker_parameters}" == "" ] ; then
        export BENCHMARK_OPTS="${JAVA_ARGS}"
     else
-       export BENCHMARK_OPTS="${JAVA_ARGS} ${LTW_ARGS} ${KIEKER_ARGS} ${kieker_parameters}"
+       export BENCHMARK_OPTS="${JAVA_ARGS} ${ltwArgs} ${KIEKER_ARGS} ${kieker_parameters}"
     fi
 
     debug "Run options: ${BENCHMARK_OPTS}"
 
+    echo "Finally Runing: $benchmarkMain LTW: $ltwArgs"
+
     "${MOOBENCH_BIN}" \
-	--application moobench.application.MonitoredClassSimple \
+	--application $benchmarkMain \
         --output-filename "${RAWFN}-${loop}-${recursion}-${index}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
@@ -71,13 +75,14 @@ function executeBenchmarkBody() {
   index="$1"
   loop="$2"
   recursion="$3"
+  benchmarkMain="$4"
   if [[ "${RECEIVER[$index]}" ]] ; then
      debug "receiver ${RECEIVER[$index]}"
      ${RECEIVER[$index]} >> "${DATA_DIR}/kieker.receiver-${loop}-${index}.log" &
      RECEIVER_PID=$!
      debug "PID ${RECEIVER_PID}"
   fi
-
+  
   executeExperiment "$loop" "$recursion" "$index" "${TITLE[$index]}" "${WRITER_CONFIG[$index]}"
 
   if [[ "${RECEIVER_PID}" ]] ; then
@@ -91,6 +96,7 @@ function executeBenchmark() {
     recursion="${RECURSION_DEPTH}"
 
     for ((index=0;index<${#WRITER_CONFIG[@]};index+=1)); do
+      echo "Running ${BENCHMARK_MAIN[$index]}"
       executeBenchmarkBody $index $i $recursion
     done
 }
