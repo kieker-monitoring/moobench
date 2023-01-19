@@ -45,16 +45,16 @@ function executeExperiment() {
     echo " # ${loop}.${recursion}.${index} ${title}" >> "${DATA_DIR}/kieker.log"
 
     if [  "${kieker_parameters}" == "" ] ; then
-       export BENCHMARK_OPTS="${JAVA_ARGS}"
+       export BENCHMARK_OPTS="java -jar ../../tools/benchmark-optimizations/build/libs/benchmark-optimizations.jar"
     else
-       export BENCHMARK_OPTS="${JAVA_ARGS} ${ltwArgs} ${KIEKER_ARGS} ${kieker_parameters}"
+       export BENCHMARK_OPTS="java ${JAVA_ARGS} ${ltwArgs} ${KIEKER_ARGS} ${kieker_parameters} -jar ../../tools/benchmark-optimizations/build/libs/benchmark-optimizations.jar"
     fi
 
     debug "Run options: ${BENCHMARK_OPTS}"
 
-    echo "Finally Runing: $benchmarkMain LTW: $ltwArgs"
+    echo "Finally Running: $benchmarkMain LTW: $ltwArgs"
 
-    java -jar ../../tools/benchmark-optimizations/build/libs/benchmark-optimizations.jar \
+    $BENCHMARK_OPTS \
 	--application $benchmarkMain \
         --output-filename "${RAWFN}-${loop}-${recursion}-${index}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
