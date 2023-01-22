@@ -68,7 +68,7 @@ getAgent
 
 checkDirectory data-dir "${DATA_DIR}" create
 checkFile log "${DATA_DIR}/kieker.log" clean
-checkDirectory results-directory "${RESULTS_DIR}" recreate
+cleanupResults
 PARENT=`dirname "${RESULTS_DIR}"`
 checkDirectory result-base "${PARENT}"
 
