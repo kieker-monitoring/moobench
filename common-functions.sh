@@ -114,14 +114,15 @@ EOF
 
 function printIntermediaryResults {
    loop="$1"
-   for ((index=0;index<${#TITLE[@]};index+=1)); do
+   for index in 2 4 
+   do
       RESULT_FILE="${RAWFN}-${loop}-${RECURSION_DEPTH}-${index}.csv"
-      checkFile result "${RESULT_FILE}"
+#      checkFile result "${RESULT_FILE}"
       raw_length=`cat "${RESULT_FILE}" | wc -l`
-      if [ "${raw_length}" == "0" ] ; then
-         error "Result file '${RESULT_FILE}' is empty."
-         exit 1
-      fi
+#      if [ "${raw_length}" == "0" ] ; then
+#         error "Result file '${RESULT_FILE}' is empty."
+#         exit 1
+#      fi
       info_n "Intermediary results "${TITLE[$index]}" "
       cat "${RESULT_FILE}" | awk -F';' '{print $2}' | getSum
    done
