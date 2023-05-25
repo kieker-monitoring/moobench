@@ -61,7 +61,7 @@ function executeExperiment() {
     echo "java $BENCHMARK_OPTS"
 
     echo $CLASSPATH
-    perf record -F 500 -p 20315 -g -o perfX.data -- java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+    sudo perf record -F 500 -g -o perf_$index.data -- java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
         -cp $CLASSPATH \
         moobench.benchmark.BenchmarkMain \
 	--application moobench.application.MonitoredClassSimple \
@@ -70,7 +70,7 @@ function executeExperiment() {
         --method-time "${METHOD_TIME}" \
         --total-threads 1 \
         --recursion-depth "${recursion}" &> "${LOG_FILE}"
-    exit 1
+	
     if [ ! -f "${RESULT_FILE}" ] ; then
         info "---------------------------------------------------"
         cat "${LOG_FILE}"

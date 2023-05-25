@@ -95,7 +95,7 @@ TIME=`expr ${METHOD_TIME} \* ${TOTAL_NUM_OF_CALLS} / 1000000000 \* 4 \* ${RECURS
 info "Experiment will take circa ${TIME} seconds."
 
 # general server arguments
-JAVA_ARGS="-Xms1G -Xmx2G"
+JAVA_ARGS="-Xmx2G"
 
 LTW_ARGS="-javaagent:${AGENT} -Dorg.aspectj.weaver.showWeaveInfo=true -Daj.weaving.verbose=true -Dkieker.monitoring.skipDefaultAOPConfiguration=true -Dorg.aspectj.weaver.loadtime.configuration=file://${AOP}"
 
@@ -136,6 +136,8 @@ for ((i=1;i<="${NUM_OF_LOOPS}";i+=1)); do
 
     executeBenchmark
     printIntermediaryResults "${i}"
+    
+    exit 1
 done
 
 # Create R labels
