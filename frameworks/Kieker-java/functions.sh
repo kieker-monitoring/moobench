@@ -42,6 +42,8 @@ function executeExperiment() {
     info " # ${loop}.${recursion}.${index} ${title}"
     echo " # ${loop}.${recursion}.${index} ${title}" >> "${DATA_DIR}/kieker.log"
 
+    JAVA_ARGS="-XX:+PreserveFramePointer -XX:+UnlockDiagnosticVMOptions -XX:+DumpPerfMapAtExit"
+
     if [  "${kieker_parameters}" == "" ] ; then
        export BENCHMARK_OPTS="${JAVA_ARGS}"
     else
@@ -53,14 +55,22 @@ function executeExperiment() {
     RESULT_FILE="${RAWFN}-${loop}-${recursion}-${index}.csv"
     LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
-    "${MOOBENCH_BIN}" \
+    APP_HOME=../../benchmark
+    CLASSPATH=$APP_HOME/lib/benchmark.jar:$APP_HOME/lib/jcommander-1.72.jar
+
+    echo "java $BENCHMARK_OPTS"
+
+    echo $CLASSPATH
+    perf record -F 500 -p 20315 -g -o perfX.data -- java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+        -cp $CLASSPATH \
+        moobench.benchmark.BenchmarkMain \
 	--application moobench.application.MonitoredClassSimple \
         --output-filename "${RESULT_FILE}" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
         --total-threads 1 \
         --recursion-depth "${recursion}" &> "${LOG_FILE}"
-
+    exit 1
     if [ ! -f "${RESULT_FILE}" ] ; then
         info "---------------------------------------------------"
         cat "${LOG_FILE}"
