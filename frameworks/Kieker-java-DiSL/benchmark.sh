@@ -70,9 +70,6 @@ info "----------------------------------"
 
 cd "${BASE_DIR}"
 
-# load agent
-getAgent
-
 checkDirectory data-dir "${DATA_DIR}" create
 checkFile log "${DATA_DIR}/kieker.log" clean
 cleanupResults
@@ -87,7 +84,6 @@ RECEIVER_BIN="${BASE_DIR}/receiver/bin/receiver"
 checkExecutable receiver "${RECEIVER_BIN}"
 
 
-checkFile ApsectJ-Agent "${AGENT}"
 checkFile aop-file "${AOP}"
 
 
@@ -103,7 +99,7 @@ info "Experiment will take circa ${TIME} seconds."
 # general server arguments
 JAVA_ARGS="-Xms1G -Xmx2G"
 
-LTW_ARGS="-javaagent:${AGENT} -Dorg.aspectj.weaver.showWeaveInfo=true -Daj.weaving.verbose=true -Dkieker.monitoring.skipDefaultAOPConfiguration=true -Dorg.aspectj.weaver.loadtime.configuration=file://${AOP}"
+LTW_ARGS="-Dorg.aspectj.weaver.showWeaveInfo=true -Daj.weaving.verbose=true -Dkieker.monitoring.skipDefaultAOPConfiguration=true -Dorg.aspectj.weaver.loadtime.configuration=file://${AOP}"
 
 KIEKER_ARGS="-Dlog4j.configuration=log4j.cfg -Dkieker.monitoring.name=KIEKER-BENCHMARK -Dkieker.monitoring.adaptiveMonitoring.enabled=false -Dkieker.monitoring.periodicSensorsExecutorPoolSize=0"
 

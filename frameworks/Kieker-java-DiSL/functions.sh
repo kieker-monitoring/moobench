@@ -7,21 +7,6 @@ then
     exit 1
 fi
 
-
-function getAgent() {
-	info "Checking whether Kieker is present in ${AGENT}"
-	if [ ! -f "${AGENT}" ] ; then
-		# get agent
-		export VERSION_PATH=`curl "https://oss.sonatype.org/service/local/repositories/snapshots/content/net/kieker-monitoring/kieker/" | grep '<resourceURI>' | sed 's/ *<resourceURI>//g' | sed 's/<\/resourceURI>//g' | grep '/$' | grep -v ".xml" | head -n 1`
-		export AGENT_PATH=`curl "${VERSION_PATH}" | grep 'aspectj.jar</resourceURI' | sort | sed 's/ *<resourceURI>//g' | sed 's/<\/resourceURI>//g' | tail -1`
-		curl "${AGENT_PATH}" > "${AGENT}"
-
-		if [ ! -f "${AGENT}" ] || [ -s "${AGENT}" ] ; then
-			error "Kieker download from $AGENT_PATH failed; please asure that a correct Kieker AspectJ file is present!"
-		fi
-	fi
-}
-
 # experiment setups
 
 #################################
