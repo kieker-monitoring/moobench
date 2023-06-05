@@ -21,8 +21,8 @@ function executeExperiment() {
     loop="$1"
     recursion="$2"
     index="$3"
-    title="$4"
-    kieker_parameters="$5"
+    title="${TITLE[$index]}"
+    kieker_parameters="${WRITER_CONFIG[$index]}"
 
     info " # ${loop}.${recursion}.${index} ${title}"
     echo " # ${loop}.${recursion}.${index} ${title}" >> "${DATA_DIR}/kieker.log"
@@ -40,14 +40,6 @@ function executeExperiment() {
 
     APP_HOME=../../benchmark
     CLASSPATH=$APP_HOME/lib/benchmark.jar:$APP_HOME/lib/jcommander-1.72.jar	
-
-    echo $JAVA_ARGS
-    echo $KIEKER_ARGS
-    echo $LTW_ARGS
-    echo $kieker_parameters
-    echo $MOOBENCH_BIN
-    echo "Classpath: $CLASSPATH Index: $index"
-
 
     if [[ $index != 0 ]]
     then
@@ -106,7 +98,7 @@ function executeBenchmarkBody() {
      debug "PID ${RECEIVER_PID}"
   fi
 
-  executeExperiment "$loop" "$recursion" "$index" "${TITLE[$index]}" "${WRITER_CONFIG[$index]}"
+  executeExperiment "$loop" "$recursion" "$index"
 
   if [[ "${RECEIVER_PID}" ]] ; then
      kill -TERM "${RECEIVER_PID}"
