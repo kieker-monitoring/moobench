@@ -54,6 +54,7 @@ function executeExperiment() {
     	$DISL_HOME/bin/disl.py -d $DISL_HOME/output -s_noexcepthandler -cs -- \
    	 	 ../../../kieker/kieker-monitoring/build/libs/kieker-monitoring-2.0.0-SNAPSHOT.jar \
     		 -noverify -XX:-PrintWarnings \
+    		 $kieker_parameters \
    	 	 -cp $CLASSPATH \
        	 moobench.benchmark.BenchmarkMain \
 		--application moobench.application.MonitoredClassSimple \
