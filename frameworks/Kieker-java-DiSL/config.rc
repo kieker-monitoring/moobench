@@ -1,0 +1,22 @@
+##
+# MooBench configuration parameter
+
+source ${MAIN_DIR}/config.rc
+
+# path setup
+JAVA_BIN=`which java`
+
+RSCRIPT_PATH="${BASE_DIR}/../statistics.r"
+
+MAIN_DIR="${BASE_DIR}/../.."
+
+MOOBENCH_BIN="${MAIN_DIR}/benchmark/bin/benchmark"
+RECEIVER_ARCHIVE="${MAIN_DIR}/tools/receiver/build/distributions/receiver.tar"
+
+DATA_DIR="${BASE_DIR}/data"
+AGENT="${BASE_DIR}/kieker-2.0.0-SNAPSHOT-aspectj.jar"
+
+# in-jar locations
+AOP="${BASE_DIR}/kieker.aop.xml"
+
+# end
