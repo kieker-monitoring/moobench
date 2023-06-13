@@ -271,4 +271,16 @@ if [ -z $DEBUG ]; then
 	DEBUG=false		## false
 fi
 
+
+# These technical configuration parameters should only be changed under exceptional circumstances
+if [ -z $APP_HOME ]
+then
+	APP_HOME=../../benchmark
+fi
+
+if [ -z $CLASSPATH ]
+then
+	CLASSPATH=$APP_HOME/lib/benchmark.jar:$APP_HOME/lib/jcommander-1.72.jar
+fi
+
 # end

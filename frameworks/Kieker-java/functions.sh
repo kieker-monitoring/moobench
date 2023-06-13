@@ -53,7 +53,9 @@ function executeExperiment() {
     RESULT_FILE="${RAWFN}-${loop}-${recursion}-${index}.csv"
     LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
-    "${MOOBENCH_BIN}" \
+    java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+        -cp $CLASSPATH \
+        moobench.benchmark.BenchmarkMain \
 	--application moobench.application.MonitoredClassSimple \
         --output-filename "${RESULT_FILE}" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
