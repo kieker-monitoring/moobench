@@ -53,7 +53,7 @@ function executeExperiment() {
     RESULT_FILE="${RAWFN}-${loop}-${recursion}-${index}.csv"
     LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
-    sudo perf record -F 500 -g -o perf_"$index"_"$loop".data -- java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+    sudo perf record -F 500 -g -o perf_"$index"_"$loop".data -- java -XX:+UnlockDiagnosticVMOptions -XX:+DumpPerfMapAtExit -XX:+PreserveFramePointer -XX:+DebugNonSafepoints  $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
         -cp $CLASSPATH \
         moobench.benchmark.BenchmarkMain \
 	--application moobench.application.MonitoredClassSimple \
