@@ -22,5 +22,5 @@ unset DUMMY_LOOPS
 
 echo
 echo "Running METHOD_TIME Experiments"
-for mtime in 1 10 100 200 300 400 500 750 1000 2000 10000; do echo -n "$mtime.. "; export METHOD_TIME=$mtime; ./benchmark.sh &> $JAVA_FOLDER/time_$mtime.txt; done
+for mtime in 1 10 100 200 300 400 500 750 1000 2000 10000 20000; do echo -n "$mtime.. "; export METHOD_TIME=$mtime; ./benchmark.sh &> $JAVA_FOLDER/time_$mtime.txt; done
 unset METHOD_TIME
