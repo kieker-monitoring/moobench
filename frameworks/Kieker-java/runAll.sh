@@ -7,7 +7,7 @@ unset RECURSION_DEPTH
 
 echo
 echo "Running Calls Experiments"
-for calls in 100 1000 10000 100000 1000000 2000000 10000000 100000000 1000000000; do echo -n "$calls.. "; export TOTAL_NUM_OF_CALLS=$calls; ./benchmark.sh &> $JAVA_FOLDER/calls_$calls.txt; done
+for calls in 100 1000 10000 100000 1000000 2000000 10000000 100000000; do echo -n "$calls.. "; export TOTAL_NUM_OF_CALLS=$calls; ./benchmark.sh &> $JAVA_FOLDER/calls_$calls.txt; done
 unset TOTAL_NUM_OF_CALLS
 
 echo
