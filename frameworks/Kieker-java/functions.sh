@@ -60,7 +60,7 @@ function executeExperiment() {
         --output-filename "${RESULT_FILE}" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
-        --total-threads 1 \
+        --total-threads $THREADS \
         --recursion-depth "${recursion}" &> "${LOG_FILE}"
 
     if [ ! -f "${RESULT_FILE}" ] ; then
