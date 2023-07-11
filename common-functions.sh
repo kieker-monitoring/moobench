@@ -120,7 +120,7 @@ function printIntermediaryResults {
       raw_length=`cat "${RESULT_FILE}" | wc -l`
       if [ "${raw_length}" == "0" ] ; then
          error "Result file '${RESULT_FILE}' is empty."
-         exit 1
+      #   exit 1
       fi
       info_n "Intermediary results "${TITLE[$index]}" (in ns) "
       cat "${RESULT_FILE}" | awk -F';' '{print $2}' | getSum

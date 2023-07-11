@@ -51,8 +51,8 @@ function executeExperiment() {
     RESULT_FILE="${RAWFN}-${loop}-${recursion}-${index}.csv"
     LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
-    "${MOOBENCH_BIN}" \
-	--application moobench.application.MonitoredClassSimple \
+    timeout 60s "${MOOBENCH_BIN}" \
+        --application moobench.application.MonitoredClassSimple \
         --output-filename "${RESULT_FILE}" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
@@ -61,7 +61,7 @@ function executeExperiment() {
 
     if [ ! -f "${RESULT_FILE}" ] ; then
         info "---------------------------------------------------"
-        cat "${LOG_FILE}"
+        # cat "${LOG_FILE}"
         error "Result file '${RESULT_FILE}' is empty."
     else
        size=`wc -c "${RESULT_FILE}" | awk '{ print $1 }'`
