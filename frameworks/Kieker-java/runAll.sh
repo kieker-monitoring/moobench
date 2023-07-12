@@ -10,10 +10,10 @@ echo "Running Calls Experiments"
 for calls in 100 1000 10000 100000 1000000 2000000 10000000; do echo -n "$calls.. "; export TOTAL_NUM_OF_CALLS=$calls; ./benchmark.sh &> $JAVA_FOLDER/calls_$calls.txt; done
 unset TOTAL_NUM_OF_CALLS
 
-echo
-echo "Running Threads Experiments"
-for threads in {1..10}; do echo -n "$threads.. "; export THREADS=$threads; ./benchmark.sh &> $JAVA_FOLDER/threads_$threads.txt; done
-unset THREADS
+#echo
+#echo "Running Threads Experiments"
+#for threads in {1..10}; do echo -n "$threads.. "; export THREADS=$threads; ./benchmark.sh &> $JAVA_FOLDER/threads_$threads.txt; done
+#unset THREADS
 
 echo
 echo "Running Dummy Loops Experiments"
