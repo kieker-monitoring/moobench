@@ -75,7 +75,7 @@ function executeExperiment() {
            error "Result file '${RESULT_FILE}' is empty."
        fi
     fi
-    rm -rf "${DATA_DIR}"/kieker-*
+    sudo rm -rf "${DATA_DIR}"/kieker-*
 
     [ -f "${DATA_DIR}/hotspot.log" ] && mv "${DATA_DIR}/hotspot.log" "${RESULTS_DIR}/hotspot-${loop}-${recursion}-${index}.log"
     echo >> "${DATA_DIR}/kieker.log"
