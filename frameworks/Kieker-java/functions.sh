@@ -56,7 +56,7 @@ function executeExperiment() {
     java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
         -cp $CLASSPATH \
         moobench.benchmark.BenchmarkMain \
-	--application moobench.application.MonitoredClassSimple \
+	--application moobench.application.MonitoredClassLoops \
         --output-filename "${RESULT_FILE}" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
