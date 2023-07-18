@@ -24,7 +24,7 @@ import java.util.Random;
  * @author DaGeRe
  */
 public final class MonitoredClassLoops implements MonitoredClass {
-	private static final int DUMMY_LOOPS = Integer.parseInt(System.getenv("DUMMY_LOOPS") != null ? System.getenv("DUMMY_LOOPS") : "15");
+	private static final int CLASS_LOOPS = Integer.parseInt(System.getenv("CLASS_LOOPS") != null ? System.getenv("CLASS_LOOPS") : "15");
 	
 	private static final Random r = new Random();
 
@@ -40,7 +40,7 @@ public final class MonitoredClassLoops implements MonitoredClass {
 			return this.monitoredMethod(methodTime, recDepth - 1);
 		} else {
 			int sum = 0;
-			for (int i = 0; i < DUMMY_LOOPS; i++) {
+			for (int i = 0; i < CLASS_LOOPS; i++) {
 				sum += r.nextInt();
 			}
 			return System.nanoTime() + sum % 2;
