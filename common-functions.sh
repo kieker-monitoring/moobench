@@ -114,7 +114,7 @@ EOF
 
 function printIntermediaryResults {
    loop="$1"
-   for index in 2 4; do
+   for ((index=0;index<${#TITLE[@]};index+=1)); do
       RESULT_FILE="${RAWFN}-${loop}-${RECURSION_DEPTH}-${index}.csv"
       #checkFile result "${RESULT_FILE}"
       raw_length=`cat "${RESULT_FILE}" | wc -l`

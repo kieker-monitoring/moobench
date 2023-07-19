@@ -107,7 +107,7 @@ function executeBenchmarkBody() {
 function executeBenchmark() {
     recursion="${RECURSION_DEPTH}"
 
-    for index in 2 4; do
+    for ((index=0;index<${#WRITER_CONFIG[@]};index+=1)); do
       executeBenchmarkBody $index $i $recursion
     done
 }
