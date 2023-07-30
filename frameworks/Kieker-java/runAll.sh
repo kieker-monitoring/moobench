@@ -1,6 +1,7 @@
 JAVA_FOLDER=$(java -version 2>&1 | grep version | tr " " "_" | tr -d "\"")
 
 function runAndStore {
+	rm -r results/ data/
 	filePrefix=$1
 	./benchmark.sh &> $JAVA_FOLDER/$filePrefix.txt
 	mv results/results.zip $JAVA_FOLDER/$filePrefix.zip
