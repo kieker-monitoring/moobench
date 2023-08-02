@@ -1,3 +1,15 @@
+if [ -z "$FLAME_HOME" ]
+then
+	echo "Variable \$FLAME_HOME should be defined, but isn't."
+	exit 1
+fi
+
+if [ ! -d $FLAME_HOME ]
+then
+	echo "Variable \$FLAME_HOME should be a folder, but isn't."
+	exit 1
+fi
+
 sudo chown $(whoami):$(whoami) perf*
 perf script -i perf_2_1.data | $FLAME_HOME/stackcollapse-perf.pl > nologging.folded
 cat nologging.folded | $FLAME_HOME/flamegraph.pl > nologging.svg
