@@ -7,5 +7,6 @@ $FLAME_HOME/difffolded.pl nologging.folded binary.folded | $FLAME_HOME/flamegrap
 $FLAME_HOME/difffolded.pl binary.folded nologging.folded | $FLAME_HOME/flamegraph.pl > diffBinary.svg
 
 mkdir graphs
+mv perf_*.data graphs
 mv *.svg graphs
 mv *.folded graphs
