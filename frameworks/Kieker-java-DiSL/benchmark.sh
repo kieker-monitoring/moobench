@@ -26,6 +26,11 @@ if [ ! -d "${BASE_DIR}" ] ; then
 	exit 1
 fi
 
+if [ -z "${DISL_HOME}" ]; then
+	echo "\$DISL_HOME needs to be defined."
+	exit 1
+fi
+
 if [ -f "${MAIN_DIR}/common-functions.sh" ] ; then
 	source "${MAIN_DIR}/common-functions.sh"
 else
