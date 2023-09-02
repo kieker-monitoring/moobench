@@ -45,7 +45,10 @@ function runNoInstrumentation {
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     echo " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}" >> "${BASE_DIR}/OpenTelemetry.log"
     export BENCHMARK_OPTS="${JAVA_ARGS_NOINSTR}"
-    "${MOOBENCH_BIN}" --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
+    java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+        -cp $CLASSPATH \
+        moobench.benchmark.BenchmarkMain \
+        --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
@@ -59,7 +62,10 @@ function runOpenTelemetryNoLogging {
     info " # ${i}.$RECURSION_DEPTH.${k} "${TITLE[$k]}
     echo " # ${i}.$RECURSION_DEPTH.${k} "${TITLE[$k]} >> "${BASE_DIR}/OpenTelemetry.log"
     export BENCHMARK_OPTS="${JAVA_ARGS_OPENTELEMETRY_LOGGING_DEACTIVATED}"
-    "${MOOBENCH_BIN}" --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
+    java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+        -cp $CLASSPATH \
+        moobench.benchmark.BenchmarkMain \
+        --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
@@ -73,7 +79,10 @@ function runOpenTelemetryLogging {
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     echo " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}" >> "${BASE_DIR}/OpenTelemetry.log"
     export BENCHMARK_OPTS="${JAVA_ARGS_OPENTELEMETRY_LOGGING}"
-    "${MOOBENCH_BIN}" --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
+    java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+        -cp $CLASSPATH \
+        moobench.benchmark.BenchmarkMain \
+        --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
@@ -111,7 +120,10 @@ function runOpenTelemetryJaeger {
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     echo " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}" >> "${BASE_DIR}/OpenTelemetry.log"
     export BENCHMARK_OPTS="${JAVA_ARGS_OPENTELEMETRY_JAEGER}"
-    "${MOOBENCH_BIN}" --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
+    java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+        -cp $CLASSPATH \
+        moobench.benchmark.BenchmarkMain \
+        --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
@@ -128,7 +140,10 @@ function runOpenTelemetryPrometheus {
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     echo " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}" >> "${BASE_DIR}/OpenTelemetry.log"
     export BENCHMARK_OPTS="${JAVA_ARGS_OPENTELEMETRY_PROMETHEUS}"
-    "${MOOBENCH_BIN}" --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
+    java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+        -cp $CLASSPATH \
+        moobench.benchmark.BenchmarkMain \
+        --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
