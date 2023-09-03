@@ -114,7 +114,7 @@ for ((i=1;i<=${NUM_OF_LOOPS};i+=1)); do
     runOpenTelemetryPrometheus
     cleanup
 
-    printIntermediaryResults
+    printIntermediaryResults "${i}"
 done
 
 # Create R labels

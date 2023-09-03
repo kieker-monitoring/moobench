@@ -20,6 +20,7 @@ cd "${BASE_DIR}"
 start=$(pwd)
 for benchmark in inspectIT-java OpenTelemetry-java Kieker-java
 do
+	echo "Running $benchmark"
         cd "${benchmark}"
         ./benchmark.sh &> "${start}/log_${benchmark}.txt"
         cd "${start}"

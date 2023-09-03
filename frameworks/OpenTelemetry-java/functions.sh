@@ -1,4 +1,4 @@
-# OpenTelementry specific functions
+# OpenTelemetry specific functions
 
 # ensure the script is sourced
 if [ "${BASH_SOURCE[0]}" -ef "$0" ]

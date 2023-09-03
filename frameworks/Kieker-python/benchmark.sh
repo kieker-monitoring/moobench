@@ -55,12 +55,6 @@ info "----------------------------------"
 info "Setup..."
 info "----------------------------------"
 
-# This is necessary, as the framework name is originally
-# derived from the directory the script is sitting in, but
-# Kieker supports multiple languages and has multiple
-# sub directories for each programming language.
-export FRAMEWORK_NAME="kieker-${FRAMEWORK_NAME}"
-
 cd "${BASE_DIR}"
 
 # load agent
@@ -128,8 +122,8 @@ for ((i=1;i<=${NUM_OF_LOOPS};i+=1)); do
 
     noInstrumentation 0 $i
 
-    dactivatedProbe 1 $i 1
-    dactivatedProbe 2 $i 2
+    deactivatedProbe 1 $i 1
+    deactivatedProbe 2 $i 2
 
     noLogging 3 $i 1
     noLogging 4 $i 2
@@ -139,8 +133,8 @@ for ((i=1;i<=${NUM_OF_LOOPS};i+=1)); do
 
     tcpLogging 7 $i 1
     tcpLogging 8 $i 2
-    
-    printIntermediaryResults
+
+    printIntermediaryResults "${i}"
 done
 
 # Create R labels
@@ -149,6 +143,7 @@ runStatistics
 cleanupResults
 
 mv "${DATA_DIR}/kieker.log" "${RESULTS_DIR}/kieker.log"
+rm "${DATA_DIR}/kieker"
 [ -f "${DATA_DIR}/errorlog.txt" ] && mv "${DATA_DIR}/errorlog.txt" "${RESULTS_DIR}"
 
 checkFile results.yaml "${RESULTS_DIR}/results.yaml"

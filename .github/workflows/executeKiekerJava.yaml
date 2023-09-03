@@ -16,9 +16,11 @@ jobs:
         java:
           - 1.8
           - 11
+          - 17
       fail-fast: false
     runs-on: ${{ matrix.os }}
     name: Java ${{ matrix.java }} OS ${{ matrix.os }} sample
+    timeout-minutes: 15 # For check of functional runnability, 15 minutes should be more than sufficient, otherwise, developer should be notified
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK ${{ matrix.java }}
@@ -34,7 +36,7 @@ jobs:
           export TOTAL_NUM_OF_CALLS=10 
           export RECURSION_DEPTH=10 
           ./benchmark.sh 
-          unzip results-Kieker-java/results.zip 
+          unzip results/results.zip 
           measuredValues=$(cat raw-1-10-* | wc -l) 
           if [ $measuredValues -ne 60 ] 
           then

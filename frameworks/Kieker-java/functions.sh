@@ -9,16 +9,21 @@ fi
 
 
 function getAgent() {
-	info "Checking whether Kieker is present in ${AGENT}"
-	if [ ! -f "${AGENT}" ] ; then
-		# get agent
-		export VERSION_PATH=`curl "https://oss.sonatype.org/service/local/repositories/snapshots/content/net/kieker-monitoring/kieker/" | grep '<resourceURI>' | sed 's/ *<resourceURI>//g' | sed 's/<\/resourceURI>//g' | grep '/$' | grep -v ".xml" | head -n 1`
-		export AGENT_PATH=`curl "${VERSION_PATH}" | grep 'aspectj.jar</resourceURI' | sort | sed 's/ *<resourceURI>//g' | sed 's/<\/resourceURI>//g' | tail -1`
-		curl "${AGENT_PATH}" > "${AGENT}"
+	info "Download the Kieker agent ${AGENT}"
+	# get agent
+	export VERSION_PATH=`curl "https://oss.sonatype.org/service/local/repositories/snapshots/content/net/kieker-monitoring/kieker/" | grep '<resourceURI>' | sed 's/ *<resourceURI>//g' | sed 's/<\/resourceURI>//g' | grep '/$' | grep -v ".xml" | head -n 1`
+	export AGENT_PATH=`curl "${VERSION_PATH}" | grep 'aspectj.jar</resourceURI' | sort | sed 's/ *<resourceURI>//g' | sed 's/<\/resourceURI>//g' | tail -1`
+	curl "${AGENT_PATH}" > "${AGENT}"
 
-		if [ ! -f "${AGENT}" ] || [ -s "${AGENT}" ] ; then
-			error "Kieker download from $AGENT_PATH failed; please asure that a correct Kieker AspectJ file is present!"
-		fi
+	if [ ! -f "${AGENT}" ] ; then
+		error "Kieker download from $AGENT_PATH seems to have failed; no file in $AGENT present."
+		ls
+		exit 1
+	fi
+	if [ ! -s "${AGENT}" ] ; then
+		error "Kieker download from $AGENT_PATH seems to have failed; file in $AGENT has size 0."
+		ls -lah
+		exit 1
 	fi
 }
 
@@ -36,8 +41,8 @@ function executeExperiment() {
     loop="$1"
     recursion="$2"
     index="$3"
-    title="$4"
-    kieker_parameters="$5"
+    title="${TITLE[$index]}"
+    kieker_parameters="${WRITER_CONFIG[$index]}"
 
     info " # ${loop}.${recursion}.${index} ${title}"
     echo " # ${loop}.${recursion}.${index} ${title}" >> "${DATA_DIR}/kieker.log"
@@ -50,14 +55,29 @@ function executeExperiment() {
 
     debug "Run options: ${BENCHMARK_OPTS}"
 
+    RESULT_FILE="${RAWFN}-${loop}-${recursion}-${index}.csv"
+    LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
+
     "${MOOBENCH_BIN}" \
 	--application moobench.application.MonitoredClassSimple \
-        --output-filename "${RAWFN}-${loop}-${recursion}-${index}.csv" \
+        --output-filename "${RESULT_FILE}" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
-        --total-threads 1 \
-        --recursion-depth "${recursion}" &> "${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
+        --total-threads $THREADS \
+        --recursion-depth "${recursion}" &> "${LOG_FILE}"
 
+    if [ ! -f "${RESULT_FILE}" ] ; then
+        info "---------------------------------------------------"
+        cat "${LOG_FILE}"
+        error "Result file '${RESULT_FILE}' is empty."
+    else
+       size=`wc -c "${RESULT_FILE}" | awk '{ print $1 }'`
+       if [ "${size}" == "0" ] ; then
+           info "---------------------------------------------------"
+           cat "${LOG_FILE}"
+           error "Result file '${RESULT_FILE}' is empty."
+       fi
+    fi
     rm -rf "${DATA_DIR}"/kieker-*
 
     [ -f "${DATA_DIR}/hotspot.log" ] && mv "${DATA_DIR}/hotspot.log" "${RESULTS_DIR}/hotspot-${loop}-${recursion}-${index}.log"
@@ -78,7 +98,7 @@ function executeBenchmarkBody() {
      debug "PID ${RECEIVER_PID}"
   fi
 
-  executeExperiment "$loop" "$recursion" "$index" "${TITLE[$index]}" "${WRITER_CONFIG[$index]}"
+  executeExperiment "$loop" "$recursion" "$index"
 
   if [[ "${RECEIVER_PID}" ]] ; then
      kill -TERM "${RECEIVER_PID}"

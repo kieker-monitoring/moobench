@@ -7,6 +7,15 @@
 
 # configure base dir
 BASE_DIR=$(cd "$(dirname "$0")"; pwd)
+MAIN_DIR="${BASE_DIR}/../.."
+
+# Hotfix for ASPECTJ
+# https://stackoverflow.com/questions/70411097/instrument-java-17-with-aspectj
+JAVA_VERSION=$(java -version 2>&1 | grep version | sed 's/^.* "\([0-9\.]*\).*/\1/g')
+if [ "${JAVA_VERSION}" != "1.8.0" ] ; then
+	export JAVA_OPTS="--add-opens java.base/java.lang=ALL-UNNAMED"
+	echo "Setting \$JAVA_OPTS, since Java version is bigger than 8"
+fi
 
 #
 # source functionality
@@ -16,8 +25,6 @@ if [ ! -d "${BASE_DIR}" ] ; then
 	echo "Base directory ${BASE_DIR} does not exist."
 	exit 1
 fi
-
-MAIN_DIR="${BASE_DIR}/../.."
 
 if [ -f "${MAIN_DIR}/common-functions.sh" ] ; then
 	source "${MAIN_DIR}/common-functions.sh"
@@ -55,12 +62,6 @@ info "----------------------------------"
 info "Setup..."
 info "----------------------------------"
 
-# This is necessary, as the framework name is originally
-# derived from the directory the script is sitting in, but
-# Kieker supports multiple languages and has multiple
-# sub directories for each programming language.
-export FRAMEWORK_NAME="kieker-${FRAMEWORK_NAME}"
-
 cd "${BASE_DIR}"
 
 # load agent
@@ -68,7 +69,8 @@ getAgent
 
 checkDirectory data-dir "${DATA_DIR}" create
 checkFile log "${DATA_DIR}/kieker.log" clean
-checkDirectory results-directory "${RESULTS_DIR}" recreate
+cleanupResults
+mkdir -p $RESULTS_DIR
 PARENT=`dirname "${RESULTS_DIR}"`
 checkDirectory result-base "${PARENT}"
 
@@ -133,8 +135,7 @@ for ((i=1;i<="${NUM_OF_LOOPS}";i+=1)); do
     echo "## Starting iteration ${i}/${NUM_OF_LOOPS}" >> "${DATA_DIR}/kieker.log"
 
     executeBenchmark
-
-    printIntermediaryResults
+    printIntermediaryResults "${i}"
 done
 
 # Create R labels

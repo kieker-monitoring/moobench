@@ -44,7 +44,7 @@ function createConfig() {
 cat > "${BASE_DIR}/config.ini" << EOF
 [Benchmark]
 total_calls = ${TOTAL_NUM_OF_CALLS}
-recursion_depth = ${RECURSION_DEPTH} 
+recursion_depth = ${RECURSION_DEPTH}
 method_time = ${METHOD_TIME}
 config_path = ${BASE_DIR}/monitoring.ini
 inactive = $inactive
@@ -88,7 +88,7 @@ function noInstrumentation() {
     sleep "${SLEEP_TIME}"
 }
 
-function dactivatedProbe() {
+function deactivatedProbe() {
     index="$1"
     loop="$2"
     approach="$3"

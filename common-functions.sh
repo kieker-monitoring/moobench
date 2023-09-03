@@ -113,9 +113,17 @@ EOF
 }
 
 function printIntermediaryResults {
+   loop="$1"
    for ((index=0;index<${#TITLE[@]};index+=1)); do
-      info_n "Intermediary results "${TITLE[$index]}" "
-      cat ${RAWFN}-*-${RECURSION_DEPTH}-${index}.csv | awk -F';' '{print $2}' | getSum
+      RESULT_FILE="${RAWFN}-${loop}-${RECURSION_DEPTH}-${index}.csv"
+      checkFile result "${RESULT_FILE}"
+      raw_length=`cat "${RESULT_FILE}" | wc -l`
+      if [ "${raw_length}" == "0" ] ; then
+         error "Result file '${RESULT_FILE}' is empty."
+         exit 1
+      fi
+      info_n "Intermediary results "${TITLE[$index]}" (in ns) "
+      cat "${RESULT_FILE}" | awk -F';' '{print $2}' | getSum
    done
 }
 
@@ -142,6 +150,9 @@ fi
 
 function error() {
 	echo -e "${ERROR} $@"
+	if [ "${_STOP_ON_ERROR}" == "true" ] ; then
+	   exit 1
+	fi
 }
 
 function warn() {
@@ -234,7 +245,7 @@ function showParameter() {
 }
 
 FRAMEWORK_NAME=$(basename -- "${BASE_DIR}")
-RESULTS_DIR="${BASE_DIR}/results-${FRAMEWORK_NAME}"
+RESULTS_DIR="${BASE_DIR}/results"
 RAWFN="${RESULTS_DIR}/raw"
 
 # Initialize all unset parameters

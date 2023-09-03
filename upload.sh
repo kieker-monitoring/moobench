@@ -8,6 +8,9 @@
 # configure base dir
 BASE_DIR=$(cd "$(dirname "$0")"; pwd)
 
+KEYSTORE="$1"
+UPDATE_SITE_URL="$2"
+
 #
 # source functionality
 #
@@ -33,21 +36,43 @@ else
 fi
 
 checkExecutable compile-results "${COMPILE_RESULTS_BIN}"
+checkFile keystore "${KEYSTORE}"
+checkDirectory results "${BASE_DIR}/results" recreate
 
-KEYSTORE="$1"
-UPDATE_SITE_RUL="$2"
+if [ "${UPDATE_SITE_URL}" == "" ] ; then
+	error "Missing UPDATE_SITE_URL"
+	info "Usage: $0 KEYSTORE UPDATE_SITE_URL"
+	exit 1
+fi
 
-mkdir results
+# Retrieve logs
 cd results
-sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}/kieker-java-log.yaml
-sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}/kieker-python-log.yaml
-sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}/OpenTelemetry-log.yaml
-sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}/inspectIT-log.yaml
+
+info "Get Kieker-java log"
+sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}/Kieker-java-log.yaml
+
+info "Get Kieker-python log"
+sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}/Kieker-python-log.yaml
+
+info "Get OpenTelemetry log"
+sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}/OpenTelemetry-java-log.yaml
+
+info "Get inspectIT log"
+sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}/inspectIT-java-log.yaml
 cd ..
+
+# Compute logs and charts
+info "Compute new logs and charts"
 "${COMPILE_RESULTS_BIN}" -i *-results.yaml -l results -c results -t results -w 100
+
+# Stash results back onto the update site
+info "Push logs and results"
+
 cd results
 echo "put *.yaml" | sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo  -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}
 echo "put *.html" | sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo  -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}
 echo "put *.json" | sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo  -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}
 cd ..
+
+info "Done"
 # end

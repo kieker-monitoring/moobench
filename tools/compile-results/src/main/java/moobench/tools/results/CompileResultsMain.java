@@ -16,7 +16,6 @@
  ***************************************************************************/
 package moobench.tools.results;
 
-import java.io.File;
 import java.nio.file.Path;
 
 import com.beust.jcommander.JCommander;
@@ -46,7 +45,7 @@ public class CompileResultsMain extends AbstractService<TeetimeConfiguration, Se
     }
 
     @Override
-    protected File getConfigurationFile() {
+    protected Path getConfigurationPath() {
         return null;
     }
 

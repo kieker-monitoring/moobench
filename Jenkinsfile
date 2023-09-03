@@ -49,10 +49,10 @@ pipeline {
           sh './frameworks/OpenTelemetry-java/benchmark.sh'
           sh './frameworks/inspectIT-java/benchmark.sh'
 
-          sh 'cp frameworks/Kieker-python/results-Kieker-python/results.yaml kieker-python-results.yaml'
-          sh 'cp frameworks/Kieker-java/results-Kieker-java/results.yaml kieker-java-results.yaml'
-          sh 'cp frameworks/OpenTelemetry-java/results-OpenTelemetry/results.yaml open-telementry-results.yaml'
-          sh 'cp frameworks/inspectIT-java/results-inspectIT/results.yaml inspect-it-results.yaml'
+          sh 'cp frameworks/Kieker-python/results/results.yaml Kieker-python-results.yaml'
+          sh 'cp frameworks/Kieker-java/results/results.yaml Kieker-java-results.yaml'
+          sh 'cp frameworks/OpenTelemetry-java/results/results.yaml OpenTelemetry-java-results.yaml'
+          sh 'cp frameworks/inspectIT-java/results/results.yaml inspectIT-java-results.yaml'
 
           stash includes: '*-results.yaml', name: 'yaml'
        }

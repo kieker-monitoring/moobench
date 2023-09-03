@@ -111,7 +111,7 @@ for ((i=1;i<=${NUM_OF_LOOPS};i+=1)); do
     runInspectITPrometheus
     cleanup
     
-    printIntermediaryResults
+    printIntermediaryResults "${i}"
 done
 
 # Create R labels

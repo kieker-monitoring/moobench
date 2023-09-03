@@ -17,11 +17,12 @@ For all combinations of supported monitoring frameworks $FRAMEWORK and languages
 - benchmark = moobench code
 - continuous-integration = obsolete
 - docker = Dockerfile to be used in automated runs on our intrestructure
-- frameworks = benchmark setups for the different frameworks
-  - Kieker
-  - OpenTelementry
-  - SPASSmeter
-  - inspectIT
+- frameworks = benchmark setups for the different frameworks for the respective language
+  - Kieker-java
+  - Kieker-python
+  - OpenTelementry-java
+  - SPASSmeter (currently not maintained)
+  - inspectIT-java
 - gradle = build system, gradle libraries
 - tools = tooling used to support benchmarks and process results
   - compile-results = adds new results to a result log and computes partial

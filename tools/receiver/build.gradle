@@ -18,7 +18,7 @@ jar {
 	doLast {
 		copy {
 		    from jar
-		    into "../../frameworks/Kieker/scripts/receiver/lib/"
+		    into "../../frameworks/Kieker-java/scripts/receiver/lib/"
 	    }
 	}
 }

@@ -1,4 +1,4 @@
-# OpenTelementry configuration
+# OpenTelemetry configuration
 
 source ${MAIN_DIR}/config.rc
 

@@ -14,6 +14,7 @@ jobs:
         fail-fast: false
     runs-on: ${{ matrix.os }}
     name: Java ${{ matrix.java }} OS ${{ matrix.os }} sample
+    timeout-minutes: 15 # For check of functional runnability, 15 minutes should be more than sufficient, otherwise, developer should be notified
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK ${{ matrix.java }}
