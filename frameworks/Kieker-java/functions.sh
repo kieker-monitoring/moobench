@@ -58,8 +58,15 @@ function executeExperiment() {
     RESULT_FILE="${RAWFN}-${loop}-${recursion}-${index}.csv"
     LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
+    if [ $index == 0 ]
+    then
+	    application=moobench.application.MonitoredClassSimple
+    else
+	    application=moobench.application.MonitoredClassInstrumented
+    fi
+
     "${MOOBENCH_BIN}" \
-	--application moobench.application.MonitoredClassSimple \
+	--application $application \
         --output-filename "${RESULT_FILE}" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
