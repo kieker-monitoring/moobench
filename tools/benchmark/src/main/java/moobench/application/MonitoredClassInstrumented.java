@@ -17,10 +17,9 @@
  */
 package moobench.application;
 
-import kieker.monitoring.core.controller.MonitoringController;
+import kieker.common.record.controlflow.OperationExecutionRecord;
 import kieker.monitoring.core.registry.ControlFlowRegistry;
 import kieker.monitoring.core.registry.SessionRegistry;
-import kieker.common.record.controlflow.OperationExecutionRecord;
 
 /**
  * @author Jan Waller
@@ -39,16 +38,7 @@ public final class MonitoredClassInstrumented implements MonitoredClass {
 
     public final long monitoredMethod(final long methodTime, final int recDepth) {
         if (!MonitoredClassInstrumented._kieker_sourceInstrumentation_controller.isMonitoringEnabled()) {
-            if (recDepth > 1) {
-                return this.monitoredMethod(methodTime, recDepth - 1);
-            } else {
-                final long exitTime = System.nanoTime() + methodTime;
-                long currentTime;
-                do {
-                    currentTime = System.nanoTime();
-                } while (currentTime < exitTime);
-                return currentTime;
-            }
+            return monitoredMethod_Extracted(methodTime, recDepth);
         }
         final String _kieker_sourceInstrumentation_signature = "public final long moobench.application.MonitoredClassInstrumented.monitoredMethod(long,int)";;
               // collect data
@@ -76,18 +66,8 @@ public final class MonitoredClassInstrumented implements MonitoredClass {
       }
       // measure before
       final long _kieker_sourceInstrumentation_tin = MonitoredClassInstrumented._kieker_sourceInstrumentation_TIME_SOURCE.getTime();
-;
         try {
-            if (recDepth > 1) {
-                return this.monitoredMethod(methodTime, recDepth - 1);
-            } else {
-                final long exitTime = System.nanoTime() + methodTime;
-                long currentTime;
-                do {
-                    currentTime = System.nanoTime();
-                } while (currentTime < exitTime);
-                return currentTime;
-            }
+            return monitoredMethod_Extracted(methodTime, recDepth);
         } finally {
             // measure after
          final long _kieker_sourceInstrumentation_tout = MonitoredClassInstrumented._kieker_sourceInstrumentation_TIME_SOURCE.getTime();
@@ -102,4 +82,17 @@ public final class MonitoredClassInstrumented implements MonitoredClass {
          };
         }
     }
+
+	private long monitoredMethod_Extracted(final long methodTime, final int recDepth) {
+		if (recDepth > 1) {
+		    return this.monitoredMethod(methodTime, recDepth - 1);
+		} else {
+		    final long exitTime = System.nanoTime() + methodTime;
+		    long currentTime;
+		    do {
+		        currentTime = System.nanoTime();
+		    } while (currentTime < exitTime);
+		    return currentTime;
+		}
+	}
 }
