@@ -65,7 +65,8 @@ info "----------------------------------"
 cd "${BASE_DIR}"
 
 # load agent
-getAgent
+# getAgent
+AGENT=$HOME/.m2/repository/net/kieker-monitoring/kieker/1.15.2/kieker-1.15.2-aspectj.jar
 
 checkDirectory data-dir "${DATA_DIR}" create
 checkFile log "${DATA_DIR}/kieker.log" clean
@@ -81,7 +82,7 @@ RECEIVER_BIN="${BASE_DIR}/receiver/bin/receiver"
 checkExecutable receiver "${RECEIVER_BIN}"
 
 
-checkFile ApsectJ-Agent "${AGENT}"
+# checkFile ApsectJ-Agent "${AGENT}"
 checkFile aop-file "${AOP}"
 
 
