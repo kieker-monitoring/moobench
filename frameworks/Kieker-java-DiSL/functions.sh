@@ -41,15 +41,17 @@ function executeExperiment() {
     APP_HOME=../../benchmark
     CLASSPATH=$APP_HOME/lib/benchmark.jar:$APP_HOME/lib/jcommander-1.72.jar	
 
-    KIEKER_DISL_JAR="../../../kieker/kieker-monitoring/build/libs/kieker-monitoring-2.0.0-SNAPSHOT.jar"
+    KIEKER_DISL_JAR="../../../kieker/build/libs/kieker-2.0.0-SNAPSHOT-disl.jar"
+
+    if [ ! -f $KIEKER_DISL_JAR ]
+    then
+        echo "It is expected that the Kieker DISL jar is available in \$KIEKER_DISL_JAR, but nothing found in $KIEKER_DISL_JAR"
+        exit 1
+    fi
 
     if [[ $index != 0 ]]
     then
-    	if [ ! -f $KIEKER_DISL_JAR ]
-    	then
-    		echo "It is expected that the Kieker DISL jar is available in \$KIEKER_DISL_JAR, but nothing found in $KIEKER_DISL_JAR"
-    		exit 1
-    	fi
+    	
     
     	$DISL_HOME/bin/disl.py -d $DISL_HOME/output -s_noexcepthandler -cs -- \
    	 	 $KIEKER_DISL_JAR \
