@@ -10,6 +10,7 @@
 rootProject.name = 'moobench'
 
 include 'tools:benchmark'
+include 'tools:benchmark-kieker-instrumented'
 include 'tools:receiver'
 include 'tools:compile-results'
 include 'frameworks:inspectIT-java'

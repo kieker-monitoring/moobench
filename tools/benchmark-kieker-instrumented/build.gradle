@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+dependencies {
+    implementation 'com.beust:jcommander:1.72'
+    implementation 'net.kieker-monitoring:kieker:1.15.4'
+}
+
+application {
+    mainClass = 'moobench.benchmark.BenchmarkMain'
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Moobench Benchmark Kieker-Instrumented',
+                   'Implementation-Version': '0.1-SNAPSHOT',
+                   'Main-Class': 'moobench.benchmark.BenchmarkMain'
+    }
+    
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+}
