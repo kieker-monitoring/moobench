@@ -11,7 +11,6 @@ jobs:
         os:
           - ubuntu-latest
         java:
-          - 1.8
           - 11
           - 17
       fail-fast: false
@@ -33,7 +32,7 @@ jobs:
           export TOTAL_NUM_OF_CALLS=10 
           export RECURSION_DEPTH=10 
           ./benchmark.sh 
-          unzip results/results.zip 
+          unzip results-inspectIT-java/results.zip 
           measuredValues=$(cat raw-1-10-* | wc -l) 
           if [ $measuredValues -ne 50 ] 
           then

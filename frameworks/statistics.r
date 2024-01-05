@@ -49,19 +49,19 @@ resultsBIG <- array(dim=c(numberOfWriters, numberOfValues), dimnames=resultDimen
 
 numOfRowsToRead <- results.count-results.skip
 
-for (writer_idx in (1:numberOfWriters)) {
+for (writer_idx in configs.indices) {
    recordsPerSecond = c()
    rpsLastDuration = 0
    rpsCount = 0
-   file_idx <- writer_idx - 1
-
+   array_idx <- writer_idx + 1 
+   
    # loop
    for (loop_counter in (1:configs.loop)) {
-      results_fn_filepath <- paste(results_fn, "-", loop_counter, "-", recursion_depth, "-", file_idx, ".csv", sep="")
+      results_fn_filepath <- paste(results_fn, "-", loop_counter, "-", recursion_depth, "-", writer_idx, ".csv", sep="")
       message(results_fn_filepath)
       results <- read.csv2(results_fn_filepath, nrows=numOfRowsToRead, skip=results.skip, quote="", colClasses=c("NULL","numeric", "numeric", "numeric"), comment.char="", col.names=c("thread_id", "duration_nsec", "gc", "t"), header=FALSE)
       trx_idx <- c(1:numOfRowsToRead)
-      resultsBIG[writer_idx,trx_idx] <- results[["duration_nsec"]]
+      resultsBIG[array_idx,trx_idx] <- results[["duration_nsec"]]
    }
 }
 
@@ -72,21 +72,24 @@ printDimensionNames <- list(c("mean","sd","ci95%","md25%","md50%","md75%","max",
 # row number == number of computed result values, e.g., mean, min, max
 printvalues <- matrix(nrow=8, ncol=numberOfWriters, dimnames=printDimensionNames)
 
-for (writer_idx in (1:numberOfWriters)) {
+for (writer_idx in configs.indices) {
    idx_mult <- c(1:numOfRowsToRead)
 
-   valuesBIG <- resultsBIG[writer_idx,idx_mult]/timeUnit
+   array_idx <- writer_idx + 1 
 
-   printvalues["mean",writer_idx] <- mean(valuesBIG)
-   printvalues["sd",writer_idx] <- sd(valuesBIG)
-   printvalues["ci95%",writer_idx] <- qnorm_value*sd(valuesBIG)/sqrt(length(valuesBIG))
-   printvalues[c("md25%","md50%","md75%"),writer_idx] <- quantile(valuesBIG, probs=c(0.25, 0.5, 0.75))
-   printvalues["max",writer_idx] <- max(valuesBIG)
-   printvalues["min",writer_idx] <- min(valuesBIG)
+   valuesBIG <- resultsBIG[array_idx,idx_mult]/timeUnit
+
+   printvalues["mean",array_idx] <- mean(valuesBIG)
+   printvalues["sd",array_idx] <- sd(valuesBIG)
+   printvalues["ci95%",array_idx] <- qnorm_value*sd(valuesBIG)/sqrt(length(valuesBIG))
+   printvalues[c("md25%","md50%","md75%"),array_idx] <- quantile(valuesBIG, probs=c(0.25, 0.5, 0.75))
+   printvalues["max",array_idx] <- max(valuesBIG)
+   printvalues["min",array_idx] <- min(valuesBIG)
 }
 resultstext <- formatC(printvalues,format="f",digits=4,width=8)
 
 print(resultstext)
+
 
 currentTime <- as.numeric(Sys.time())
 
@@ -102,15 +105,16 @@ write(paste("kind:", configs.framework_name), file=out_yaml_fn,append=FALSE)
 write("experiments:", file=out_yaml_fn, append=TRUE)
 write(paste("- timestamp:", currentTime), file=out_yaml_fn, append=TRUE)
 write("  measurements:", file=out_yaml_fn, append=TRUE)
-for (writer_idx in (1:(numberOfWriters))) {
-   write(paste("    ", configs.labels[writer_idx], ": [", 
-      mktext(printvalues["mean",writer_idx]), ",",
-      mktext(printvalues["sd",writer_idx]), ",", 
-      mktext(printvalues["ci95%",writer_idx]), ",",
-      mktext(printvalues["md25%",writer_idx]), ",",
-      mktext(printvalues["md50%",writer_idx]), ",",
-      mktext(printvalues["md75%",writer_idx]), ",",
-      mktext(printvalues["max",writer_idx]), ",",
-      mktext(printvalues["min",writer_idx]), "]"), file=out_yaml_fn, append=TRUE)
+for (writer_idx in configs.indices) {
+   array_idx <- writer_idx + 1 
+   write(paste("    ", configs.labels[array_idx], ": [", 
+      mktext(printvalues["mean",array_idx]), ",",
+      mktext(printvalues["sd",array_idx]), ",", 
+      mktext(printvalues["ci95%",array_idx]), ",",
+      mktext(printvalues["md25%",array_idx]), ",",
+      mktext(printvalues["md50%",array_idx]), ",",
+      mktext(printvalues["md75%",array_idx]), ",",
+      mktext(printvalues["max",array_idx]), ",",
+      mktext(printvalues["min",array_idx]), "]"), file=out_yaml_fn, append=TRUE)
 }
 # end

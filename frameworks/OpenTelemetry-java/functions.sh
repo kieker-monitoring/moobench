@@ -38,6 +38,40 @@ function cleanup {
     sleep "${SLEEP_TIME}"
 }
 
+## Execute Benchmark
+function executeBenchmark() {
+   for index in $MOOBENCH_CONFIGURATIONS
+   do
+      if [ $index == 0 ]
+      then
+          runNoInstrumentation 0
+          cleanup
+      fi
+      
+      if [ $index == 1 ]
+      then
+          runOpenTelemetryNoLogging 1
+          cleanup
+      fi
+      if [ $index == 2 ]
+      then
+          runOpenTelemetryLogging 2
+          cleanup
+      fi
+      if [ $index == 3 ]
+      then
+          runOpenTelemetryZipkin 3
+          cleanup
+      fi
+      if [ $index == 4 ]
+      then
+          runOpenTelemetryPrometheus 4
+          cleanup
+      fi
+   done
+}
+
+
 # experiment setups
 
 function runNoInstrumentation {
@@ -55,7 +89,7 @@ function runNoInstrumentation {
 
 function runOpenTelemetryNoLogging {
     # OpenTelemetry Instrumentation Logging Deactivated
-    k=`expr ${k} + 1`
+    k=$1
     info " # ${i}.$RECURSION_DEPTH.${k} "${TITLE[$k]}
     echo " # ${i}.$RECURSION_DEPTH.${k} "${TITLE[$k]} >> "${BASE_DIR}/OpenTelemetry.log"
     export BENCHMARK_OPTS="${JAVA_ARGS_OPENTELEMETRY_LOGGING_DEACTIVATED}"
@@ -69,7 +103,7 @@ function runOpenTelemetryNoLogging {
 
 function runOpenTelemetryLogging {
     # OpenTelemetry Instrumentation Logging
-    k=`expr ${k} + 1`
+    k=$1
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     echo " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}" >> "${BASE_DIR}/OpenTelemetry.log"
     export BENCHMARK_OPTS="${JAVA_ARGS_OPENTELEMETRY_LOGGING}"
@@ -89,7 +123,7 @@ function runOpenTelemetryLogging {
 
 function runOpenTelemetryZipkin {
     # OpenTelemetry Instrumentation Zipkin
-    k=`expr ${k} + 1`
+    k=$1
     startZipkin
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     echo " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}" >> "${BASE_DIR}/OpenTelemetry.log"
@@ -106,7 +140,7 @@ function runOpenTelemetryZipkin {
 
 function runOpenTelemetryJaeger {
     # OpenTelemetry Instrumentation Jaeger
-    k=`expr ${k} + 1`
+    k=$1
     startJaeger
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     echo " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}" >> "${BASE_DIR}/OpenTelemetry.log"
@@ -123,7 +157,7 @@ function runOpenTelemetryJaeger {
 
 function runOpenTelemetryPrometheus {
     # OpenTelemetry Instrumentation Prometheus
-    k=`expr ${k} + 1`
+    k=$1
     startPrometheus
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     echo " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}" >> "${BASE_DIR}/OpenTelemetry.log"

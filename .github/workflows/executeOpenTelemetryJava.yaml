@@ -11,9 +11,9 @@ jobs:
         os:
           - ubuntu-latest
         java:
-          - 1.8
           - 11
           - 17
+          - 21
       fail-fast: false
     runs-on: ${{ matrix.os }}
     name: Java ${{ matrix.java }} OS ${{ matrix.os }} sample
@@ -33,9 +33,9 @@ jobs:
           export TOTAL_NUM_OF_CALLS=10 
           export RECURSION_DEPTH=10 
           ./benchmark.sh 
-          unzip results/results.zip 
+          unzip results-OpenTelemetry-java/results.zip 
           measuredValues=$(cat raw-1-10-* | wc -l) 
-          if [ $measuredValues -ne 50 ] 
+          if [ $measuredValues -ne 40 ] 
           then
             echo "It should be 50 measured values, but was $measuredValues"
             exit 1

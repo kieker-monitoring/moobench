@@ -54,6 +54,13 @@ else
 	exit 1
 fi
 
+if [ -z "$MOOBENCH_CONFIGURATIONS" ]
+then
+	MOOBENCH_CONFIGURATIONS="0 1 2 4 5"
+	echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (without TextLogStreamHandler)"
+fi
+echo "Running configurations: $MOOBENCH_CONFIGURATIONS"
+
 #
 # Setup
 #
@@ -119,6 +126,8 @@ WRITER_CONFIG[4]="-Dkieker.monitoring.enabled=true -Dkieker.monitoring.writer=ki
 WRITER_CONFIG[5]="-Dkieker.monitoring.writer=kieker.monitoring.writer.tcp.SingleSocketTcpWriter -Dkieker.monitoring.writer.tcp.SingleSocketTcpWriter.port=2345"
 RECEIVER[5]="${RECEIVER_BIN} 2345"
 
+
+
 writeConfiguration
 
 #
@@ -129,8 +138,8 @@ info "----------------------------------"
 info "Running benchmark..."
 info "----------------------------------"
 
-for ((i=1;i<="${NUM_OF_LOOPS}";i+=1)); do
-
+for ((i=1;i<=${NUM_OF_LOOPS};i+=1))
+do
     info "## Starting iteration ${i}/${NUM_OF_LOOPS}"
     echo "## Starting iteration ${i}/${NUM_OF_LOOPS}" >> "${DATA_DIR}/kieker.log"
 

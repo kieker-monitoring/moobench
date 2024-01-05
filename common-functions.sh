@@ -30,7 +30,8 @@ function cleanupResults() {
 function createRLabels() {
 	# Create R labels
 	LABELS=""
-	for I in "${TITLE[@]}" ; do
+	for I in "${TITLE[@]}"
+	do
 		title="$I"
 		if [ "$LABELS" == "" ] ; then
 			LABELS="\"$title\""
@@ -43,11 +44,13 @@ function createRLabels() {
 
 ## Generate Results file
 function runStatistics() {
-if [ "${TOTAL_NUM_OF_CALLS}" == 1 ] ; then
-   export SKIP=0
-else
-   export SKIP=${TOTAL_NUM_OF_CALLS}/2
-fi
+   if [ "${TOTAL_NUM_OF_CALLS}" == 1 ] ; then
+      export SKIP=0
+   else
+      export SKIP=${TOTAL_NUM_OF_CALLS}/2
+   fi
+   INDICES=$(echo $MOOBENCH_CONFIGURATIONS | tr " " ",")
+   echo "Indices: $INDICES"
 R --vanilla --silent << EOF
 results_fn="${RAWFN}"
 out_yaml_fn="${RESULTS_DIR}/results.yaml"
@@ -55,6 +58,7 @@ configs.loop=${NUM_OF_LOOPS}
 configs.recursion=${RECURSION_DEPTH}
 configs.labels=c($LABELS)
 configs.framework_name="${FRAMEWORK_NAME}"
+configs.indices=c($INDICES)
 results.count=${TOTAL_NUM_OF_CALLS}
 results.skip=${SKIP}
 source("${RSCRIPT_PATH}")
@@ -114,7 +118,8 @@ EOF
 
 function printIntermediaryResults {
    loop="$1"
-   for ((index=0;index<${#TITLE[@]};index+=1)); do
+   for index in $MOOBENCH_CONFIGURATIONS
+   do
       RESULT_FILE="${RAWFN}-${loop}-${RECURSION_DEPTH}-${index}.csv"
       checkFile result "${RESULT_FILE}"
       raw_length=`cat "${RESULT_FILE}" | wc -l`
@@ -245,7 +250,7 @@ function showParameter() {
 }
 
 FRAMEWORK_NAME=$(basename -- "${BASE_DIR}")
-RESULTS_DIR="${BASE_DIR}/results"
+RESULTS_DIR="${BASE_DIR}/results-$FRAMEWORK_NAME"
 RAWFN="${RESULTS_DIR}/raw"
 
 # Initialize all unset parameters

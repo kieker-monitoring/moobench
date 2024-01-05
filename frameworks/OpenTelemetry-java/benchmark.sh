@@ -47,6 +47,13 @@ else
 	exit 1
 fi
 
+if [ -z "$MOOBENCH_CONFIGURATIONS" ]
+then
+	MOOBENCH_CONFIGURATIONS="0 1 3 4"
+	echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (without text logging)"
+fi
+echo "Running configurations: $MOOBENCH_CONFIGURATIONS"
+
 #
 # Setup
 #
@@ -73,7 +80,7 @@ TIME=`expr ${METHOD_TIME} \* ${TOTAL_NUM_OF_CALLS} / 1000000000 \* 4 \* ${RECURS
 info "Experiment will take circa ${TIME} seconds."
 
 # general server arguments
-JAVA_ARGS="-Xms1G -Xmx2G -verbose:gc"
+JAVA_ARGS="-Xms1G -Xmx2G"
 
 JAVA_ARGS_NOINSTR="${JAVA_ARGS}"
 JAVA_ARGS_OPENTELEMETRY_BASIC="${JAVA_ARGS} -javaagent:${AGENT_JAR} -Dotel.resource.attributes=service.name=moobench -Dotel.instrumentation.methods.include=moobench.application.MonitoredClassSimple[monitoredMethod];moobench.application.MonitoredClassThreaded[monitoredMethod]"
@@ -99,21 +106,7 @@ for ((i=1;i<=${NUM_OF_LOOPS};i+=1)); do
     info "## Starting iteration ${i}/${NUM_OF_LOOPS}"
     echo "## Starting iteration ${i}/${NUM_OF_LOOPS}" >> "${BASE_DIR}/OpenTelemetry.log"
 
-    runNoInstrumentation
-    cleanup
-
-    runOpenTelemetryNoLogging
-    cleanup
-
-    runOpenTelemetryLogging
-    cleanup
-    
-    runOpenTelemetryZipkin
-    cleanup
-    
-    runOpenTelemetryPrometheus
-    cleanup
-
+    executeBenchmark
     printIntermediaryResults "${i}"
 done
 

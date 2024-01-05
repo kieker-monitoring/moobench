@@ -17,6 +17,7 @@
 
 # Do not store compile results
 compile-results/
+frameworks/Kieker-python/kieker-lang-pack-python/
 
 # Do not store measurement results
 frameworks/OpenTelemetry-java/raw*
@@ -25,6 +26,5 @@ frameworks/inspectIT-java/raw*
 frameworks/inspectIT-java/results-inspectIT-java/
 frameworks/Kieker-java/raw*
 frameworks/Kieker-java/results-Kieker-java/
-frameworks/Kieker-java/results/
 frameworks/Kieker-python/raw*
 frameworks/Kieker-python/results-Kieker-python/
