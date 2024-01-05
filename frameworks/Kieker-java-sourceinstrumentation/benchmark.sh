@@ -64,9 +64,6 @@ info "----------------------------------"
 
 cd "${BASE_DIR}"
 
-# load agent
-getAgent
-
 checkDirectory data-dir "${DATA_DIR}" create
 checkFile log "${DATA_DIR}/kieker.log" clean
 cleanupResults
@@ -79,10 +76,6 @@ checkFile receiver "${RECEIVER_ARCHIVE}"
 tar -xpf "${RECEIVER_ARCHIVE}"
 RECEIVER_BIN="${BASE_DIR}/receiver/bin/receiver"
 checkExecutable receiver "${RECEIVER_BIN}"
-
-
-checkFile ApsectJ-Agent "${AGENT}"
-checkFile aop-file "${AOP}"
 
 
 checkExecutable java "${JAVA_BIN}"
