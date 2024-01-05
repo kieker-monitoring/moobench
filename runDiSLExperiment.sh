@@ -6,9 +6,9 @@ fi
 
 echo "======="
 echo "SI"
-git checkout optimization-sourceInstrumentation
+git checkout disl
 ./setup.sh &> setup_si.txt
-cd frameworks/Kieker-java
+cd frameworks/Kieker-java-sourceinstrumentation/
 ./runExponentialSizes.sh
 mv exp-results ../SI-exp-results
 cd ../../
