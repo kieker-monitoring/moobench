@@ -44,6 +44,11 @@ checkFile moobench "${MOOBENCH_ARCHIVE}"
 tar -xpf "${MOOBENCH_ARCHIVE}"
 MOOBENCH_BIN="${BASE_DIR}/benchmark/bin/benchmark"
 
+checkFile moobench ${BASE_DIR}/tools/benchmark-kieker-instrumented/build/distributions/benchmark-kieker-instrumented.tar
+tar -xpf ${BASE_DIR}/tools/benchmark-kieker-instrumented/build/distributions/benchmark-kieker-instrumented.tar
+
+
+
 checkFile compile-result "${COMPILE_RESULTS_ARCHIVE}"
 tar -xpf "${COMPILE_RESULTS_ARCHIVE}"
 COMPILE_RESULTS_BIN="${BASE_DIR}/compile-results/bin/compile-results"

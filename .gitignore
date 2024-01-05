@@ -10,6 +10,7 @@
 /.gradle/
 /build/
 /benchmark/**
+benchmark-kieker-instrumented/
 
 # Ignore eclipse project files
 .project
@@ -26,5 +27,6 @@ frameworks/inspectIT-java/raw*
 frameworks/inspectIT-java/results-inspectIT-java/
 frameworks/Kieker-java/raw*
 frameworks/Kieker-java/results-Kieker-java/
+frameworks/Kieker-java-sourceinstrumentation/results-Kieker-java-sourceinstrumentation/
 frameworks/Kieker-python/raw*
 frameworks/Kieker-python/results-Kieker-python/
