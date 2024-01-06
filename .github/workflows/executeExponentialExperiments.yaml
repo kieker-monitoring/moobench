@@ -31,6 +31,7 @@ jobs:
         run: |
           cd ../
           git clone https://gitlab.ow2.org/disl/disl.git
+          cd disl
           ant
           mvn install:install-file -Dfile=output/lib/disl-server.jar -DgroupId=ch.usi.dag -DartifactId=disl -Dversion=1.0-SNAPSHOT -Dpackaging=jar
           export DISL_HOME=$(pwd)
