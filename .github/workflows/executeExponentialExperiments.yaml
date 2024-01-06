@@ -40,6 +40,7 @@ jobs:
           cd ../
           git clone https://github.com/kieker-monitoring/kieker.git
           cd kieker
+          git checkout KIEKER-1961-Support-DiSL-2
           ./gradlew clean assemble mainJar aspectJJar dislJar -x check -x test
       - name: Run minimal parameter experiment and check success
         run: |
