@@ -96,8 +96,6 @@ RECEIVER_BIN="${BASE_DIR}/receiver/bin/receiver"
 checkExecutable receiver "${RECEIVER_BIN}"
 
 
-checkFile aop-file "${AOP}"
-
 
 checkExecutable java "${JAVA_BIN}"
 checkExecutable moobench "${MOOBENCH_BIN}"
