@@ -65,6 +65,13 @@ then
 	exit 1
 fi
 
+if [ -z "$MOOBENCH_CONFIGURATIONS" ]
+then
+	MOOBENCH_CONFIGURATIONS="0 1 2 4 5"
+	echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (without TextLogStreamHandler)"
+fi
+echo "Running configurations: $MOOBENCH_CONFIGURATIONS"
+
 #
 # Setup
 #
