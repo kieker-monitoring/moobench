@@ -35,6 +35,12 @@ jobs:
           ant
           mvn install:install-file -Dfile=output/lib/disl-server.jar -DgroupId=ch.usi.dag -DartifactId=disl -Dversion=1.0-SNAPSHOT -Dpackaging=jar
           export DISL_HOME=$(pwd)
+      - name: Get Kieker
+        run: |
+          cd ../
+          git clone https://github.com/kieker-monitoring/kieker.git
+          cd kieker
+          ./gradlew clean assemble mainJar aspectJJar dislJar -x check -x test
       - name: Run minimal parameter experiment and check success
         run: |
           export SLEEP_TIME=0
