@@ -71,7 +71,7 @@ function executeExperiment() {
     fi
     
     
-    	java -cp $CLASSPATH \
+    	java $BENCHMARK_OPTS -cp $CLASSPATH \
 		moobench.benchmark.BenchmarkMain \
 	--application $application \
         --output-filename "${RESULT_FILE}" \
