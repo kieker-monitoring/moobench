@@ -1,5 +1,5 @@
 ---
-name: Kieker-java execution check
+name: Run Exponential Size Comparison
 on:
   push:
   pull_request:
