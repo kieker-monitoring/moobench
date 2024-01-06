@@ -6,7 +6,6 @@ fi
 
 echo "======="
 echo "SI"
-git checkout disl
 ./setup.sh &> setup_si.txt
 cd frameworks/Kieker-java-sourceinstrumentation/
 ./runExponentialSizes.sh
@@ -15,7 +14,6 @@ cd ../../
 
 echo "======="
 echo "AspectJ"
-git checkout Kieker-1.15.2-OperationExecutionRecord
 ./setup.sh &> setup_aspectj.txt
 cd frameworks/Kieker-java
 ./runExponentialSizes.sh
@@ -24,7 +22,6 @@ cd ../../
 
 echo "======="
 echo "DiSL"
-git checkout disl
 ./setup.sh &> setup_disl.txt
 cd frameworks/Kieker-java-DiSL
 ./runExponentialSizes.sh

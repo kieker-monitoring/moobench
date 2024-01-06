@@ -67,7 +67,7 @@ function executeExperiment() {
 	        --recursion-depth "${recursion}" &> "${LOG_FILE}"
     else
     	java -cp $CLASSPATH \
-       	 moobench.benchmark.BenchmarkMain \
+		moobench.benchmark.BenchmarkMain \
 		--application moobench.application.MonitoredClassSimple \
 	        --output-filename "${RESULT_FILE}" \
 	        --total-calls "${TOTAL_NUM_OF_CALLS}" \
