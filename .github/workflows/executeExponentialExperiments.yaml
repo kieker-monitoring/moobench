@@ -27,6 +27,13 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
+      - name: Get DiSL
+        run: |
+          cd ../
+          git clone https://gitlab.ow2.org/disl/disl.git
+          ant
+          mvn install:install-file -Dfile=output/lib/disl-server.jar -DgroupId=ch.usi.dag -DartifactId=disl -Dversion=1.0-SNAPSHOT -Dpackaging=jar
+          export DISL_HOME=$(pwd)
       - name: Run minimal parameter experiment and check success
         run: |
           export SLEEP_TIME=0
@@ -34,6 +41,7 @@ jobs:
           export TOTAL_NUM_OF_CALLS=10 
           export RECURSION_DEPTH=10 
           export EXPONENTIAL_SIZES="2 4"
+          export DISL_HOME=../disl
           ./runDiSLExperiment.sh
           SIResults=$(ls frameworks/SI-exp-results/ | grep .zip | wc -l) 
           if [ $SIResults -ne 2 ] 
