@@ -57,3 +57,10 @@ jobs:
             echo "It should be 2 results for AspectJ, but was $AspectJResults"
             exit 1
           fi
+          
+          DiSLJResults=$(ls frameworks/DiSL-exp-results/ | grep .zip | wc -l) 
+          if [ $DiSLJResults -ne 2 ] 
+          then
+            echo "It should be 2 results for DiSL, but was $DiSLJResults"
+            exit 1
+          fi
