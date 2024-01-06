@@ -66,7 +66,7 @@ function executeExperiment() {
 	    CLASSPATH=$APP_HOME/lib/benchmark.jar:$APP_HOME/lib/jcommander-1.72.jar
     else
 	    application=moobench.application.MonitoredClassInstrumented
-	    APP_HOME=../../tools/benchmark-kieker-instrumented
+	    APP_HOME=../../benchmark-kieker-instrumented
 	    CLASSPATH=$APP_HOME/lib/benchmark-kieker-instrumented.jar:$APP_HOME/lib/jcommander-1.72.jar:$APP_HOME/lib/jctools-core-3.3.0.jar:$APP_HOME/lib/kieker-1.15.4.jar:$APP_HOME/lib/slf4j-api-1.7.30.jar
     fi
     
