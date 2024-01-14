@@ -45,13 +45,15 @@ pipeline {
     stage('Run Benchmark') {
        steps {
           sh './frameworks/Kieker-python/benchmark.sh'
-          sh './frameworks/Kieker-java/benchmark.sh'
-          sh './frameworks/OpenTelemetry-java/benchmark.sh'
-          sh './frameworks/inspectIT-java/benchmark.sh'
-
           sh 'cp frameworks/Kieker-python/results/results.yaml Kieker-python-results.yaml'
+          
+          sh './frameworks/Kieker-java/benchmark.sh'
           sh 'cp frameworks/Kieker-java/results/results.yaml Kieker-java-results.yaml'
+          
+          sh './frameworks/OpenTelemetry-java/benchmark.sh'
           sh 'cp frameworks/OpenTelemetry-java/results/results.yaml OpenTelemetry-java-results.yaml'
+          
+          sh './frameworks/inspectIT-java/benchmark.sh'
           sh 'cp frameworks/inspectIT-java/results/results.yaml inspectIT-java-results.yaml'
 
           stash includes: '*-results.yaml', name: 'yaml'
