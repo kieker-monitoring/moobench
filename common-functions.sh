@@ -81,10 +81,12 @@ function startZipkin {
 }
 
 function periodicallyCurlPrometheus {
+	PROMETHEUS_PORT=9464
+	sleep 5
 	while [ true ]
 	do
 		echo "Curling for prometheus simulation..."
-		curl localhost:8888/metrics
+		curl localhost:$PROMETHEUS_PORT/metrics
 		sleep 15
 	done
 }
