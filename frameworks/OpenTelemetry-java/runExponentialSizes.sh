@@ -7,10 +7,10 @@
 # configure base dir
 BASE_DIR=$(cd "$(dirname "$0")"; pwd)
 
-if [ -f "${BASE_DIR}/../common-functions.sh" ] ; then
-	. "${BASE_DIR}/../common-functions.sh"
+if [ -f "${BASE_DIR}/../../common-functions.sh" ] ; then
+	. "${BASE_DIR}/../../common-functions.sh"
 else
-	echo "Missing configuration: ${BASE_DIR}/../common-functions.sh"
+	echo "Missing configuration: ${BASE_DIR}/../../common-functions.sh"
 	exit 1
 fi
 
