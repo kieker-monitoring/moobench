@@ -15,6 +15,7 @@ benchmark-kieker-instrumented/
 # Ignore eclipse project files
 .project
 
+frameworks/Kieker-java-javassist/*.jar
 
 # Do not store compile results
 compile-results/
@@ -28,5 +29,6 @@ frameworks/inspectIT-java/results-inspectIT-java/
 frameworks/Kieker-java/raw*
 frameworks/Kieker-java/results-Kieker-java/
 frameworks/Kieker-java-sourceinstrumentation/results-Kieker-java-sourceinstrumentation/
+frameworks/Kieker-java-javassist/results-Kieker-java-javassist/
 frameworks/Kieker-python/raw*
 frameworks/Kieker-python/results-Kieker-python/
