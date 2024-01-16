@@ -51,6 +51,8 @@ function executeBenchmark() {
       esac
       
       cleanup
+      
+      date
    done
 }
 
