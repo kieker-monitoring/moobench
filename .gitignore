@@ -30,5 +30,6 @@ frameworks/Kieker-java/raw*
 frameworks/Kieker-java/results-Kieker-java/
 frameworks/Kieker-java-sourceinstrumentation/results-Kieker-java-sourceinstrumentation/
 frameworks/Kieker-java-javassist/results-Kieker-java-javassist/
+frameworks/Kieker-java-javassist/results-Kieker-java-bytebuddy/
 frameworks/Kieker-python/raw*
 frameworks/Kieker-python/results-Kieker-python/
