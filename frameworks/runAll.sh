@@ -18,7 +18,7 @@ fi
 cd "${BASE_DIR}"
 
 start=$(pwd)
-for benchmark in inspectIT-java OpenTelemetry-java Kieker-java
+for benchmark in Kieker-java Kieker-java-bytebuddy Kieker-java-javassist Kieker-java-sourceinstrumentation OpenTelemetry-java
 do
 	echo "Running $benchmark"
         cd "${benchmark}"
