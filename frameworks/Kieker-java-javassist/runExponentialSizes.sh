@@ -39,7 +39,7 @@ do
 	export RECURSION_DEPTH=$depth
 	echo "Running $depth"
 	./benchmark.sh &> ${RESULTS_DIR}/$depth.txt
-	mv results-Kieker-java-javaassist/results.zip ${RESULTS_DIR}/results-$RECURSION_DEPTH.zip
+	mv results-Kieker-java-javassist/results.zip ${RESULTS_DIR}/results-$RECURSION_DEPTH.zip
 done
 
 # end
