@@ -70,7 +70,9 @@ function startZipkin {
 	then
 		mkdir -p "${BASE_DIR}/zipkin"
 		cd "${BASE_DIR}/zipkin"
-		curl -sSL https://zipkin.io/quickstart.sh | bash -s
+		wget https://repo1.maven.org/maven2/io/zipkin/zipkin-server/2.27.1/zipkin-server-2.27.1-exec.jar 
+		mv zipkin-server-2.27.1-exec.jar zipkin.jar
+		# Regular installation method: Only works with newer Java -> curl -sSL https://zipkin.io/quickstart.sh | bash -s
 	else
 		cd "${BASE_DIR}/zipkin"
 	fi
