@@ -23,10 +23,10 @@ fi
 
 for agent_type in aspectj bytebuddy javassist
 do
-	AGENT_RAW_PATH="../../../kieker/build/libs/kieker-2.0.0-SNAPSHOT-$agent_type.jar"
+	AGENT_RAW_PATH="../../kieker/build/libs/kieker-2.0.0-SNAPSHOT-$agent_type.jar"
 	if [ ! -f "${AGENT_RAW_PATH}" ]
 	then
-		error "Kieker agent for $agent_type in $AGENT_RAW_PATH not present; please build Kieker with an appropriate branch. (./gradlew mainJar bytebuddyJar aspectjJar javassistJar -x test -x check)"
+		error "Kieker agent for $agent_type in $AGENT_RAW_PATH not present; please build Kieker with an appropriate branch. (./gradlew mainJar bytebuddyJar aspectjJar javassistJar -x test -x check)vim"
 		ls
 		exit 1
 	fi
