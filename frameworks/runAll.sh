@@ -15,10 +15,27 @@ else
 	exit 1
 fi
 
+if [ ! -f $DISL_HOME/bin/disl.py ]
+then
+	echo "Missing or wrong environment variable \$DISL_HOME"
+	exit 1
+fi
+
+for agent_type in aspectj bytebuddy javassist
+do
+	AGENT_RAW_PATH="../../../kieker/build/libs/kieker-2.0.0-SNAPSHOT-$agent_type.jar"
+	if [ ! -f "${AGENT_RAW_PATH}" ]
+	then
+		error "Kieker agent for $agent_type in $AGENT_RAW_PATH not present; please build Kieker with an appropriate branch."
+		ls
+		exit 1
+	fi
+done
+
 cd "${BASE_DIR}"
 
 start=$(pwd)
-for benchmark in Kieker-java Kieker-java-bytebuddy Kieker-java-javassist Kieker-java-sourceinstrumentation OpenTelemetry-java
+for benchmark in Kieker-java Kieker-java-DiSL Kieker-java-bytebuddy Kieker-java-javassist Kieker-java-sourceinstrumentation OpenTelemetry-java
 do
 	echo "Running $benchmark"
         cd "${benchmark}"
