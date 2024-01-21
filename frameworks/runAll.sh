@@ -37,7 +37,11 @@ cd "${BASE_DIR}"
 start=$(pwd)
 for benchmark in Kieker-java Kieker-java-DiSL Kieker-java-bytebuddy Kieker-java-javassist Kieker-java-sourceinstrumentation OpenTelemetry-java
 do
-	echo "Running $benchmark"
+	case "$technology" in
+		"Kieker-java-sourceinstrumentation") MOOBENCH_CONFIGURATIONS="0 1 3" ;;
+		*) MOOBENCH_CONFIGURATIONS="0 1 4" ;;
+	esac
+	echo "Running $benchmark Configurations: $MOOBENCH_CONFIGURATIONS"
         cd "${benchmark}"
         ./benchmark.sh &> "${start}/log_${benchmark}.txt"
         cd "${start}"
