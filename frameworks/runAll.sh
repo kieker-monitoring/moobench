@@ -39,6 +39,7 @@ for benchmark in Kieker-java Kieker-java-DiSL Kieker-java-bytebuddy Kieker-java-
 do
 	case "$technology" in
 		"Kieker-java-sourceinstrumentation") MOOBENCH_CONFIGURATIONS="0 1 3" ;;
+		"OpenTelemetry-java") MOOBENCH_CONFIGURATIONS="0 1 3" ;;
 		*) MOOBENCH_CONFIGURATIONS="0 1 4" ;;
 	esac
 	echo "Running $benchmark Configurations: $MOOBENCH_CONFIGURATIONS"
