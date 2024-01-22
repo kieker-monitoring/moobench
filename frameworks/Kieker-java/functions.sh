@@ -9,11 +9,9 @@ fi
 
 
 function getAgent() {
-	info "Download the Kieker agent ${AGENT}"
-	# get agent
-	export VERSION_PATH=`curl "https://oss.sonatype.org/service/local/repositories/snapshots/content/net/kieker-monitoring/kieker/" | grep '<resourceURI>' | sed 's/ *<resourceURI>//g' | sed 's/<\/resourceURI>//g' | grep '/$' | grep -v ".xml" | head -n 1`
-	export AGENT_PATH=`curl "${VERSION_PATH}" | grep 'aspectj.jar</resourceURI' | sort | sed 's/ *<resourceURI>//g' | sed 's/<\/resourceURI>//g' | tail -1`
-	curl "${AGENT_PATH}" > "${AGENT}"
+        AGENT_RAW_PATH="../../../kieker/build/libs/kieker-2.0.0-SNAPSHOT-aspectj.jar"
+	info "Assuming Kieker-aspectj agent is in $AGENT_RAW_PATH"
+	cp $AGENT_RAW_PATH $AGENT
 
 	if [ ! -f "${AGENT}" ] ; then
 		error "Kieker download from $AGENT_PATH seems to have failed; no file in $AGENT present."
