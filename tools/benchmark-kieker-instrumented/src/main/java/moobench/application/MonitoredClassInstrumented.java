@@ -44,7 +44,10 @@ public final class MonitoredClassInstrumented implements MonitoredClass {
             return;
             // empty default constructor
         }
-        final String _kieker_sourceInstrumentation_signature = "public new moobench.application.MonitoredClassInstrumented.<init>()";;
+        final String _kieker_sourceInstrumentation_signature = "public new moobench.application.MonitoredClassInstrumented.<init>()";
+        if (!MonitoredClassInstrumented._kieker_sourceInstrumentation_controller.isProbeActivated(_kieker_sourceInstrumentation_signature)) {
+        	return;
+        }
               // collect data
       final boolean _kieker_sourceInstrumentation_entrypoint;
       final String _kieker_sourceInstrumentation_hostname = MonitoredClassInstrumented._kieker_sourceInstrumentation_VM_NAME;
@@ -94,6 +97,9 @@ public final class MonitoredClassInstrumented implements MonitoredClass {
             return monitoredMethod_Extracted(methodTime, recDepth);
         }
         final String _kieker_sourceInstrumentation_signature = "public final long moobench.application.MonitoredClassInstrumented.monitoredMethod(long,int)";;
+        if (!MonitoredClassInstrumented._kieker_sourceInstrumentation_controller.isProbeActivated(_kieker_sourceInstrumentation_signature)) {
+        	return monitoredMethod_Extracted(methodTime, recDepth);
+        }
               // collect data
       final boolean _kieker_sourceInstrumentation_entrypoint;
       final String _kieker_sourceInstrumentation_hostname = MonitoredClassInstrumented._kieker_sourceInstrumentation_VM_NAME;
