@@ -33,7 +33,7 @@ do
 	export RECURSION_DEPTH=$depth
 	info "Running $depth"
 	./benchmark.sh &> "${RESULTS_DIR}/$depth.txt"
-	mv "${RESULTS_DIR}/results.zip" "${RESULTS_DIR}/results-$RECURSION_DEPTH.zip"
+	mv results-OpenTelemetry-java/results.zip ${RESULTS_DIR}/results-$RECURSION_DEPTH.zip
 done
 
 # end
