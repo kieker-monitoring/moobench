@@ -95,7 +95,7 @@ TIME=`expr ${METHOD_TIME} \* ${TOTAL_NUM_OF_CALLS} / 1000000000 \* 4 \* ${RECURS
 info "Experiment will take circa ${TIME} seconds."
 
 # general server arguments
-JAVA_ARGS="-Xms1G -Xmx2G"
+JAVA_ARGS="-Xms1G -Xmx3G"
 
 LTW_ARGS=""
 
