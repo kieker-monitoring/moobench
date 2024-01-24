@@ -91,6 +91,7 @@ JAVA_ARGS_OPENTELEMETRY_JAEGER="${JAVA_ARGS_OPENTELEMETRY_BASIC} -Dotel.traces.e
 JAVA_ARGS_OPENTELEMETRY_PROMETHEUS="${JAVA_ARGS_OPENTELEMETRY_BASIC} -Dotel.traces.exporter=none -Dotel.metrics.exporter=prometheus"
 
 writeConfiguration
+checkMoobenchConfiguration
 
 #
 # Run benchmark

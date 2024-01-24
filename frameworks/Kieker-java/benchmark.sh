@@ -129,7 +129,7 @@ RECEIVER[5]="${RECEIVER_BIN} 2345"
 
 
 writeConfiguration
-
+checkMoobenchConfiguration
 #
 # Run benchmark
 #

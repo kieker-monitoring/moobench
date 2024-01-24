@@ -136,6 +136,20 @@ function printIntermediaryResults {
    done
 }
 
+function checkMoobenchConfiguration {
+	for configurationId in $MOOBENCH_CONFIGURATIONS
+	do
+		echo "Checking: $configurationId"
+		label="${TITLE[$configurationId]}"
+		echo "Label: $label"
+		if [ -z "$label" ]
+		then
+			echo "Configuration is not defined: $configurationId"
+			exit 1
+		fi
+	done
+}
+
 #
 # reporting
 #
