@@ -99,7 +99,7 @@ JAVA_ARGS="-Xms1G -Xmx3G"
 
 LTW_ARGS=""
 
-KIEKER_ARGS="-Dlog4j.configuration=log4j.cfg -Dkieker.monitoring.name=KIEKER-BENCHMARK -Dkieker.monitoring.adaptiveMonitoring.enabled=false -Dkieker.monitoring.periodicSensorsExecutorPoolSize=0"
+KIEKER_ARGS="-Dlog4j.configuration=log4j.cfg -Dkieker.monitoring.name=KIEKER-BENCHMARK -Dkieker.monitoring.adaptiveMonitoring.enabled=false -Dkieker.monitoring.periodicSensorsExecutorPoolSize=0 -Dkieker.monitoring.core.controller.WriterController.RecordQueueFQN=com.lmax.disruptor.dsl.Disruptor"
 
 # JAVA_ARGS used to configure and setup a specific writer
 declare -a WRITER_CONFIG

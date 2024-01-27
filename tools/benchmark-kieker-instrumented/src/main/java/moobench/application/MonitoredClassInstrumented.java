@@ -18,6 +18,7 @@
 package moobench.application;
 
 import kieker.common.record.controlflow.OperationExecutionRecord;
+import kieker.monitoring.core.controller.MonitoringController;
 import kieker.monitoring.core.registry.ControlFlowRegistry;
 import kieker.monitoring.core.registry.SessionRegistry;
 
@@ -26,7 +27,7 @@ import kieker.monitoring.core.registry.SessionRegistry;
  */
 public final class MonitoredClassInstrumented implements MonitoredClass {
 
-    private static final kieker.monitoring.core.controller.IMonitoringController _kieker_sourceInstrumentation_controller = kieker.monitoring.core.controller.MonitoringController.getInstance();
+    private static final kieker.monitoring.core.controller.MonitoringController _kieker_sourceInstrumentation_controller = (MonitoringController) kieker.monitoring.core.controller.MonitoringController.getInstance();
 
     private static final kieker.monitoring.timer.ITimeSource _kieker_sourceInstrumentation_TIME_SOURCE = _kieker_sourceInstrumentation_controller.getTimeSource();
 
@@ -73,14 +74,14 @@ public final class MonitoredClassInstrumented implements MonitoredClass {
       }
       // measure before
       final long _kieker_sourceInstrumentation_tin = MonitoredClassInstrumented._kieker_sourceInstrumentation_TIME_SOURCE.getTime();
-;
+
         try {
             return;
             // empty default constructor
         } finally {
             // measure after
          final long _kieker_sourceInstrumentation_tout = MonitoredClassInstrumented._kieker_sourceInstrumentation_TIME_SOURCE.getTime();
-         MonitoredClassInstrumented._kieker_sourceInstrumentation_controller.newMonitoringRecord(new OperationExecutionRecord(_kieker_sourceInstrumentation_signature, _kieker_sourceInstrumentation_sessionId, _kieker_sourceInstrumentation_traceId, _kieker_sourceInstrumentation_tin, _kieker_sourceInstrumentation_tout, _kieker_sourceInstrumentation_hostname, _kieker_sourceInstrumentation_eoi, _kieker_sourceInstrumentation_ess));
+         _kieker_sourceInstrumentation_controller.newOperationExecutionRecord(_kieker_sourceInstrumentation_signature, _kieker_sourceInstrumentation_sessionId, _kieker_sourceInstrumentation_traceId, _kieker_sourceInstrumentation_tin, _kieker_sourceInstrumentation_tout, _kieker_sourceInstrumentation_hostname, _kieker_sourceInstrumentation_eoi, _kieker_sourceInstrumentation_ess);
          // cleanup
          if (_kieker_sourceInstrumentation_entrypoint) {
             MonitoredClassInstrumented._kieker_sourceInstrumentation_controlFlowRegistry.unsetThreadLocalTraceId();
@@ -130,7 +131,8 @@ public final class MonitoredClassInstrumented implements MonitoredClass {
         } finally {
             // measure after
          final long _kieker_sourceInstrumentation_tout = MonitoredClassInstrumented._kieker_sourceInstrumentation_TIME_SOURCE.getTime();
-         MonitoredClassInstrumented._kieker_sourceInstrumentation_controller.newMonitoringRecord(new OperationExecutionRecord(_kieker_sourceInstrumentation_signature, _kieker_sourceInstrumentation_sessionId, _kieker_sourceInstrumentation_traceId, _kieker_sourceInstrumentation_tin, _kieker_sourceInstrumentation_tout, _kieker_sourceInstrumentation_hostname, _kieker_sourceInstrumentation_eoi, _kieker_sourceInstrumentation_ess));
+//         MonitoredClassInstrumented._kieker_sourceInstrumentation_controller.newMonitoringRecord(new OperationExecutionRecord(_kieker_sourceInstrumentation_signature, _kieker_sourceInstrumentation_sessionId, _kieker_sourceInstrumentation_traceId, _kieker_sourceInstrumentation_tin, _kieker_sourceInstrumentation_tout, _kieker_sourceInstrumentation_hostname, _kieker_sourceInstrumentation_eoi, _kieker_sourceInstrumentation_ess));
+         _kieker_sourceInstrumentation_controller.newOperationExecutionRecord(_kieker_sourceInstrumentation_signature, _kieker_sourceInstrumentation_sessionId, _kieker_sourceInstrumentation_traceId, _kieker_sourceInstrumentation_tin, _kieker_sourceInstrumentation_tout, _kieker_sourceInstrumentation_hostname, _kieker_sourceInstrumentation_eoi, _kieker_sourceInstrumentation_ess);
          // cleanup
          if (_kieker_sourceInstrumentation_entrypoint) {
             MonitoredClassInstrumented._kieker_sourceInstrumentation_controlFlowRegistry.unsetThreadLocalTraceId();
