@@ -131,8 +131,10 @@ function printIntermediaryResults {
          error "Result file '${RESULT_FILE}' is empty."
          exit 1
       fi
+      CALLS_AFTER_WARMUP=$(($raw_length / 2))
       info_n "Intermediary results "${TITLE[$index]}" (in ns) "
-      cat "${RESULT_FILE}" | awk -F';' '{print $2}' | getSum
+      cat "${RESULT_FILE}" | awk -F';' '{print $2}' | getSum | tr "\n" " "
+      tail -n $CALLS_AFTER_WARMUP "${RESULT_FILE}" | awk -F';' '{print $2}' | getSum
    done
 }
 
