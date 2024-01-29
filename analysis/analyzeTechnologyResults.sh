@@ -1,5 +1,20 @@
 #!/bin/bash
 
+if [ $# -gt 0 ]
+then
+	if [ -d $1 ]
+	then
+		cd $1
+	else
+		echo "Folder does not exist: $1"
+		exit 1
+	fi
+else
+	echo "Folder should be passed as parameter."
+fi
+
+echo "Folder: "$(pwd)
+
 function getSum {
   awk '{sum += $1; square += $1^2} END {print "Average: "sum/NR" Standard Deviation: "sqrt(square / NR - (sum/NR)^2)" Count: "NR}'
 }
@@ -56,11 +71,11 @@ function createCSVs {
 function summarizyTechnology {
 	technology=$1
 	echo -n "$technology "
-	cat $technology"_baseline".csv | getSum | awk '{print $2" & "$5}'
+	cat $technology"_baseline".csv | getSum | awk '{print sprintf("%.4f", $2)" & "sprintf("%.4f", $5)}'
 	echo -n "(pure) & "
-	cat $technology"_onlyinst".csv | getSum | awk '{print $2" & "$5}'
+	cat $technology"_onlyinst".csv | getSum | awk '{print sprintf("%.4f", $2)" & "sprintf("%.4f", $5)}'
 	echo -n "(full) & "
-	cat $technology.csv | getSum | awk '{print $2" & "$5}'
+	cat $technology.csv | getSum | awk '{print sprintf("%.4f", $2)" & "sprintf("%.4f", $5)}'
 	avgAfterWarmup=$(cat $technology.csv | getSum | awk '{print $2}')
 	avgBeforeWarmup=$(cat $technology.csv | awk '{print $2}' | getSum | awk '{print $2}')
 	if [ $(awk -v n1=$avgAfterWarmup -v n2=$avgBeforeWarmup 'BEGIN {if (n1>n2) {print "1";}}') ]
