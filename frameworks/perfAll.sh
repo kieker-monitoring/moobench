@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ ! -f $FLAME_HOME/flamegraph.pl ]
+then
+	echo "\$FLAME_HOME should be defined and point to a version of FlameGraph that contains flamegraph.pl"
+fi
+
 for technology in Kieker-java Kieker-java-bytebuddy Kieker-java-javassist Kieker-java-sourceinstrumentation
 do
 	case "$technology" in

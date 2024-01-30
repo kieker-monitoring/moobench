@@ -69,7 +69,9 @@ function executeExperiment() {
         --method-time "${METHOD_TIME}" \
         --total-threads $THREADS \
         --recursion-depth "${recursion}" &> "${LOG_FILE}"
-
+    sudo chown $(whoami):$(whoami) perf_"$index"_"$loop".data
+    perf script -i perf_"$index"_"$loop".data | $FLAME_HOME/stackcollapse-perf.pl &> perf_"$index"_"$loop".folded
+    
     if [ ! -f "${RESULT_FILE}" ] ; then
         info "---------------------------------------------------"
         cat "${LOG_FILE}"
