@@ -19,6 +19,7 @@ package moobench.benchmark;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
+import java.util.Formatter;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -61,10 +62,13 @@ public final class BenchmarkingThreadNano implements BenchmarkingThread {
   }
 
   public String print(final int index, final String separatorString) {
-    return String.format("%d%s%d%s%d",
-        this.executionTimes[index], separatorString,
-        this.usedHeapMemory[index], separatorString,
-        this.gcCollectionCountDiffs[index]);
+	StringBuilder builder = new StringBuilder();
+	builder.append(this.executionTimes[index]);
+	builder.append(separatorString);
+	builder.append(this.usedHeapMemory[index]);
+	builder.append(separatorString);
+	builder.append(this.gcCollectionCountDiffs[index]);
+	return builder.toString();
   }
 
   public final void run() {
