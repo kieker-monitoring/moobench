@@ -4,6 +4,21 @@ function getSum {
   awk '{sum += $1; square += $1^2} END {print "Average: "sum/NR" Standard Deviation: "sqrt(square / NR - (sum/NR)^2)" Count: "NR}'
 }
 
+start=$(pwd)
+
+if [ $# -gt 0 ]
+then
+	if [ -d $1 ]
+	then
+		cd $1
+	else
+		echo "Folder does not exist: $1"
+		exit 1
+	fi
+else
+	echo "Folder should be passed as parameter."
+fi
+
 if [ -f unzip.txt ]
 then
 	rm unzip.txt
@@ -57,4 +72,4 @@ do
 	fi
 done
 
-gnuplot -c plot.plt 
+gnuplot -c $start/plot.plt 
