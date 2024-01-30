@@ -49,7 +49,7 @@ fi
 
 if [ -z "$MOOBENCH_CONFIGURATIONS" ]
 then
-	MOOBENCH_CONFIGURATIONS="0 1 3 4"
+	MOOBENCH_CONFIGURATIONS="0 1 3"
 	echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (without text logging)"
 fi
 echo "Running configurations: $MOOBENCH_CONFIGURATIONS"
@@ -80,7 +80,7 @@ TIME=`expr ${METHOD_TIME} \* ${TOTAL_NUM_OF_CALLS} / 1000000000 \* 4 \* ${RECURS
 info "Experiment will take circa ${TIME} seconds."
 
 # general server arguments
-JAVA_ARGS="-Xms1G -Xmx2G"
+JAVA_ARGS="-Xms1G -Xmx3G"
 
 JAVA_ARGS_NOINSTR="${JAVA_ARGS}"
 JAVA_ARGS_OPENTELEMETRY_BASIC="${JAVA_ARGS} -javaagent:${AGENT_JAR} -Dotel.resource.attributes=service.name=moobench -Dotel.instrumentation.methods.include=moobench.application.MonitoredClassSimple[monitoredMethod];moobench.application.MonitoredClassThreaded[monitoredMethod]"
