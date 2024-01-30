@@ -5,6 +5,6 @@
   </weaver>
   <aspects>
     <aspect
-      name="kieker.monitoring.probe.aspectj.flow.operationExecution.FullInstrumentation" />
+      name="kieker.monitoring.probe.aspectj.operationExecution.OperationExecutionAspectFull" />
   </aspects>
 </aspectj>
