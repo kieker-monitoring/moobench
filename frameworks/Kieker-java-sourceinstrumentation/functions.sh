@@ -76,7 +76,7 @@ function executeExperiment() {
     fi
     
     
-    sudo perf record -F 500 -a -g -o perf_"$index"_"$loop".data -- java -XX:+PreserveFramePointer $BENCHMARK_OPTS -cp $CLASSPATH \
+    sudo perf record -F 500 -a -g -o perf_"$index"_"$loop".data -- java -XX:+PreserveFramePointer -XX:+UnlockDiagnosticVMOptions -XX:+DumpPerfMapAtExit $BENCHMARK_OPTS -cp $CLASSPATH \
 		moobench.benchmark.BenchmarkMain \
 	--application $application \
         --output-filename "${RESULT_FILE}" \

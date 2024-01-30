@@ -61,7 +61,7 @@ function executeExperiment() {
     APP_HOME=../../benchmark
     CLASSPATH=$APP_HOME/lib/benchmark.jar:$APP_HOME/lib/jcommander-1.72.jar
 
-    sudo perf record -F 500 -a -g -o perf_"$index"_"$loop".data -- java -XX:+PreserveFramePointer $BENCHMARK_OPTS -cp $CLASSPATH \
+    sudo perf record -F 500 -a -g -o perf_"$index"_"$loop".data -- java -XX:+PreserveFramePointer -XX:+UnlockDiagnosticVMOptions -XX:+DumpPerfMapAtExit $BENCHMARK_OPTS -cp $CLASSPATH \
 		moobench.benchmark.BenchmarkMain \
 	--application moobench.application.MonitoredClassSimple \
         --output-filename "${RESULT_FILE}" \
