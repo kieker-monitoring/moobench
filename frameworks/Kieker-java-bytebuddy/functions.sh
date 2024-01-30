@@ -71,6 +71,7 @@ function executeExperiment() {
         --recursion-depth "${recursion}" &> "${LOG_FILE}"
     sudo chown $(whoami):$(whoami) perf_"$index"_"$loop".data
     perf script -i perf_"$index"_"$loop".data | $FLAME_HOME/stackcollapse-perf.pl &> perf_"$index"_"$loop".folded
+    cat perf_"$index"_"$loop".folded | $FLAME_HOME/flamegraph.pl &> perf_"$index"_"$loop".svg
     
     if [ ! -f "${RESULT_FILE}" ] ; then
         info "---------------------------------------------------"
