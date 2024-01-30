@@ -56,16 +56,9 @@ function executeExperiment() {
     RESULT_FILE="${RAWFN}-${loop}-${recursion}-${index}.csv"
     LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
-    if [ $index == 0 ]
-    then
-	    application=moobench.application.MonitoredClassSimple
-	    APP_HOME=../../benchmark
-	    CLASSPATH=$APP_HOME/lib/benchmark.jar:$APP_HOME/lib/jcommander-1.72.jar
-    else
-	    application=moobench.application.MonitoredClassInstrumented
-	    APP_HOME=../../benchmark-kieker-instrumented
-	    CLASSPATH=$APP_HOME/lib/benchmark-kieker-instrumented.jar:$APP_HOME/lib/jcommander-1.72.jar:$APP_HOME/lib/jctools-core-3.3.0.jar:$APP_HOME/lib/kieker-1.15.4.jar:$APP_HOME/lib/slf4j-api-1.7.30.jar
-    fi
+    application=moobench.application.MonitoredClassSimple
+    APP_HOME=../../benchmark
+    CLASSPATH=$APP_HOME/lib/benchmark.jar:$APP_HOME/lib/jcommander-1.72.jar
 
     sudo perf record -F 500 -a -g -o perf_"$index"_"$loop".data -- java $BENCHMARK_OPTS -cp $CLASSPATH \
 		moobench.benchmark.BenchmarkMain \

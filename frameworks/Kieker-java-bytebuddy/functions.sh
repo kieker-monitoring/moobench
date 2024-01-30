@@ -56,7 +56,13 @@ function executeExperiment() {
     RESULT_FILE="${RAWFN}-${loop}-${recursion}-${index}.csv"
     LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
-    "${MOOBENCH_BIN}" \
+
+    application=moobench.application.MonitoredClassSimple
+    APP_HOME=../../benchmark
+    CLASSPATH=$APP_HOME/lib/benchmark.jar:$APP_HOME/lib/jcommander-1.72.jar
+
+    sudo perf record -F 500 -a -g -o perf_"$index"_"$loop".data -- java $BENCHMARK_OPTS -cp $CLASSPATH \
+		moobench.benchmark.BenchmarkMain \
 	--application moobench.application.MonitoredClassSimple \
         --output-filename "${RESULT_FILE}" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
