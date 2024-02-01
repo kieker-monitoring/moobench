@@ -24,7 +24,7 @@ then
 	rm unzip.txt
 fi
 
-for technology in OpenTelemetry Kieker-java-javassist Kieker-java-bytebuddy Kieker-DiSL
+for technology in OpenTelemetry-java Kieker-java Kieker-java-javassist Kieker-java-bytebuddy Kieker-java-DiSL Kieker-java-sourceinstrumentation
 do
 	
 	if [ ! -f $technology.csv ]
