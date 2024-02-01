@@ -10,12 +10,16 @@ set ylabel 'Duration {/Symbol m}s'
 
 set key left top
 	
-plot 'OpenTelemetry.csv' u 1:2 w linespoint lc "red" title 'OpenTelemetry', \
-       'OpenTelemetry.csv' u 1:($2-$3):($2+$3) w filledcurves lc "red" notitle fs transparent solid 0.5, \
+plot 'OpenTelemetry-java.csv' u 1:2 w linespoint lc "red" title 'OpenTelemetry', \
+       'OpenTelemetry-java.csv' u 1:($2-$3):($2+$3) w filledcurves lc "red" notitle fs transparent solid 0.5, \
      'Kieker-java-bytebuddy.csv' u 1:2 w linespoint lc "blue" title 'ByteBuddy', \
        'Kieker-java-bytebuddy.csv' u 1:($2-$3):($2+$3) w filledcurves lc "blue" notitle fs transparent solid 0.5, \
-     'Kieker-DiSL.csv' u 1:2 w linespoint lc "green" title 'DiSL',  \
-       'Kieker-DiSL.csv' u 1:($2-$3):($2+$3) w filledcurves lc "green" notitle fs transparent solid 0.5
+     'Kieker-java.csv' u 1:2 w linespoint lc "blue" title 'AspectJ', \
+       'Kieker-java.csv' u 1:($2-$3):($2+$3) w filledcurves lc "blue" notitle fs transparent solid 0.5, \
+     'Kieker-java-DiSL.csv' u 1:2 w linespoint lc "green" title 'DiSL',  \
+       'Kieker-java-DiSL.csv' u 1:($2-$3):($2+$3) w filledcurves lc "green" notitle fs transparent solid 0.5, \
+     'Kieker-java-sourceinstrumentation.csv' u 1:2 w linespoint lc "purple" title 'Source Instr.',  \
+       'Kieker-java-sourceinstrumentation.csv' u 1:($2-$3):($2+$3) w filledcurves lc "purple" notitle fs transparent solid 0.5
 
 	
 unset output
