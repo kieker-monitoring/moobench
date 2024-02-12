@@ -11,11 +11,13 @@
 /build/
 /benchmark/**
 benchmark-kieker-instrumented/
+benchmark-kieker-javassist/
 
 # Ignore eclipse project files
 .project
 
 frameworks/Kieker-java-javassist/*.jar
+frameworks/Kieker-java-javassist-buildtime/*.jar
 
 # Do not store compile results
 compile-results/
@@ -31,5 +33,6 @@ frameworks/Kieker-java/results-Kieker-java/
 frameworks/Kieker-java-sourceinstrumentation/results-Kieker-java-sourceinstrumentation/
 frameworks/Kieker-java-javassist/results-Kieker-java-javassist/
 frameworks/Kieker-java-javassist/results-Kieker-java-bytebuddy/
+frameworks/Kieker-java-javassist-buildtime/results-Kieker-java-javassist-buildtime/
 frameworks/Kieker-python/raw*
 frameworks/Kieker-python/results-Kieker-python/
