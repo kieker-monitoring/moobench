@@ -123,13 +123,16 @@ RECEIVER[5]="${RECEIVER_BIN} 2345"
 
 writeConfiguration
 
-info "----------------------------------"
-info "Preparing benchmark...."
-info "----------------------------------"
-cd ../../
-cp benchmark benchmark-kieker-javassist -R
-java -cp ../kieker/build/libs/kieker-2.0.0-SNAPSHOT-javassist.jar kieker.monitoring.probe.javassist.BuildTimeAdaption benchmark-kieker-javassist/lib/benchmark.jar
-cd frameworks/Kieker-java-javassist-buildtime/
+if [ ! -d ../../benchmark-kieker-javassist ]
+then
+	info "----------------------------------"
+	info "Preparing benchmark...."
+	info "----------------------------------"
+	cd ../../
+	cp benchmark benchmark-kieker-javassist -R
+	java -cp ../kieker/build/libs/kieker-2.0.0-SNAPSHOT-javassist.jar kieker.monitoring.probe.javassist.BuildTimeAdaption benchmark-kieker-javassist/lib/benchmark.jar
+	cd frameworks/Kieker-java-javassist-buildtime/
+fi
 
 #
 # Run benchmark
