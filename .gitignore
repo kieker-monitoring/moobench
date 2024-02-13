@@ -10,8 +10,8 @@
 /.gradle/
 /build/
 /benchmark/**
-benchmark-kieker-instrumented/
-benchmark-kieker-javassist/
+/benchmark-kieker-instrumented/
+/benchmark-kieker-javassist/
 
 # Ignore eclipse project files
 .project
