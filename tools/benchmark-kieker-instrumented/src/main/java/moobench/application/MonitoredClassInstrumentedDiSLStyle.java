@@ -17,48 +17,45 @@
  */
 package moobench.application;
 
-import kieker.common.record.controlflow.OperationExecutionRecord;
-import kieker.monitoring.core.registry.ControlFlowRegistry;
-import kieker.monitoring.core.registry.SessionRegistry;
-import kieker.monitoring.probe.disl.flow.operationExecution.KiekerMonitoringAnalysis;
 import kieker.monitoring.probe.disl.flow.operationExecution.FullOperationStartData;
+import kieker.monitoring.probe.disl.flow.operationExecution.KiekerMonitoringAnalysis;
 
 /**
  * @author Jan Waller
  */
 public final class MonitoredClassInstrumentedDiSLStyle implements MonitoredClass {
 
-    /**
-     * Default constructor.
-     */
-    public MonitoredClassInstrumentedDiSLStyle() {
-        final String _kieker_sourceInstrumentation_signature = "public new moobench.application.MonitoredClassInstrumented.<init>()";
-        FullOperationStartData data = KiekerMonitoringAnalysis.operationStart(_kieker_sourceInstrumentation_signature);
-        
-        if (data != null) {
+	/**
+	 * Default constructor.
+	 */
+	public MonitoredClassInstrumentedDiSLStyle() {
+		final String _kieker_sourceInstrumentation_signature = "public new moobench.application.MonitoredClassInstrumented.<init>()";
+		FullOperationStartData data = KiekerMonitoringAnalysis.operationStart(_kieker_sourceInstrumentation_signature);
+
+		if (data != null) {
 			KiekerMonitoringAnalysis.operationEnd(data);
 		}
-    }
+	}
 
-    public final long monitoredMethod(final long methodTime, final int recDepth) {
-        final String _kieker_sourceInstrumentation_signature = "public final long moobench.application.MonitoredClassInstrumented.monitoredMethod(long,int)";;
-        FullOperationStartData data = KiekerMonitoringAnalysis.operationStart(_kieker_sourceInstrumentation_signature);
-        try {if (recDepth > 1) {
-		    return this.monitoredMethod(methodTime, recDepth - 1);
-		} else {
-		    final long exitTime = System.nanoTime() + methodTime;
-		    long currentTime;
-		    do {
-		        currentTime = System.nanoTime();
-		    } while (currentTime < exitTime);
-		    return currentTime;
+	public final long monitoredMethod(final long methodTime, final int recDepth) {
+		final String _kieker_sourceInstrumentation_signature = "public final long moobench.application.MonitoredClassInstrumented.monitoredMethod(long,int)";
+		FullOperationStartData data = KiekerMonitoringAnalysis.operationStart(_kieker_sourceInstrumentation_signature);
+		try {
+			if (recDepth > 1) {
+				return this.monitoredMethod(methodTime, recDepth - 1);
+			} else {
+				final long exitTime = System.nanoTime() + methodTime;
+				long currentTime;
+				do {
+					currentTime = System.nanoTime();
+				} while (currentTime < exitTime);
+				return currentTime;
+			}
+		} finally {
+			if (data != null) {
+				KiekerMonitoringAnalysis.operationEnd(data);
+			}
 		}
-        }
-        finally {
-           if (data != null) {
-		   	KiekerMonitoringAnalysis.operationEnd(data);
-		   }
-        }
-        
-    }
+
+	}
 }
