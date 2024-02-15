@@ -38,9 +38,9 @@ start=$(pwd)
 for benchmark in Kieker-java Kieker-java-DiSL Kieker-java-bytebuddy Kieker-java-javassist Kieker-java-sourceinstrumentation OpenTelemetry-java
 do
 	case "$benchmark" in
-		"Kieker-java-sourceinstrumentation") export MOOBENCH_CONFIGURATIONS="0 1 4 5" ;;
+		"Kieker-java-sourceinstrumentation") export MOOBENCH_CONFIGURATIONS="0 1 2 4 5" ;;
 		"OpenTelemetry-java") export MOOBENCH_CONFIGURATIONS="0 1 3" ;;
-		*) export MOOBENCH_CONFIGURATIONS="0 1 4" ;;
+		*) export MOOBENCH_CONFIGURATIONS="0 1 2 4" ;;
 	esac
 	echo "Running $benchmark Configurations: $MOOBENCH_CONFIGURATIONS"
         cd "${benchmark}"
