@@ -28,7 +28,7 @@ function createCSVs {
 		"Kieker-java-bytebuddy") suffix="-4" ;;
 		"Kieker-java-javassist") suffix="-4" ;;
 		"Kieker-java-DiSL") suffix="-4" ;;
-		"Kieker-java-sourceinstrumentation") suffix="-3" ;;
+		"Kieker-java-sourceinstrumentation") suffix="-4" ;;
 		"OpenTelemetry-java") suffix="-3" ;;
 	esac
 	
@@ -52,6 +52,19 @@ function createCSVs {
 		head -n $WARMUP $file | tail -n $WARMUP_REST | awk -F';' '{print $2}' | getSum | awk '{print $2/1000}'
 	done &> $technology"_onlyinst".csv
 	
+	if [ "$technology" != "OpenTelemetry-java" ]
+	then
+		for file in raw-*2.csv
+		do
+			TOTAL_NUM_OF_CALLS=$(wc -l $file | awk '{print $1}')
+			WARMUP=$(($TOTAL_NUM_OF_CALLS / 4))
+			WARMUP_REST=$(($WARMUP-5))
+			AFTER_WARMUP=$(($TOTAL_NUM_OF_CALLS / 2))
+			tail -n $AFTER_WARMUP $file | awk -F';' '{print $2}' | getSum | awk '{print $2/1000}' | tr "\n" " "
+			head -n $WARMUP $file | tail -n $WARMUP_REST | awk -F';' '{print $2}' | getSum | awk '{print $2/1000}'
+		done &> $technology"_deactivated".csv
+	fi
+	
 	for file in raw-*0.csv
 	do
 		TOTAL_NUM_OF_CALLS=$(wc -l $file | awk '{print $1}')
@@ -72,8 +85,10 @@ function summarizyTechnology {
 	technology=$1
 	echo -n "$technology "
 	cat $technology"_baseline".csv | getSum | awk '{print sprintf("%.2f", $2)" & "sprintf("%.2f", $5)}'
-	echo -n "(pure) & "
+	echo -n "(deactivated) & "
 	cat $technology"_onlyinst".csv | getSum | awk '{print sprintf("%.2f", $2)" & "sprintf("%.2f", $5)}'
+	echo -n "(nologging) & "
+	cat $technology"_deactivated".csv | getSum | awk '{print sprintf("%.2f", $2)" & "sprintf("%.2f", $5)}'
 	echo -n "(full) & "
 	cat $technology.csv | getSum | awk '{print sprintf("%.2f", $2)" & "sprintf("%.2f", $5)}'
 	avgAfterWarmup=$(cat $technology.csv | getSum | awk '{print $2}')
