@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 #
 # Kieker moobench setup script
 #
@@ -38,15 +40,26 @@ JAVA_VERSION=`java -version`
 
 info "Java version ${JAVA_VERSION}"
 
+echo "Building tools"
+
 ./gradlew build
 
 checkFile moobench "${MOOBENCH_ARCHIVE}"
+
+echo "Extracting main benchmark"
 tar -xpf "${MOOBENCH_ARCHIVE}"
 MOOBENCH_BIN="${BASE_DIR}/benchmark/bin/benchmark"
 
+echo "Extracting Kieker source instrumented benchmark"
 checkFile moobench ${BASE_DIR}/tools/benchmark-kieker-instrumented/build/distributions/benchmark-kieker-instrumented.tar
 tar -xpf ${BASE_DIR}/tools/benchmark-kieker-instrumented/build/distributions/benchmark-kieker-instrumented.tar
 
+
+echo "Generating javassist load time instrumented benchmark"
+rm -r benchmark-kieker-javassist
+cp benchmark benchmark-kieker-javassist -R
+java -cp ../kieker/build/libs/kieker-2.0.0-SNAPSHOT-javassist.jar kieker.monitoring.probe.javassist.BuildTimeAdaption benchmark-kieker-javassist/lib/benchmark.jar
+cd frameworks/Kieker-java-javassist-buildtime/
 
 
 checkFile compile-result "${COMPILE_RESULTS_ARCHIVE}"
