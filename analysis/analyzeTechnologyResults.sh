@@ -54,15 +54,19 @@ function createCSVs {
 	
 	if [ "$technology" != "OpenTelemetry-java" ]
 	then
-		for file in raw-*2.csv
-		do
-			TOTAL_NUM_OF_CALLS=$(wc -l $file | awk '{print $1}')
-			WARMUP=$(($TOTAL_NUM_OF_CALLS / 4))
-			WARMUP_REST=$(($WARMUP-5))
-			AFTER_WARMUP=$(($TOTAL_NUM_OF_CALLS / 2))
-			tail -n $AFTER_WARMUP $file | awk -F';' '{print $2}' | getSum | awk '{print $2/1000}' | tr "\n" " "
-			head -n $WARMUP $file | tail -n $WARMUP_REST | awk -F';' '{print $2}' | getSum | awk '{print $2/1000}'
-		done &> $technology"_deactivated".csv
+		files=$(ls raw-*2.csv)
+		if [ "$files" != "0" ]
+		then
+			for file in raw-*2.csv
+			do
+				TOTAL_NUM_OF_CALLS=$(wc -l $file | awk '{print $1}')
+				WARMUP=$(($TOTAL_NUM_OF_CALLS / 4))
+				WARMUP_REST=$(($WARMUP-5))
+				AFTER_WARMUP=$(($TOTAL_NUM_OF_CALLS / 2))
+				tail -n $AFTER_WARMUP $file | awk -F';' '{print $2}' | getSum | awk '{print $2/1000}' | tr "\n" " "
+				head -n $WARMUP $file | tail -n $WARMUP_REST | awk -F';' '{print $2}' | getSum | awk '{print $2/1000}'
+			done &> $technology"_deactivated".csv
+		fi
 	fi
 	
 	for file in raw-*0.csv
