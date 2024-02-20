@@ -54,7 +54,7 @@ echo "Extracting Kieker source instrumented benchmark"
 checkFile moobench ${BASE_DIR}/tools/benchmark-kieker-instrumented/build/distributions/benchmark-kieker-instrumented.tar
 tar -xpf ${BASE_DIR}/tools/benchmark-kieker-instrumented/build/distributions/benchmark-kieker-instrumented.tar
 
-
+echo
 echo "Generating javassist load time instrumented benchmark"
 if [ -d benchmark-kieker-javassist ]
 then
@@ -62,7 +62,15 @@ then
 fi
 cp benchmark benchmark-kieker-javassist -R
 java -cp ../kieker/build/libs/kieker-2.0.0-SNAPSHOT-javassist.jar kieker.monitoring.probe.javassist.BuildTimeAdaption benchmark-kieker-javassist/lib/benchmark.jar
-cd frameworks/Kieker-java-javassist-buildtime/
+
+echo 
+echo "Generating javassist load time instrumented benchmark"
+if [ -d benchmark-kieker-bytebuddy ]
+then
+	rm -r benchmark-kieker-bytebuddy
+fi
+cp benchmark benchmark-kieker-bytebuddy -R
+java -cp ../kieker/build/libs/kieker-2.0.0-SNAPSHOT-bytebuddy.jar kieker.monitoring.probe.bytebuddy.BuildTimeAdaption benchmark-kieker-bytebuddy/lib/benchmark.jar
 
 
 checkFile compile-result "${COMPILE_RESULTS_ARCHIVE}"
