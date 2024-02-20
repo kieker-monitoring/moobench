@@ -64,7 +64,7 @@ cp benchmark benchmark-kieker-javassist -R
 java -cp ../kieker/build/libs/kieker-2.0.0-SNAPSHOT-javassist.jar kieker.monitoring.probe.javassist.BuildTimeAdaption benchmark-kieker-javassist/lib/benchmark.jar
 
 echo 
-echo "Generating javassist load time instrumented benchmark"
+echo "Generating bytebuddy load time instrumented benchmark"
 if [ -d benchmark-kieker-bytebuddy ]
 then
 	rm -r benchmark-kieker-bytebuddy
