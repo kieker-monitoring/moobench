@@ -22,6 +22,11 @@ frameworks/Kieker-java-javassist-buildtime/*.jar
 # Do not store compile results
 compile-results/
 frameworks/Kieker-python/kieker-lang-pack-python/
+frameworks/Kieker-java-bytebuddy/receiver/
+frameworks/Kieker-java-DiSL/receiver/
+frameworks/Kieker-java-javassist/receiver/
+frameworks/Kieker-java-bytebuddy-buildtime/receiver/
+frameworks/Kieker-java-javassist-buildtime/receiver/
 
 # Do not store measurement results
 frameworks/OpenTelemetry-java/raw*
@@ -34,5 +39,6 @@ frameworks/Kieker-java-sourceinstrumentation/results-Kieker-java-sourceinstrumen
 frameworks/Kieker-java-javassist/results-Kieker-java-javassist/
 frameworks/Kieker-java-javassist/results-Kieker-java-bytebuddy/
 frameworks/Kieker-java-javassist-buildtime/results-Kieker-java-javassist-buildtime/
+frameworks/Kieker-java-bytebuddy-buildtime/results-Kieker-java-bytebuddy-buildtime/
 frameworks/Kieker-python/raw*
 frameworks/Kieker-python/results-Kieker-python/
