@@ -12,6 +12,7 @@
 /benchmark/**
 /benchmark-kieker-instrumented/
 /benchmark-kieker-javassist/
+/benchmark-kieker-bytebuddy/
 
 # Ignore eclipse project files
 .project
@@ -42,3 +43,7 @@ frameworks/Kieker-java-javassist-buildtime/results-Kieker-java-javassist-buildti
 frameworks/Kieker-java-bytebuddy-buildtime/results-Kieker-java-bytebuddy-buildtime/
 frameworks/Kieker-python/raw*
 frameworks/Kieker-python/results-Kieker-python/
+
+# Do not store intermediate results
+frameworks/Kieker-java-javassist-buildtime/data/
+frameworks/Kieker-java/data/
