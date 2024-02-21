@@ -18,7 +18,7 @@
 package moobench.application;
 
 import kieker.monitoring.probe.disl.flow.operationExecution.FullOperationStartData;
-import kieker.monitoring.probe.disl.flow.operationExecution.KiekerMonitoringAnalysis;
+import kieker.monitoring.probe.disl.flow.operationExecution.OperationExecutionDataGatherer;
 
 /**
  * @author Jan Waller
@@ -30,16 +30,16 @@ public final class MonitoredClassInstrumentedDiSLStyle implements MonitoredClass
 	 */
 	public MonitoredClassInstrumentedDiSLStyle() {
 		final String _kieker_sourceInstrumentation_signature = "public new moobench.application.MonitoredClassInstrumented.<init>()";
-		FullOperationStartData data = KiekerMonitoringAnalysis.operationStart(_kieker_sourceInstrumentation_signature);
+		FullOperationStartData data = OperationExecutionDataGatherer.operationStart(_kieker_sourceInstrumentation_signature);
 
 		if (data != null) {
-			KiekerMonitoringAnalysis.operationEnd(data);
+			OperationExecutionDataGatherer.operationEnd(data);
 		}
 	}
 
 	public final long monitoredMethod(final long methodTime, final int recDepth) {
 		final String _kieker_sourceInstrumentation_signature = "public final long moobench.application.MonitoredClassInstrumented.monitoredMethod(long,int)";
-		FullOperationStartData data = KiekerMonitoringAnalysis.operationStart(_kieker_sourceInstrumentation_signature);
+		FullOperationStartData data = OperationExecutionDataGatherer.operationStart(_kieker_sourceInstrumentation_signature);
 		try {
 			if (recDepth > 1) {
 				return this.monitoredMethod(methodTime, recDepth - 1);
@@ -53,7 +53,7 @@ public final class MonitoredClassInstrumentedDiSLStyle implements MonitoredClass
 			}
 		} finally {
 			if (data != null) {
-				KiekerMonitoringAnalysis.operationEnd(data);
+				OperationExecutionDataGatherer.operationEnd(data);
 			}
 		}
 
