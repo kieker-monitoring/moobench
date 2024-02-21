@@ -61,16 +61,24 @@ then
 	rm -r benchmark-kieker-javassist
 fi
 cp benchmark benchmark-kieker-javassist -R
-java -cp ../kieker/build/libs/kieker-2.0.0-SNAPSHOT-javassist.jar kieker.monitoring.probe.javassist.BuildTimeAdaption benchmark-kieker-javassist/lib/benchmark.jar
+java -cp ../kieker/monitoring-buildtime/build/libs/monitoring-buildtime-2.0.0-SNAPSHOT.jar kieker.monitoring.buildtime.BuildTimeInstrumentationJavassist benchmark-kieker-javassist/lib/benchmark.jar
 
 echo 
-echo "Generating bytebuddy load time instrumented benchmark"
+echo "Generating ByteBuddy load time instrumented benchmark"
 if [ -d benchmark-kieker-bytebuddy ]
 then
 	rm -r benchmark-kieker-bytebuddy
 fi
 cp benchmark benchmark-kieker-bytebuddy -R
-java -cp ../kieker/build/libs/kieker-2.0.0-SNAPSHOT-bytebuddy.jar kieker.monitoring.probe.bytebuddy.BuildTimeAdaption benchmark-kieker-bytebuddy/lib/benchmark.jar
+java -cp ../kieker/monitoring-buildtime/build/libs/monitoring-buildtime-2.0.0-SNAPSHOT.jar kieker.monitoring.buildtime.BuildTimeInstrumentationJavassist benchmark-kieker-bytebuddy/lib/benchmark.jar
+
+echo "Generating AspectJ load time instrumented benchmark"
+if [ -d benchmark-kieker-aspectj ]
+then
+	rm -r benchmark-kieker-aspectj
+fi
+cp benchmark benchmark-kieker-aspectj -R
+java -cp ../kieker/monitoring-buildtime/build/libs/monitoring-buildtime-2.0.0-SNAPSHOT.jar kieker.monitoring.buildtime.BuildTimeInstrumentationAspectJ benchmark-kieker-aspectj/lib/benchmark.jar frameworks/Kieker-java/kieker.aop.xml
 
 
 checkFile compile-result "${COMPILE_RESULTS_ARCHIVE}"
