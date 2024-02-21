@@ -24,12 +24,8 @@ function createCSVs {
 	unzip results.zip &> unzip.txt
 	
 	case "$technology" in
-		"Kieker-java") suffix="-4" ;;
-		"Kieker-java-bytebuddy") suffix="-4" ;;
-		"Kieker-java-javassist") suffix="-4" ;;
-		"Kieker-java-DiSL") suffix="-4" ;;
-		"Kieker-java-sourceinstrumentation") suffix="-4" ;;
 		"OpenTelemetry-java") suffix="-3" ;;
+		*) suffix="-4" ;;
 	esac
 	
 	for file in raw-*$suffix.csv
@@ -108,7 +104,9 @@ then
 	rm unzip.txt
 fi
 
-for technology in Kieker-java Kieker-java-bytebuddy Kieker-java-DiSL Kieker-java-javassist Kieker-java-sourceinstrumentation OpenTelemetry-java
+technologies=$(ls | grep "results-" | cut -c 9-)
+
+for technology in $technologies
 do
 	echo "Analyzing: $technology"
 	
