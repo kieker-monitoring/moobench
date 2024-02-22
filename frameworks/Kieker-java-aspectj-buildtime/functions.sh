@@ -63,7 +63,7 @@ function executeExperiment() {
 	    APP_HOME=../../benchmark
 	    CLASSPATH=$APP_HOME/lib/benchmark.jar:$APP_HOME/lib/jcommander-1.72.jar
     else
-	    APP_HOME=../../benchmark-kieker-javassist
+	    APP_HOME=../../benchmark-kieker-aspectj
 	    CLASSPATH=$APP_HOME/lib/benchmark.jar:$APP_HOME/lib/jcommander-1.72.jar:kieker-2.0.0-SNAPSHOT-aspectj.jar
     fi
         
