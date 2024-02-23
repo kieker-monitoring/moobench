@@ -34,8 +34,18 @@ done
 
 cd "${BASE_DIR}"
 
+benchmarks="Kieker-java Kieker-java-DiSL Kieker-java-bytebuddy Kieker-java-javassist Kieker-java-sourceinstrumentation OpenTelemetry-java"
+
+if [ $1 == "ALL" ]
+then
+	benchmarks="Kieker-java-aspectj-buildtime Kieker-java-bytebuddy-buildtime Kieker-java-javassist-buildtime $benchmarks"
+	echo "Executing all benchmarks: $benchmarks"
+else
+	echo "Executing load time benchmarks: $benchmarks"	
+fi
+
 start=$(pwd)
-for benchmark in Kieker-java Kieker-java-DiSL Kieker-java-bytebuddy Kieker-java-javassist Kieker-java-sourceinstrumentation OpenTelemetry-java
+for benchmark in $benchmarks
 do
 	case "$benchmark" in
 		"Kieker-java-sourceinstrumentation") export MOOBENCH_CONFIGURATIONS="0 1 2 4 5" ;;
