@@ -61,4 +61,5 @@ frameworks/Kieker-python/results-Kieker-python/
 
 # Do not store intermediate results
 frameworks/Kieker-java-javassist-buildtime/data/
+frameworks/Kieker-java-aspectj-buildtime/data/
 frameworks/Kieker-java/data/
