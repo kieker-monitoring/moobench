@@ -27,8 +27,10 @@ frameworks/.gitignore
 
 
 frameworks/Kieker-java-javassist/*.jar
+frameworks/Kieker-java-bytebuddy/*.jar
 frameworks/Kieker-java-javassist-buildtime/*.jar
 frameworks/Kieker-java-bytebuddy-buildtime/*.jar
+frameworks/Kieker-java-aspectj-buildtime/*.jar
 
 # Do not store compile results
 compile-results/
@@ -52,6 +54,8 @@ frameworks/Kieker-java-javassist/results-Kieker-java-javassist/
 frameworks/Kieker-java-javassist/results-Kieker-java-bytebuddy/
 frameworks/Kieker-java-javassist-buildtime/results-Kieker-java-javassist-buildtime/
 frameworks/Kieker-java-bytebuddy-buildtime/results-Kieker-java-bytebuddy-buildtime/
+frameworks/Kieker-java-aspectj-buildtime/results-Kieker-java-aspectj-buildtime/
+frameworks/Kieker-java-bytebuddy/results-Kieker-java-bytebuddy/
 frameworks/Kieker-python/raw*
 frameworks/Kieker-python/results-Kieker-python/
 
