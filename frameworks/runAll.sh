@@ -36,7 +36,7 @@ cd "${BASE_DIR}"
 
 benchmarks="Kieker-java Kieker-java-DiSL Kieker-java-bytebuddy Kieker-java-javassist Kieker-java-sourceinstrumentation OpenTelemetry-java"
 
-if [ $1 == "ALL" ]
+if [ ! -z "$1" ] && [ $1 == "ALL" ]
 then
 	benchmarks="Kieker-java-aspectj-buildtime Kieker-java-bytebuddy-buildtime Kieker-java-javassist-buildtime $benchmarks"
 	echo "Executing all benchmarks: $benchmarks"

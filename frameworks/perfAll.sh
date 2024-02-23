@@ -5,15 +5,23 @@ then
 	echo "\$FLAME_HOME should be defined and point to a version of FlameGraph that contains flamegraph.pl"
 fi
 
-for technology in Kieker-java Kieker-java-bytebuddy Kieker-java-javassist Kieker-java-sourceinstrumentation
+benchmarks="Kieker-java Kieker-java-bytebuddy Kieker-java-javassist Kieker-java-sourceinstrumentation OpenTelemetry-java"
+
+if [ ! -z "$1" ] && [ $1 == "ALL" ]
+then
+	benchmarks="Kieker-java-aspectj-buildtime Kieker-java-bytebuddy-buildtime Kieker-java-javassist-buildtime $benchmarks"
+	echo "Executing all benchmarks: $benchmarks"
+else
+	echo "Executing load time benchmarks: $benchmarks"	
+fi
+
+start=$(pwd)
+for benchmark in $benchmarks
 do
-	case "$technology" in
-		"Kieker-java") export MOOBENCH_CONFIGURATIONS="4" ;;
-		"Kieker-java-bytebuddy") export MOOBENCH_CONFIGURATIONS="4" ;;
-		"Kieker-java-javassist") export MOOBENCH_CONFIGURATIONS="4" ;;
-		"Kieker-java-DiSL") export MOOBENCH_CONFIGURATIONS="4" ;;
-		"Kieker-java-sourceinstrumentation") export MOOBENCH_CONFIGURATIONS="3" ;;
-		"OpenTelemetry-java") export MOOBENCH_CONFIGURATIONS="3" ;;
+	case "$benchmark" in
+		"Kieker-java-sourceinstrumentation") export MOOBENCH_CONFIGURATIONS="0 1 2 4 5" ;;
+		"OpenTelemetry-java") export MOOBENCH_CONFIGURATIONS="0 1 3" ;;
+		*) export MOOBENCH_CONFIGURATIONS="0 1 2 4" ;;
 	esac
 
 	cd $technology
