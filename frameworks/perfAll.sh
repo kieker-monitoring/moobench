@@ -24,7 +24,7 @@ do
 		*) export MOOBENCH_CONFIGURATIONS="0 1 2 4" ;;
 	esac
 
-	cd $technology
+	cd $benchmark
 	export NUM_OF_LOOPS=1; export TOTAL_NUM_OF_CALLS=10000000; ./benchmark.sh
 	cd ..
 done
