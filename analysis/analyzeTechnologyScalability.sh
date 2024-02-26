@@ -36,12 +36,8 @@ do
 		do
 			echo "Analyzing $size"
 			case "$technology" in
-				"Kieker-java") suffix="-4" ;;
-				"Kieker-java-bytebuddy") suffix="-4" ;;
-				"Kieker-java-javassist") suffix="-4" ;;
-				"Kieker-java-DiSL") suffix="-4" ;;
-				"Kieker-java-sourceinstrumentation") suffix="-3" ;;
 				"OpenTelemetry-java") suffix="-3" ;;
+				*) suffix="-4" ;;
 			esac
 			echo "Suffix: $suffix"
 			
