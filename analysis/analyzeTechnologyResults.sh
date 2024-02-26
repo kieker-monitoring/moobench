@@ -87,8 +87,11 @@ function summarizyTechnology {
 	cat $technology"_baseline".csv | getSum | awk '{print sprintf("%.2f", $2)" & "sprintf("%.2f", $5)}'
 	echo -n "(deactivated) & "
 	cat $technology"_onlyinst".csv | getSum | awk '{print sprintf("%.2f", $2)" & "sprintf("%.2f", $5)}'
-	echo -n "(nologging) & "
-	cat $technology"_deactivated".csv | getSum | awk '{print sprintf("%.2f", $2)" & "sprintf("%.2f", $5)}'
+	if [ ! $technology = "OpenTelemetry-java" ]
+	then
+		echo -n "(nologging) & "
+		cat $technology"_deactivated".csv | getSum | awk '{print sprintf("%.2f", $2)" & "sprintf("%.2f", $5)}'
+	fi
 	echo -n "(full) & "
 	cat $technology.csv | getSum | awk '{print sprintf("%.2f", $2)" & "sprintf("%.2f", $5)}'
 	avgAfterWarmup=$(cat $technology.csv | getSum | awk '{print $2}')
