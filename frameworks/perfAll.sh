@@ -3,6 +3,7 @@
 if [ ! -f $FLAME_HOME/flamegraph.pl ]
 then
 	echo "\$FLAME_HOME should be defined and point to a version of FlameGraph that contains flamegraph.pl"
+	exit 1
 fi
 
 benchmarks="Kieker-java Kieker-java-bytebuddy Kieker-java-javassist Kieker-java-sourceinstrumentation OpenTelemetry-java"
