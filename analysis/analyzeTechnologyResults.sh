@@ -100,19 +100,11 @@ function summarizyTechnology {
 	then
 		echo "Warning: After before warmup $avgBeforeWarmup was lower than average after warmup $avgAfterWarmup"
 	fi
+	echo
 }
 
-if [ -f unzip.txt ]
-then
-	rm unzip.txt
-fi
-
-technologies=$(ls | grep "results-" | cut -c 9-)
-
-for technology in $technologies
-do
-	echo "Analyzing: $technology"
-	
+function analyzeTechnology {
+	technology=$1
 	if [ -d results-$technology ]
 	then
 		if [ ! -f $technology.csv ]
@@ -132,5 +124,23 @@ do
 		
 		summarizyTechnology $technology
 	fi
+}
+
+if [ -f unzip.txt ]
+then
+	rm unzip.txt
+fi
+
+technologies=$(ls | grep "results-" | cut -c 9-)
+for technology in $(echo "$technologies" | grep -v "buildtime\|sourceinstrumentation")
+do
+	echo "Analyzing: $technology"
+	analyzeTechnology $technology
+done
+
+for technology in $(echo "$technologies" | grep "buildtime\|sourceinstrumentation")
+do
+	echo "Analyzing: $technology"
+	analyzeTechnology $technology
 done
 
