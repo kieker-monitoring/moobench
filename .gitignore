@@ -56,6 +56,7 @@ frameworks/Kieker-java-javassist-buildtime/results-Kieker-java-javassist-buildti
 frameworks/Kieker-java-bytebuddy-buildtime/results-Kieker-java-bytebuddy-buildtime/
 frameworks/Kieker-java-aspectj-buildtime/results-Kieker-java-aspectj-buildtime/
 frameworks/Kieker-java-bytebuddy/results-Kieker-java-bytebuddy/
+frameworks/Kieker-java-DiSL/results-Kieker-java-DiSL/
 frameworks/Kieker-python/raw*
 frameworks/Kieker-python/results-Kieker-python/
 
