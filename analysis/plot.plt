@@ -18,6 +18,8 @@ plot 'OpenTelemetry-java.csv' u 1:2 w linespoint lc "red" title 'OpenTelemetry',
        'Kieker-java.csv' u 1:($2-$3):($2+$3) w filledcurves lc "yellow" notitle fs transparent solid 0.5, \
      'Kieker-java-DiSL.csv' u 1:2 w linespoint lc "green" title 'DiSL',  \
        'Kieker-java-DiSL.csv' u 1:($2-$3):($2+$3) w filledcurves lc "green" notitle fs transparent solid 0.5, \
+     'Kieker-java-javassist.csv' u 1:2 w linespoint lc "orange" title 'Javassist', \
+       'Kieker-java-javassist.csv' u 1:($2-$3):($2+$3) w filledcurves lc "orange" notitle fs transparent solid 0.5, \
      'Kieker-java-sourceinstrumentation.csv' u 1:2 w linespoint lc "purple" title 'Source Instr.',  \
        'Kieker-java-sourceinstrumentation.csv' u 1:($2-$3):($2+$3) w filledcurves lc "purple" notitle fs transparent solid 0.5
 
@@ -38,6 +40,8 @@ plot 'OpenTelemetry-java.csv' u 1:4 w linespoint lc "red" title 'OpenTelemetry',
        'Kieker-java.csv' u 1:($4-$5):($4+$5) w filledcurves lc "yellow" notitle fs transparent solid 0.5, \
      'Kieker-java-DiSL.csv' u 1:4 w linespoint lc "green" title 'DiSL',  \
        'Kieker-java-DiSL.csv' u 1:($4-$5):($4+$5) w filledcurves lc "green" notitle fs transparent solid 0.5, \
+     'Kieker-java-javassist.csv' u 1:2 w linespoint lc "orange" title 'Javassist', \
+       'Kieker-java-javassist.csv' u 1:($2-$3):($2+$3) w filledcurves lc "orange" notitle fs transparent solid 0.5, \
      'Kieker-java-sourceinstrumentation.csv' u 1:4 w linespoint lc "purple" title 'Source Instr.',  \
        'Kieker-java-sourceinstrumentation.csv' u 1:($4-$5):($4+$5) w filledcurves lc "purple" notitle fs transparent solid 0.5
 
