@@ -1,0 +1,9 @@
+[Benchmark]
+total_calls = 100000
+recursion_depth = 10
+method_time = 500000
+config_path = /home/serafim/Desktop/kieker-experiment/monitoring.ini
+inactive = False
+instrumentation_on = True
+approach = 1
+

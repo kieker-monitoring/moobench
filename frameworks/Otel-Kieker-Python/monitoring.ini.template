@@ -1,0 +1,11 @@
+[Main]
+mode = tcp
+
+[Tcp]
+host = 127.0.0.1
+port = 65432
+connection_timeout = 10
+
+[FileWriter]
+file_path = %DATA%
+

@@ -1,0 +1,9 @@
+__pycache__/**
+config.ini
+monitoring.ini
+data/**
+kieker-lang-pack-python/**
+receiver/**
+record-map.log
+results-python/**
+
