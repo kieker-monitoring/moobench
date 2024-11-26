@@ -49,9 +49,64 @@ method_time = ${METHOD_TIME}
 config_path = ${BASE_DIR}/monitoring.ini
 output_filename = ${RAWFN}-${loop}-${RECURSION_DEPTH}-${index}.csv
 empty_exporter = $empty
-simple_processor = $simple
+custom_exporter = $simple
 
 EOF
+}
+
+function getOtelCollector() {
+    # Variables
+    OTEL_COLLECTOR_URL="https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.86.0/otelcol_0.86.0_linux_amd64.tar.gz"
+    OTEL_COLLECTOR_BINARY="otelcol"
+    OTEL_COLLECTOR_DIR="./otel-collector"
+    OTEL_COLLECTOR_CONFIG="${OTEL_COLLECTOR_DIR}/config.yaml"
+    OTEL_COLLECTOR_PID_FILE="${OTEL_COLLECTOR_DIR}/otelcol.pid"
+    OTEL_COLLECTOR_LOG_FILE="${OTEL_COLLECTOR_DIR}/otelcol.log"
+
+    # Ensure the directory exists
+    mkdir -p "$OTEL_COLLECTOR_DIR"
+
+    # Check if the OpenTelemetry Collector binary exists
+    if [[ ! -f "${OTEL_COLLECTOR_DIR}/${OTEL_COLLECTOR_BINARY}" ]]; then
+        echo "Downloading OpenTelemetry Collector..."
+        curl -L "$OTEL_COLLECTOR_URL" -o "${OTEL_COLLECTOR_DIR}/otelcol.tar.gz"
+        echo "Extracting Collector..."
+        tar -xzf "${OTEL_COLLECTOR_DIR}/otelcol.tar.gz" -C "$OTEL_COLLECTOR_DIR"
+        chmod +x "${OTEL_COLLECTOR_DIR}/${OTEL_COLLECTOR_BINARY}"
+        echo "Collector downloaded and ready."
+    else
+        echo "OpenTelemetry Collector is already downloaded."
+    fi
+
+    # Create a minimal configuration for the Collector to receive spans
+    if [[ ! -f "$OTEL_COLLECTOR_CONFIG" ]]; then
+        echo "Creating minimal configuration for the Collector..."
+        cat <<EOF >"$OTEL_COLLECTOR_CONFIG"
+receivers:
+  otlp:
+    protocols:
+      http:
+      grpc:
+
+exporters:[]
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: []
+EOF
+        echo "Configuration created at $OTEL_COLLECTOR_CONFIG."
+    else
+        echo "Configuration already exists."
+    fi
+
+    # Start the OpenTelemetry Collector in the background
+    echo "Starting OpenTelemetry Collector in the background..."
+    "${OTEL_COLLECTOR_DIR}/${OTEL_COLLECTOR_BINARY}" --config "$OTEL_COLLECTOR_CONFIG" \
+        >> "$OTEL_COLLECTOR_LOG_FILE" 2>&1 &
+    echo $! > "$OTEL_COLLECTOR_PID_FILE"
+    echo "Collector is running with PID $(cat "$OTEL_COLLECTOR_PID_FILE"). Logs are in $OTEL_COLLECTOR_LOG_FILE."
 }
 
 function emptySimpleExporter() {
@@ -79,31 +134,7 @@ function emptySimpleExporter() {
     sleep "${SLEEP_TIME}"
 }
 
-function emptyBatchExporter() {
-    index="$1"
-    loop="$2"
 
-
-    info " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}"
-    echo " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}" >> "${DATA_DIR}/kieker.log"
-
-    ${RECEIVER_BIN} 5678 &
-    RECEIVER_PID=$!
-    echo $RECEIVER_PID
-    sleep "${SLEEP_TIME}"
-
-
-    createConfig  $loop True False
-
-    "${PYTHON}" benchmark.py "${BASE_DIR}/config.ini" # &> "${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
-
-    kill -9 $RECEIVER_PID
-
-    echo >> "${DATA_DIR}/kieker.log"
-    echo >> "${DATA_DIR}/kieker.log"
-    sync
-    sleep "${SLEEP_TIME}"
-}
 
 
 
@@ -133,30 +164,49 @@ function kiekerSimpleExporter() {
     sleep "${SLEEP_TIME}"
 }
 
-function kiekerBatchExporter() {
+
+
+# Function to stop the OpenTelemetry Collector
+function stopOtelCollector() {
+    OTEL_COLLECTOR_DIR="./otel-collector"
+    OTEL_COLLECTOR_PID_FILE="${OTEL_COLLECTOR_DIR}/otelcol.pid"
+
+    if [[ -f "$OTEL_COLLECTOR_PID_FILE" ]]; then
+        PID=$(cat "$OTEL_COLLECTOR_PID_FILE")
+        if kill -0 "$PID" 2>/dev/null; then
+            echo "Stopping OpenTelemetry Collector with PID $PID..."
+            kill -9 "$PID"
+            rm -f "$OTEL_COLLECTOR_PID_FILE"
+            echo "Collector stopped."
+        else
+            echo "Collector is not running or PID is invalid."
+            rm -f "$OTEL_COLLECTOR_PID_FILE"
+        fi
+    else
+        echo "No PID file found. Collector is not running."
+    fi
+}
+
+
+function otlpExporter(){
     index="$1"
     loop="$2"
-
-
+    
     info " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}"
     echo " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}" >> "${DATA_DIR}/kieker.log"
-
-    ${RECEIVER_BIN} 5678 &
-    RECEIVER_PID=$!
-    echo $RECEIVER_PID
-    sleep "${SLEEP_TIME}"
-
-
-    createConfig  $loop False False
-
+    
+    createConfig $loop False False
+    getOtelCollector
+    
     "${PYTHON}" benchmark.py "${BASE_DIR}/config.ini" # &> "${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
-
-    kill -9 $RECEIVER_PID
-
+    stopOtelCollector
+    
     echo >> "${DATA_DIR}/kieker.log"
     echo >> "${DATA_DIR}/kieker.log"
     sync
     sleep "${SLEEP_TIME}"
+    
+    
 }
 
 

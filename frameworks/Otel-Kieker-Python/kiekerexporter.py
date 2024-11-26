@@ -28,7 +28,7 @@ class KiekerTcpExporter(SpanExporter):
 	def export(self, spans):
 		for span in spans:
 			self.send_default_0(span)
-			print("test")
+			#print("test")
 		return SpanExportResult.SUCCESS
 
 	def on_new_registry_entry(self, value, idee):

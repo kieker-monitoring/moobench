@@ -8,7 +8,7 @@ import re
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor, SimpleSpanProcessor
-
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from emptyexporter import EmptyExporter
 from kiekerexporter import KiekerTcpExporter
 from kiekerprocessor import IncrementAttributeSpanProcessor
@@ -23,33 +23,26 @@ total_calls =int(parser.get('Benchmark','total_calls'))
 recursion_depth = int(parser.get('Benchmark','recursion_depth'))
 method_time = int(parser.get('Benchmark','method_time'))
 output_filename = parser.get('Benchmark', 'output_filename')
-empty_exporter = parser.getboolean('Benchmark', 'empty_exporter')
-simple_processor = parser.getboolean('Benchmark', 'simple_processor')
+empty_exporter_bool = parser.getboolean('Benchmark', 'empty_exporter')
+custom_exporter = parser.getboolean('Benchmark', 'custom_exporter')
 # debug
 
 trace.set_tracer_provider(TracerProvider())
-otlp_exporter = KiekerTcpExporter()
 empty_exporter = EmptyExporter()
 kieker_exporter = KiekerTcpExporter()
-# instrument
 
-
-if empty_exporter:
-    print("empty")
-    if simple_processor:
+if empty_exporter_bool:
         span_processor = SimpleSpanProcessor(empty_exporter)
-        trace.get_tracer_provider().add_span_processor(span_processor)
-    else:
-        span_processor = BatchSpanProcessor(empty_exporter)
         trace.get_tracer_provider().add_span_processor(span_processor)
 else:
     print("not empty")
-    if simple_processor:
+    if custom_exporter:
         span_processor = SimpleSpanProcessor(kieker_exporter)
         trace.get_tracer_provider().add_span_processor(span_processor)
         
     else:
-        span_processor = BatchSpanProcessor(kieker_exporter)
+        otlp_exporter = OTLPSpanExporter(endpoint="http://localhost:4317", insecure=True)
+        span_processor = BatchSpanProcessor(otlp_exporter)
         trace.get_tracer_provider().add_span_processor(span_processor)
 
 

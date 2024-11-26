@@ -6,4 +6,9 @@ kieker-lang-pack-python/**
 receiver/**
 record-map.log
 results-python/**
+otel-collector/**
+bin/**
+include/**
+lib/**
+lib64/**
 
