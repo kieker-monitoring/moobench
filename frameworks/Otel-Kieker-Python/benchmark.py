@@ -22,10 +22,6 @@ parser.read(sys.argv[1])
 total_calls =int(parser.get('Benchmark','total_calls'))
 recursion_depth = int(parser.get('Benchmark','recursion_depth'))
 method_time = int(parser.get('Benchmark','method_time'))
-ini_path = parser.get('Benchmark','config_path')
-inactive = parser.getboolean('Benchmark', 'inactive')
-instrumentation_on = parser.getboolean('Benchmark', 'instrumentation_on')
-approach = parser.getint('Benchmark', 'approach')
 output_filename = parser.get('Benchmark', 'output_filename')
 empty_exporter = parser.getboolean('Benchmark', 'empty_exporter')
 simple_processor = parser.getboolean('Benchmark', 'simple_processor')
@@ -39,6 +35,7 @@ kieker_exporter = KiekerTcpExporter()
 
 
 if empty_exporter:
+    print("empty")
     if simple_processor:
         span_processor = SimpleSpanProcessor(empty_exporter)
         trace.get_tracer_provider().add_span_processor(span_processor)
@@ -46,9 +43,11 @@ if empty_exporter:
         span_processor = BatchSpanProcessor(empty_exporter)
         trace.get_tracer_provider().add_span_processor(span_processor)
 else:
+    print("not empty")
     if simple_processor:
         span_processor = SimpleSpanProcessor(kieker_exporter)
         trace.get_tracer_provider().add_span_processor(span_processor)
+        
     else:
         span_processor = BatchSpanProcessor(kieker_exporter)
         trace.get_tracer_provider().add_span_processor(span_processor)

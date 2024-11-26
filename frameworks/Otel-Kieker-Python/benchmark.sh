@@ -131,19 +131,12 @@ for ((i=1;i<=${NUM_OF_LOOPS};i+=1)); do
     info "## Starting iteration ${i}/${NUM_OF_LOOPS}"
     echo "## Starting iteration ${i}/${NUM_OF_LOOPS}" >> "${DATA_DIR}/kieker.log"
 
-    noInstrumentation 0 $i
 
-    deactivatedProbe 1 $i 1
-    deactivatedProbe 2 $i 2
+ 
 
-    noLogging 3 $i 1
-    noLogging 4 $i 2
+    kiekerSimpleExporter 2 $i
 
-    textLogging 5 $i 1
-    textLogging 6 $i 2
-
-    tcpLogging 7 $i 1
-    tcpLogging 8 $i 2
+    kiekerBatchExporter 3 $i
 
     printIntermediaryResults "${i}"
 done

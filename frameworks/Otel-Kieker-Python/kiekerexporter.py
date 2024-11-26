@@ -13,7 +13,7 @@ time = TimeStamp()
 
 class KiekerTcpExporter(SpanExporter):
 		
-	def __init__(self, host="127.0.0.1", port=4137):
+	def __init__(self, host="127.0.0.1", port=5678):
 		self.host = host
 		self.port = port
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -27,10 +27,8 @@ class KiekerTcpExporter(SpanExporter):
 	
 	def export(self, spans):
 		for span in spans:
-			self.send_ExampleRecord(span)	
-			self.send_ExampleRecord2(span)	
-			self.send_BranchingRecord(span)
 			self.send_default_0(span)
+			print("test")
 		return SpanExportResult.SUCCESS
 
 	def on_new_registry_entry(self, value, idee):

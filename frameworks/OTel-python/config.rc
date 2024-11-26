@@ -1,0 +1,25 @@
+# benchmark setup script
+
+source ${MAIN_DIR}/config.rc
+
+PYTHON=`which python3`
+
+PIP=`which pip`
+if [ ! -f "$PIP" ] ; then
+	PIP=`which pip3`
+fi
+
+GIT=`which git`
+
+RSCRIPT_PATH="${BASE_DIR}/../statistics.r"
+
+DATA_DIR="${BASE_DIR}/data"
+
+KIEKER_4_PYTHON_REPO_URL="https://github.com/rju/kieker-lang-pack-python.git"
+KIEKER_4_PYTHON_DIR="${BASE_DIR}/kieker-lang-pack-python"
+KIEKER_4_PYTHON_BRANCH="ast_import_hook"
+
+RECEIVER_ARCHIVE="${MAIN_DIR}/tools/receiver/build/distributions/receiver.tar"
+
+
+

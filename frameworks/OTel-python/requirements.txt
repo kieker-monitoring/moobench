@@ -1,0 +1,6 @@
+kiekerforpython
+opentelemetry-api==1.18.0
+opentelemetry-sdk==1.18.0
+opentelemetry-exporter-otlp==1.18.0
+opentelemetry-instrumentation==0.40b0
+
