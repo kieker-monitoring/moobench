@@ -24,11 +24,19 @@ class KiekerTcpExporter(SpanExporter):
 		self.current_id = 1
 		self.span_dict={}
 		self.current_span_id = 1
+		self.list_bytes = []
 	
 	def export(self, spans):
 		for span in spans:
 			self.send_default_0(span)
 			#print("test")
+		#concatenated = b"".join(self.list_bytes)
+		#try:
+		#	self.sock.sendall(concatenated)
+			#self.list_bytes.append(binarized_record)
+		#except Exception as e:
+			# TODO: Better exception handling for tcp
+		#	print(repr(e))
 		return SpanExportResult.SUCCESS
 
 	def on_new_registry_entry(self, value, idee):
@@ -91,7 +99,7 @@ class KiekerTcpExporter(SpanExporter):
 	
 	def send_BranchingRecord(self, span: Span):
 		#fetch record name
-		lock.acquire()
+		#lock.acquire()
 		record_class_name = "kieker.common.record.controlflow.BranchingRecord"
 		self.writer_registry.register(record_class_name)
 		self.serializer.put_string(record_class_name)
@@ -99,7 +107,7 @@ class KiekerTcpExporter(SpanExporter):
 		self.serializer.put_long(int(span.start_time))
 		self.serializer.put_int(span.attributes["branch_id"])
 		self.serializer.put_int(span.attributes["branching_outcome"])
-		lock.release()
+		#lock.release()
 		binarized_record = self.serializer.pack()
 		# try to send
 		try:
@@ -110,7 +118,7 @@ class KiekerTcpExporter(SpanExporter):
 	
 	def send_default_0(self, span: Span):
 		#fetch record name
-		lock.acquire()
+		#lock.acquire()
 		record_class_name = "kieker.common.record.controlflow.OperationExecutionRecord"
 		self.writer_registry.register(record_class_name)
 		self.serializer.put_string(record_class_name)
@@ -123,11 +131,12 @@ class KiekerTcpExporter(SpanExporter):
 		self.serializer.put_string(span.attributes["hostname"])
 		self.serializer.put_int(span.attributes["eoi"])
 		self.serializer.put_int(span.attributes["ess"])
-		lock.release()
+		#lock.release()
 		binarized_record = self.serializer.pack()
 		# try to send
 		try:
 			self.sock.sendall(binarized_record)
+			#self.list_bytes.append(binarized_record)
 		except Exception as e:
 			# TODO: Better exception handling for tcp
 			print(repr(e))

@@ -29,4 +29,5 @@ def monitored_method(method_time, rec_depth):
             
                 if current_time > exit_time:
                     break
+    
             return current_time

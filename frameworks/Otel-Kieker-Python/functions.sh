@@ -50,6 +50,7 @@ config_path = ${BASE_DIR}/monitoring.ini
 output_filename = ${RAWFN}-${loop}-${RECURSION_DEPTH}-${index}.csv
 empty_exporter = $empty
 custom_exporter = $simple
+latency_filename = latency-${loop}-${RECURSION_DEPTH}-${index}.csv
 
 EOF
 }
