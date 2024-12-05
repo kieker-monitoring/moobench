@@ -53,7 +53,7 @@ fi
 
 if [ -z "$MOOBENCH_CONFIGURATIONS" ]
 then
-	MOOBENCH_CONFIGURATIONS="0 1 2 3 4 5 6 7 8"
+	MOOBENCH_CONFIGURATIONS="0 1 2 3"
 	echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (everything)"
 fi
 echo "Running configurations: $MOOBENCH_CONFIGURATIONS"
@@ -70,18 +70,6 @@ cd "${BASE_DIR}"
 
 # load agent
 getAgent
-
-checkFile log "${DATA_DIR}/kieker.log" clean
-checkDirectory results-directory "${RESULTS_DIR}" recreate
-PARENT=`dirname "${RESULTS_DIR}"`
-checkDirectory result-base "${PARENT}"
-checkDirectory data-dir "${DATA_DIR}" create
-
-# Find receiver and extract it
-checkFile receiver "${RECEIVER_ARCHIVE}"
-tar -xpf "${RECEIVER_ARCHIVE}"
-RECEIVER_BIN="${BASE_DIR}/receiver/bin/receiver"
-checkExecutable receiver "${RECEIVER_BIN}"
 
 checkFile R-script "${RSCRIPT_PATH}"
 
@@ -131,19 +119,14 @@ for ((i=1;i<=${NUM_OF_LOOPS};i+=1)); do
     info "## Starting iteration ${i}/${NUM_OF_LOOPS}"
     echo "## Starting iteration ${i}/${NUM_OF_LOOPS}" >> "${DATA_DIR}/kieker.log"
 
-    noInstrumentation 0 $i
-
-    deactivatedProbe 1 $i 1
-    deactivatedProbe 2 $i 2
-
-    noLogging 3 $i 1
-    noLogging 4 $i 2
-
-    textLogging 5 $i 1
-    textLogging 6 $i 2
-
-    tcpLogging 7 $i 1
-    tcpLogging 8 $i 2
+#    noInstrumentation 0 $i
+    
+#    runWithNoExporter 1 $i 
+    
+#    runWithZipkin 2 $i 
+    
+    runWithJaeger 0 $i 
+    
 
     printIntermediaryResults "${i}"
 done

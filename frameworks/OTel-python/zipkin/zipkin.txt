@@ -1,0 +1,31 @@
+
+                  oo
+                 oooo
+                oooooo
+               oooooooo
+              oooooooooo
+             oooooooooooo
+           ooooooo  ooooooo
+          oooooo     ooooooo
+         oooooo       ooooooo
+        oooooo   o  o   oooooo
+       oooooo   oo  oo   oooooo
+     ooooooo  oooo  oooo  ooooooo
+    oooooo   ooooo  ooooo  ooooooo
+   oooooo   oooooo  oooooo  ooooooo
+  oooooooo      oo  oo      oooooooo
+  ooooooooooooo oo  oo ooooooooooooo
+      oooooooooooo  oooooooooooo
+          oooooooo  oooooooo
+              oooo  oooo
+
+     ________ ____  _  _____ _   _
+    |__  /_ _|  _ \| |/ /_ _| \ | |
+      / / | || |_) | ' / | ||  \| |
+     / /_ | ||  __/| . \ | || |\  |
+    |____|___|_|   |_|\_\___|_| \_|
+
+:: version 3.4.2 :: commit ac5a965 ::
+
+2024-12-05T02:22:34.513+01:00  WARN [/] 5369 --- [           main] i.m.p.PrometheusMeterRegistry            : A MeterFilter is being configured after a Meter has been registered to this registry. All MeterFilters should be configured before any Meters are registered. If that is not possible or you have a use case where it should be allowed, let the Micrometer maintainers know at https://github.com/micrometer-metrics/micrometer/issues/4920. Enable DEBUG level logging on this logger to see a stack trace of the call configuring this MeterFilter.
+2024-12-05T02:22:34.629+01:00  INFO [/] 5369 --- [oss-http-*:9411] c.l.a.s.Server                           : Serving HTTP at /[0:0:0:0:0:0:0:0]:9411 - http://127.0.0.1:9411/

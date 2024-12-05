@@ -1,9 +1,5 @@
 TITLE[0]="No instrumentation"
-TITLE[1]="Deactivated probe - A"
-TITLE[2]="Deactivated probe - B"
-TITLE[3]="No logging - A"
-TITLE[4]="No logging - B"
-TITLE[5]="Text file - A"
-TITLE[6]="Text file - B"
-TITLE[7]="Binary TCP - A"
-TITLE[8]="Binary TCP - B"
+TITLE[1]="No Exporter"
+TITLE[2]="Zipkin"
+TITLE[3]="Jaeger
+
