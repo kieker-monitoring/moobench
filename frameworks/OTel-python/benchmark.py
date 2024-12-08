@@ -32,8 +32,6 @@ output_filename = parser.get('Benchmark', 'output_filename')
 
 
 # instrument
-
-
 if  instrumentation_on:
     if approach == 1: # No Exporters
         print("No exporter")
@@ -46,17 +44,14 @@ if  instrumentation_on:
         tracer_provider.add_span_processor(BatchSpanProcessor(OTLPSpanExporter(endpoint="localhost:4317", insecure=True)))
         trace.set_tracer_provider(tracer_provider)
 
-        
-#        trace.set_tracer_provider(TracerProvider(resource=Resource.create({"service.name": "hello-world-service"})))
-#        jaeger_exporter = OTLPSpanExporter(endpoint="localhost:4317", insecure=True)
-#        span_processor = BatchSpanProcessor(exp)
-#        trace.get_tracer_provider().add_span_processor(span_processor)
     elif approach == 2: # Zipkin
         print("Zipkin")
-        TracerProvider(resource=Resource.create({"service.name": "hello-world-service"}))
-        exp = zipkin_exporter = ZipkinExporter(endpoint="http://localhost:9411/api/v2/spans")
-        span_processor = BatchSpanProcessor(exp)
-        trace.get_tracer_provider().add_span_processor(span_processor)
+        
+        resource = Resource.create({"service.name": "hello-world-service"})
+        tracer_provider = TracerProvider(resource=resource)
+        tracer_provider.add_span_processor(BatchSpanProcessor(ZipkinExporter(endpoint="http://localhost:9411/api/v2/spans")))
+        trace.set_tracer_provider(tracer_provider)
+        
 
 import monitored_application
 

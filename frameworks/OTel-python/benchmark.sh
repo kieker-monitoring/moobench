@@ -119,13 +119,13 @@ for ((i=1;i<=${NUM_OF_LOOPS};i+=1)); do
     info "## Starting iteration ${i}/${NUM_OF_LOOPS}"
     echo "## Starting iteration ${i}/${NUM_OF_LOOPS}" >> "${DATA_DIR}/kieker.log"
 
-#    noInstrumentation 0 $i
+    #noInstrumentation 0 $i
     
-#    runWithNoExporter 1 $i 
+    #runWithNoExporter 1 $i 
     
-#    runWithZipkin 2 $i 
+    runWithZipkin 0 $i 
     
-    runWithJaeger 0 $i 
+   # runWithJaeger 3 $i 
     
 
     printIntermediaryResults "${i}"

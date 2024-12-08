@@ -6,4 +6,11 @@ kieker-lang-pack-python/**
 receiver/**
 record-map.log
 results-python/**
+bin/**
+include/**
+jaeger-1.45.0-linux-amd64/**
+venv/**
+results-OTel-python/**
+zipkin/**
+lib64/**
 
