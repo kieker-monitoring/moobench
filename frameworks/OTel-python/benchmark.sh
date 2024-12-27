@@ -53,7 +53,7 @@ fi
 
 if [ -z "$MOOBENCH_CONFIGURATIONS" ]
 then
-	MOOBENCH_CONFIGURATIONS="0 1 2 3"
+	MOOBENCH_CONFIGURATIONS="0 1 2 3 4"
 	echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (everything)"
 fi
 echo "Running configurations: $MOOBENCH_CONFIGURATIONS"
@@ -67,6 +67,12 @@ info "Setup..."
 info "----------------------------------"
 
 cd "${BASE_DIR}"
+
+
+checkDirectory results-directory "${RESULTS_DIR}" recreate
+PARENT=`dirname "${RESULTS_DIR}"`
+checkDirectory result-base "${PARENT}"
+checkDirectory data-dir "${DATA_DIR}" create
 
 # load agent
 getAgent
@@ -119,13 +125,19 @@ for ((i=1;i<=${NUM_OF_LOOPS};i+=1)); do
     info "## Starting iteration ${i}/${NUM_OF_LOOPS}"
     echo "## Starting iteration ${i}/${NUM_OF_LOOPS}" >> "${DATA_DIR}/kieker.log"
 
-    #noInstrumentation 0 $i
+
     
-    #runWithNoExporter 1 $i 
+    noInstrumentation 0 $i
     
-    runWithZipkin 0 $i 
+    runWithNoExporter 1 $i 
     
-   # runWithJaeger 3 $i 
+    runWithZipkin 2 $i 
+    
+    runWithJaeger 3 $i 
+    
+    runWithPrometheus 4 $i 
+    
+
     
 
     printIntermediaryResults "${i}"

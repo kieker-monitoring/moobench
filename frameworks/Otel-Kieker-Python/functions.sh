@@ -48,8 +48,8 @@ recursion_depth = ${RECURSION_DEPTH}
 method_time = ${METHOD_TIME}
 config_path = ${BASE_DIR}/monitoring.ini
 output_filename = ${RAWFN}-${loop}-${RECURSION_DEPTH}-${index}.csv
-empty_exporter = $empty
-custom_exporter = $simple
+instrumentation_on = $empty
+batched_processor = $simple
 latency_filename = latency-${loop}-${RECURSION_DEPTH}-${index}.csv
 
 EOF
@@ -110,7 +110,7 @@ EOF
     echo "Collector is running with PID $(cat "$OTEL_COLLECTOR_PID_FILE"). Logs are in $OTEL_COLLECTOR_LOG_FILE."
 }
 
-function emptySimpleExporter() {
+function noExporter() {
     index="$1"
     loop="$2"
     
@@ -118,16 +118,12 @@ function emptySimpleExporter() {
     info " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}"
     echo " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}" >> "${DATA_DIR}/kieker.log"
 
-    ${RECEIVER_BIN} 5678 &
-    RECEIVER_PID=$!
-    echo $RECEIVER_PID
-    sleep "${SLEEP_TIME}"
 
-    createConfig  $loop True True
+
+    createConfig  $loop False True
 
     "${PYTHON}" benchmark.py "${BASE_DIR}/config.ini" # &> "${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
-    kill -9 $RECEIVER_PID
 
     echo >> "${DATA_DIR}/kieker.log"
     echo >> "${DATA_DIR}/kieker.log"
@@ -143,17 +139,43 @@ function kiekerSimpleExporter() {
     index="$1"
     loop="$2"
 
+    ${RECEIVER_BIN} 5678 &
+    RECEIVER_PID=$!
+    echo $RECEIVER_PID
+    sleep "${SLEEP_TIME}"
 
     info " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}"
     echo " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}" >> "${DATA_DIR}/kieker.log"
+    
+
+
+    createConfig  $loop True False
+
+    "${PYTHON}" benchmark.py "${BASE_DIR}/config.ini" # &> "${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
+
+    kill -9 $RECEIVER_PID
+
+    echo >> "${DATA_DIR}/kieker.log"
+    echo >> "${DATA_DIR}/kieker.log"
+    sync
+    sleep "${SLEEP_TIME}"
+}
+
+function kiekerBatchedExporter() {
+    index="$1"
+    loop="$2"
 
     ${RECEIVER_BIN} 5678 &
     RECEIVER_PID=$!
     echo $RECEIVER_PID
     sleep "${SLEEP_TIME}"
 
+    info " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}"
+    echo " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}" >> "${DATA_DIR}/kieker.log"
+    
 
-    createConfig  $loop False True
+
+    createConfig  $loop True True
 
     "${PYTHON}" benchmark.py "${BASE_DIR}/config.ini" # &> "${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
@@ -167,48 +189,6 @@ function kiekerSimpleExporter() {
 
 
 
-# Function to stop the OpenTelemetry Collector
-function stopOtelCollector() {
-    OTEL_COLLECTOR_DIR="./otel-collector"
-    OTEL_COLLECTOR_PID_FILE="${OTEL_COLLECTOR_DIR}/otelcol.pid"
-
-    if [[ -f "$OTEL_COLLECTOR_PID_FILE" ]]; then
-        PID=$(cat "$OTEL_COLLECTOR_PID_FILE")
-        if kill -0 "$PID" 2>/dev/null; then
-            echo "Stopping OpenTelemetry Collector with PID $PID..."
-            kill -9 "$PID"
-            rm -f "$OTEL_COLLECTOR_PID_FILE"
-            echo "Collector stopped."
-        else
-            echo "Collector is not running or PID is invalid."
-            rm -f "$OTEL_COLLECTOR_PID_FILE"
-        fi
-    else
-        echo "No PID file found. Collector is not running."
-    fi
-}
-
-
-function otlpExporter(){
-    index="$1"
-    loop="$2"
-    
-    info " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}"
-    echo " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}" >> "${DATA_DIR}/kieker.log"
-    
-    createConfig $loop False False
-    getOtelCollector
-    
-    "${PYTHON}" benchmark.py "${BASE_DIR}/config.ini" # &> "${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
-    stopOtelCollector
-    
-    echo >> "${DATA_DIR}/kieker.log"
-    echo >> "${DATA_DIR}/kieker.log"
-    sync
-    sleep "${SLEEP_TIME}"
-    
-    
-}
 
 
 

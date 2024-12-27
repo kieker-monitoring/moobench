@@ -28,15 +28,14 @@ class KiekerTcpExporter(SpanExporter):
 	
 	def export(self, spans):
 		for span in spans:
-			self.send_default_0(span)
-			#print("test")
-		#concatenated = b"".join(self.list_bytes)
-		#try:
-		#	self.sock.sendall(concatenated)
-			#self.list_bytes.append(binarized_record)
-		#except Exception as e:
-			# TODO: Better exception handling for tcp
-		#	print(repr(e))
+			if span.name =="Foo":
+				self.send_default_0(span)
+		concatenated = b"".join(self.list_bytes)
+		self.list_bytes= []
+		try:
+			self.sock.sendall(concatenated)
+		except Exception as e:
+			print(repr(e))
 		return SpanExportResult.SUCCESS
 
 	def on_new_registry_entry(self, value, idee):
@@ -51,74 +50,11 @@ class KiekerTcpExporter(SpanExporter):
 		except Exception as e:
 			print(repr(e))  # TODO: better exception handling
 
-	def send_ExampleRecord(self, span: Span):
-		#fetch record name
-		lock.acquire()
-		record_class_name = "CustomRecords.ExampleRecord"
-		self.writer_registry.register(record_class_name)
-		self.serializer.put_string(record_class_name)
-		self.serializer.put_long(time.get_time())
-		self.serializer.put_long(int(span.start_time))
-		self.serializer.put_long(int(span.end_time))
-		self.serializer.put_long(self.get_trace_id(span.get_span_context().trace_id))
-		self.serializer.put_long(self.get_span_id(span.get_span_context().span_id))
-		parent_span_id = span.parent.span_id if span.parent else 0
-		self.serializer.put_long(self.get_span_id(parent_span_id))
-		self.serializer.put_int(span.attributes["int_num"])
-		self.serializer.put_long(span.attributes["long_num"])
-		lock.release()
-		print(self.serializer.buffer)
-		binarized_record = self.serializer.pack()
-		# try to send
-		try:
-			self.sock.sendall(binarized_record)
-		except Exception as e:
-			# TODO: Better exception handling for tcp
-			print(repr(e))
-			
-	def send_ExampleRecord2(self, span: Span):
-		#fetch record name
-		lock.acquire()
-		record_class_name = "CustomRecords.ExampleRecord2"
-		self.writer_registry.register(record_class_name)
-		self.serializer.put_string(record_class_name)
-		self.serializer.put_long(time.get_time())
-		self.serializer.put_long(self.get_trace_id(span.get_span_context().trace_id))
-		self.serializer.put_long(self.get_span_id(span.get_span_context().span_id))
-		self.serializer.put_string(span.attributes["message"])
-		self.serializer.put_boolean(span.attributes["is_off"])
-		lock.release()
-		binarized_record = self.serializer.pack()
-		# try to send
-		try:
-			self.sock.sendall(binarized_record)
-		except Exception as e:
-			# TODO: Better exception handling for tcp
-			print(repr(e))
-			
 	
-	def send_BranchingRecord(self, span: Span):
-		#fetch record name
-		#lock.acquire()
-		record_class_name = "kieker.common.record.controlflow.BranchingRecord"
-		self.writer_registry.register(record_class_name)
-		self.serializer.put_string(record_class_name)
-		self.serializer.put_long(time.get_time())
-		self.serializer.put_long(int(span.start_time))
-		self.serializer.put_int(span.attributes["branch_id"])
-		self.serializer.put_int(span.attributes["branching_outcome"])
-		#lock.release()
-		binarized_record = self.serializer.pack()
-		# try to send
-		try:
-			self.sock.sendall(binarized_record)
-		except Exception as e:
-			# TODO: Better exception handling for tcp
-			print(repr(e))
 	
 	def send_default_0(self, span: Span):
 		#fetch record name
-		#lock.acquire()
+		lock.acquire()
 		record_class_name = "kieker.common.record.controlflow.OperationExecutionRecord"
 		self.writer_registry.register(record_class_name)
 		self.serializer.put_string(record_class_name)
@@ -131,12 +67,11 @@ class KiekerTcpExporter(SpanExporter):
 		self.serializer.put_string(span.attributes["hostname"])
 		self.serializer.put_int(span.attributes["eoi"])
 		self.serializer.put_int(span.attributes["ess"])
-		#lock.release()
+		lock.release()
 		binarized_record = self.serializer.pack()
 		# try to send
 		try:
-			self.sock.sendall(binarized_record)
-			#self.list_bytes.append(binarized_record)
+			self.list_bytes.append(binarized_record)
 		except Exception as e:
 			# TODO: Better exception handling for tcp
 			print(repr(e))
@@ -153,6 +88,4 @@ class KiekerTcpExporter(SpanExporter):
 	           self.span_dict[span_id] = self.current_span_id
 	           self.current_span_id += 1
 	       return self.span_dict[span_id]
-
-
 

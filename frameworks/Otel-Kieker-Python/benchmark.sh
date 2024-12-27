@@ -130,10 +130,10 @@ for ((i=1;i<=${NUM_OF_LOOPS};i+=1)); do
 
     info "## Starting iteration ${i}/${NUM_OF_LOOPS}"
     echo "## Starting iteration ${i}/${NUM_OF_LOOPS}" >> "${DATA_DIR}/kieker.log"
-
-    kiekerSimpleExporter 0 $i
-    otlpExporter 1 $i
-    emptySimpleExporter 2 $i
+    noExporter 0 $i
+    kiekerSimpleExporter 1 $i
+    kiekerBatchedExporter 2 $i
+    
     
     
 

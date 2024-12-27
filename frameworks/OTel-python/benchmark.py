@@ -12,6 +12,12 @@ from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExport
 from opentelemetry.exporter.zipkin.json import ZipkinExporter
 from opentelemetry.exporter import jaeger
 from opentelemetry.sdk.resources import Resource
+from opentelemetry import metrics
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.exporter.prometheus import PrometheusMetricReader
+
+from prometheus_client import start_http_server
+
 # read argumetns
 if len(sys.argv) < 2:
     print('Path to the benchmark configuration file was not provided.')
@@ -51,7 +57,13 @@ if  instrumentation_on:
         tracer_provider = TracerProvider(resource=resource)
         tracer_provider.add_span_processor(BatchSpanProcessor(ZipkinExporter(endpoint="http://localhost:9411/api/v2/spans")))
         trace.set_tracer_provider(tracer_provider)
-        
+    elif approach == 4: # Prometheus
+        print("Prometheus")
+        prometheus_exporter = PrometheusMetricReader()
+        provider = MeterProvider(metric_readers=[prometheus_exporter])
+        metrics.set_meter_provider(provider)
+        start_http_server(9464)
+
 
 import monitored_application
 
@@ -70,7 +82,10 @@ for i in range(total_calls):
     if not instrumentation_on:
         monitored_application.monitored_method_without(method_time, recursion_depth)
     else:
-        monitored_application.monitored_method_traces(method_time, recursion_depth)
+        if approach !=4:
+            monitored_application.monitored_method_traces(method_time, recursion_depth)
+        else:
+            monitored_application.monitored_method_prometheus(method_time, recursion_depth)
     stop_ns = time.time_ns()
     timings.append(stop_ns-start_ns)
     if i%100000 == 0:

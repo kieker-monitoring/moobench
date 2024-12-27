@@ -94,7 +94,7 @@ function runWithNoExporter(){
     info " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}"
     echo " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}" >> "${DATA_DIR}/kieker.log"
     
-    createMonitoring dummy
+
     createConfig True 1 $loop
   
     "${PYTHON}" benchmark.py "${BASE_DIR}/config.ini" # &> "${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
@@ -115,7 +115,6 @@ function runWithZipkin() {
     info " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}"
     echo " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}" >> "${DATA_DIR}/kieker.log"
     startZipkin
-    createMonitoring dummy
     createConfig True 2 $loop
   
     "${PYTHON}" benchmark.py "${BASE_DIR}/config.ini" # &> "${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
@@ -137,6 +136,25 @@ function runWithJaeger(){
     startJaeger
     createMonitoring dummy
     createConfig True 3 $loop
+  
+    "${PYTHON}" benchmark.py "${BASE_DIR}/config.ini" # &> "${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
+
+    stopBackgroundProcess
+
+    sync
+    sleep "${SLEEP_TIME}"
+}
+
+
+function runWithPrometheus(){
+    index="$1"
+    loop="$2"
+    
+    
+    info " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}"
+    echo " # ${loop}.${RECURSION_DEPTH}.${index} ${TITLE[index]}" >> "${DATA_DIR}/kieker.log"
+    startPrometheus 
+    createConfig True 4 $loop
   
     "${PYTHON}" benchmark.py "${BASE_DIR}/config.ini" # &> "${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 

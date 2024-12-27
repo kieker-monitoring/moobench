@@ -1,5 +1,5 @@
-TITLE[0]="Empty Exporter"
-TITLE[1]="Kieker  Exporter"
-TITLE[2]="OTLP  Exporter"
+TITLE[0]="No instrumentation"
+TITLE[1]="Kieker  Exporter Simple"
+TITLE[2]="Kieker  Exporter Batched"
 
 
