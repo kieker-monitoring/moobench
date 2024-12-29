@@ -1,0 +1,30 @@
+{
+  "tableName": "inspectorStatAgent${NUM}",
+  "tableType": "OFFLINE",
+  "segmentsConfig": {
+    "timeType": "MILLISECONDS",
+    "schemaName": "inspectorStatAgent${NUM}",
+    "retentionTimeUnit": "DAYS",
+    "retentionTimeValue": "14",
+    "replication": "3",
+    "timeColumnName": "eventTime",
+    "minimizeDataMovement": false
+  },
+  "tenants": {},
+  "tableIndexConfig": {
+    "sortedColumn": ["sortKey"],
+    "bloomFilterColumns": ["tenantId", "serviceName", "sortKey", "applicationName", "agentId", "metricName", "fieldName"],
+    "noDictionaryColumns": ["fieldValue", "eventTime"],
+    "loadMode": "MMAP",
+    "nullHandlingEnabled": true
+  },
+  "metadata": {
+    "customConfigs": {}
+  },
+  "ingestionConfig": {
+    "batchIngestionConfig": {
+      "segmentIngestionType": "APPEND",
+      "segmentIngestionFrequency": "DAILY"
+    }
+  }
+}

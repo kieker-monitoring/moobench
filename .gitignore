@@ -32,3 +32,10 @@ frameworks/Kieker-java/results-Kieker-java/
 frameworks/Kieker-python/raw*
 frameworks/Kieker-python/results-Kieker-python/
 frameworks/elasticapm-java/results-elasticapm-java/
+
+# Do not store pinpoint temporary data
+frameworks/pinpoint-java/logs/
+frameworks/pinpoint-java/pinpoint-agent-*
+frameworks/pinpoint-java/hbase/
+frameworks/pinpoint-java/*.tar.gz
+frameworks/pinpoint-java/libs/
