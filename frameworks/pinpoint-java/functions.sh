@@ -7,6 +7,10 @@ then
     exit 1
 fi
 
+if [ -z "${BASE_DIR}" ] || [ ! -d $BASE_DIR ]
+then
+   echo "\$BASE_DIR was empty or not a directory; please set it before calling any function."
+fi
 
 function getAgent() {
     if [ ! -d "${BASE_DIR}/pinpoint" ]
@@ -34,12 +38,11 @@ function getHBase() {
 
 function startHBase() {
    cd hbase/hbase-2.6.1
+   bin/start-hbase.sh
    
    wget https://raw.githubusercontent.com/pinpoint-apm/pinpoint/refs/heads/master/hbase/scripts/hbase-create.hbase
    
    bin/hbase shell hbase-create.hbase
-   bin/start-hbase.sh
-   
 }
 
 function startPinot() {
@@ -77,14 +80,14 @@ function startCollectorAndWeb() {
 
    if [ ! -f pinpoint-collector-starter-${PINPOINT_VERSION}-exec.jar ]
    then
-      wget
+      wget https://repo1.maven.org/maven2/com/navercorp/pinpoint/pinpoint-collector-starter/${PINPOINT_VERSION}/pinpoint-collector-starter-${PINPOINT_VERSION}-exec.jar
    fi
    
    java -jar -Dpinpoint.zookeeper.address=localhost pinpoint-collector-starter-${PINPOINT_VERSION}-exec.jar &> ${BASE_DIR}/collector.log
    
    if [ ! -f pinpoint-web-starter-${PINPOINT_VERSION}-exec.jar ]
    then
-      wget https://repo1.maven.org/maven2/com/navercorp/pinpoint/pinpoint-web-starter/3.0.1/pinpoint-web-starter-${PINPOINT_VERSION}-exec.jar
+      wget https://repo1.maven.org/maven2/com/navercorp/pinpoint/pinpoint-web-starter/${PINPOINT_VERSION}/pinpoint-web-starter-${PINPOINT_VERSION}-exec.jar
    fi
    
    java -jar pinpoint-web-starter-${PINPOINT_VERSION}-exec.jar &> ${BASE_DIR}/web-starter.log
