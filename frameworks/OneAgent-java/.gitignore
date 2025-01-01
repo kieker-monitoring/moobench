@@ -1,0 +1,9 @@
+.RData
+.Rhistory
+benchmark/**
+data/**
+kieker-2.0.0-SNAPSHOT-aspectj.jar
+receiver/**
+results-java/**
+
+/build/

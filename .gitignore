@@ -10,6 +10,7 @@
 /.gradle/
 /build/
 /benchmark/**
+benchmark-oneagent-instrumented/**
 
 # Ignore eclipse project files
 .project
@@ -32,3 +33,4 @@ frameworks/Kieker-java/results-Kieker-java/
 frameworks/Kieker-python/raw*
 frameworks/Kieker-python/results-Kieker-python/
 frameworks/elasticapm-java/results-elasticapm-java/
+frameworks/OneAgent-java/results-OneAgent-java/

@@ -1,3 +1,4 @@
 MOOBENCH_ARCHIVE="${BASE_DIR}/tools/benchmark/build/distributions/benchmark.tar"
+MOOBENCH_ONEAGENT_ARCHIVE="${BASE_DIR}/tools/benchmark-oneagent-instrumented/build/distributions/benchmark-oneagent-instrumented.tar"
 COMPILE_RESULTS_ARCHIVE="${BASE_DIR}/tools/compile-results/build/distributions/compile-results.tar"
 COMPILE_RESULTS_BIN="${BASE_DIR}/compile-results/bin/compile-results"

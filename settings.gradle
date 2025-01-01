@@ -9,6 +9,7 @@
 
 rootProject.name = 'moobench'
 
+include 'tools:benchmark-oneagent-instrumented'
 include 'tools:benchmark'
 include 'tools:receiver'
 include 'tools:compile-results'
