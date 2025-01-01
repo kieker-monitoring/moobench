@@ -24,20 +24,18 @@ function getAgent() {
     fi
 }
 
-function getHBase() {
+function startHBase() {
+   HBASE_VERSION=2.6.1
    if [ ! -d $BASE_DIR/hbase ]
    then
-      mkdir -p $BASE_DIR/hbase
-      wget https://dlcdn.apache.org/hbase/2.6.1/hbase-2.6.1-bin.tar.gz
-      tar -xvf hbase-2.6.1-bin.tar.gz
-      cd hbase-2.6.1
+      wget https://dlcdn.apache.org/hbase/$HBASE_VERSION/hbase-$HBASE_VERSION-bin.tar.gz
+      tar -xvf hbase-$HBASE_VERSION-bin.tar.gz
+      cd hbase-$HBASE_VERSION
       wget https://raw.githubusercontent.com/pinpoint-apm/pinpoint/refs/heads/master/hbase/scripts/hbase-create.hbase
       cd $BASE_DIR
    fi
-}
 
-function startHBase() {
-   cd hbase/hbase-2.6.1
+   cd hbase/hbase-$HBASE_VERSION
    bin/start-hbase.sh
    
    wget https://raw.githubusercontent.com/pinpoint-apm/pinpoint/refs/heads/master/hbase/scripts/hbase-create.hbase
@@ -91,8 +89,6 @@ function startCollectorAndWeb() {
    fi
    
    java -jar pinpoint-web-starter-${PINPOINT_VERSION}-exec.jar &> ${BASE_DIR}/web-starter.log
-   
-   
 }
 
 function cleanup {
