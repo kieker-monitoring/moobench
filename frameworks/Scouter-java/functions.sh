@@ -42,26 +42,26 @@ function runNoInstrumentation() {
     # No instrumentation
 	k=0
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
-    echo " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}" >> "${BASE_DIR}/scouter.log"
     export BENCHMARK_OPTS="${JAVA_ARGS}"
-    "${MOOBENCH_BIN}" --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
+    "${MOOBENCH_BIN}" \
+		--application moobench.application.MonitoredClassThreaded \
+		--output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
-        --recursion-depth "${RECURSION_DEPTH}" \
-        ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
+        --recursion-depth "${RECURSION_DEPTH}" &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
 }
 
 function runScouter() {
 	# Scouter
 	k=1
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
-    echo " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}" >> "${BASE_DIR}/scouter.log"
     export BENCHMARK_OPTS="${SCOUTER_ARGS}"
-    "${MOOBENCH_BIN}" --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
+    "${MOOBENCH_BIN}" \
+		--application moobench.application.MonitoredClassThreaded \
+		--output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
-        --recursion-depth "${RECURSION_DEPTH}" \
-        ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
+        --recursion-depth "${RECURSION_DEPTH}" &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
 }

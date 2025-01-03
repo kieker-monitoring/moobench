@@ -99,47 +99,13 @@ info "Experiment will take circa ${TIME} seconds."
 JAVA_ARGS="-Xms1G -Xmx2G"
 
 
-SCOUTER_ARGS="-javaagent:${AGENT} -Dobj_name=moobench-benchmark -D_trace_auto_service_enabled=true -Dhook_method_patterns=moobench.application.*.* -Dnet_collector_ip=127.0.0.1 ${JAVA_ARGS}"
-
-
-
-writeConfiguration
-checkMoobenchConfiguration
-#
-# Run benchmark
-#
-
-info "----------------------------------"
-info "Running benchmark..."
-info "----------------------------------"
+SCOUTER_ARGS="-javaagent:${AGENT} -Dobj_name=moobench-benchmark -Dhook_service_patterns=moobench.application.MonitoredClassThreaded.monitoredMethod -Dhook_method_patterns=moobench.application.*.* -Dnet_collector_ip=127.0.0.1 ${JAVA_ARGS}"
 
 startScouterServer
 
-for ((i=1;i<=${NUM_OF_LOOPS};i+=1))
-do
-    info "## Starting iteration ${i}/${NUM_OF_LOOPS}"
-    echo "## Starting iteration ${i}/${NUM_OF_LOOPS}" >> "${DATA_DIR}/scouter.log"
-
-    executeBenchmark
-    printIntermediaryResults "${i}"
-done
-
-# Create R labels
-LABELS=$(createRLabels)
-runStatistics
-
-cleanupResults
+executeAllLoops
 
 stopScouterServer
-
-mv "${DATA_DIR}/kieker.log" "${RESULTS_DIR}/kieker.log"
-[ -f "${RESULTS_DIR}/hotspot-1-${RECURSION_DEPTH}-1.log" ] && grep "<task " "${RESULTS_DIR}/"hotspot-*.log > "${RESULTS_DIR}/java.log"
-[ -f "${DATA_DIR}/errorlog.txt" ] && mv "${DATA_DIR}/errorlog.txt" "${RESULTS_DIR}"
-
-checkFile results.yaml "${RESULTS_DIR}/results.yaml"
-checkFile results.yaml "${RESULTS_DIR}/results.zip"
-
-info "Done."
 
 exit 0
 # end
