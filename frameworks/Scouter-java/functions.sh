@@ -44,7 +44,6 @@ function runNoInstrumentation() {
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     export BENCHMARK_OPTS="${JAVA_ARGS}"
     "${MOOBENCH_BIN}" \
-		--application moobench.application.MonitoredClassThreaded \
 		--output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
@@ -58,7 +57,6 @@ function runScouter() {
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     export BENCHMARK_OPTS="${SCOUTER_ARGS}"
     "${MOOBENCH_BIN}" \
-		--application moobench.application.MonitoredClassThreaded \
 		--output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
