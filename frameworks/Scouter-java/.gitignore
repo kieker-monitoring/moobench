@@ -1,0 +1,7 @@
+data/**
+results-Scouter-java/**
+scouter-*
+scouter/**
+*.log
+*.out
+
