@@ -1,5 +1,5 @@
 ---
-name: Execution Check Kieker-java
+name: Execution Check Scouter-java
 on:
   push:
   pull_request:
