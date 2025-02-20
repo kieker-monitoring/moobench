@@ -1,0 +1,6 @@
+results-Skywalking-java/**
+skywalking-*
+apache-*
+*.log
+*.out
+
