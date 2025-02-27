@@ -1,0 +1,10 @@
+##
+# MooBench configuration parameter
+
+source ${MAIN_DIR}/config.rc
+
+APP_CLASS="moobench.application.MonitoredClassSimple"
+
+MORE_PARAMS="--application ${APP_CLASS} ${MORE_PARAMS}" 
+
+AGENT="${BASE_DIR}/skywalking-agent/skywalking-agent.jar"

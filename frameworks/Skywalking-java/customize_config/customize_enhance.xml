@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enhanced>
+    <class class_name="moobench.application.MonitoredClassSimple">
+        <method method="monitoredMethod(long.class,int.class)" static="false"/>
+    </class>
+</enhanced>
