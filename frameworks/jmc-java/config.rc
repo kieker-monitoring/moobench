@@ -1,0 +1,7 @@
+##
+# MooBench configuration parameter
+
+source ${MAIN_DIR}/config.rc
+
+DATA_DIR="${BASE_DIR}/data"
+AGENT_JAR="${BASE_DIR}/elastic-apm-agent.jar"

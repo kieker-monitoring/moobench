@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jfragent>
+	<config>
+		<!-- This is the prefix to use when generating event class names -->
+		<classprefix>__JFREvent</classprefix>
+		<allowtostring>true</allowtostring>
+		<allowconverter>true</allowconverter>
+	</config>
+	<events>
+		<event id="demo.monitoredclass.mainmethod">
+			<label>Main method call</label>
+			<description>Is the main method call</description>
+			<path>jdk.ExecuteVMOperation</path>
+			<stacktrace>true</stacktrace>
+			<class>moobench.application.MonitoredClassSimple</class>
+			<method>
+				<name>monitoredMethod</name>
+				<descriptor>(JI)J</descriptor>
+			</method>
+			<!-- location {ENTRY, EXIT, WRAP} -->
+			<location>WRAP</location>
+		</event>
+	</events>
+</jfragent>
