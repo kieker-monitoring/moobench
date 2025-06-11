@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1749616933939,
+  "lastUpdate": 1749616973066,
   "repoUrl": "https://github.com/kieker-monitoring/moobench",
   "entries": {
     "Kieker-java": [
@@ -115482,6 +115482,52 @@ window.BENCHMARK_DATA = {
             "value": 8229.48,
             "unit": "ns",
             "range": 1113.01
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "David Georg Reichelt",
+            "username": "DaGeRe",
+            "email": "davidgeorg_reichelt@dagere.de"
+          },
+          "committer": {
+            "name": "David Georg Reichelt",
+            "username": "DaGeRe",
+            "email": "davidgeorg_reichelt@dagere.de"
+          },
+          "id": "3ca1b01bf6a740d75c9f71e163b9a356f49c2359",
+          "message": "Update to gradle 8.14.1",
+          "timestamp": "2025-05-25T17:03:30Z",
+          "url": "https://github.com/kieker-monitoring/moobench/commit/3ca1b01bf6a740d75c9f71e163b9a356f49c2359"
+        },
+        "date": 1749616960797,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "No instrumentation",
+            "value": 90.9158,
+            "unit": "ns",
+            "range": 0.137333
+          },
+          {
+            "name": "Deactivated probe",
+            "value": 332.825,
+            "unit": "ns",
+            "range": 11.9341
+          },
+          {
+            "name": "Regular Writing",
+            "value": 8512.82,
+            "unit": "ns",
+            "range": 1212.02
+          },
+          {
+            "name": "Writing without sanitizing fields",
+            "value": 8404.27,
+            "unit": "ns",
+            "range": 1252.09
           }
         ]
       }
