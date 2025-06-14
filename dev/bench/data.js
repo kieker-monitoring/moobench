@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1749879292335,
+  "lastUpdate": 1749880501007,
   "repoUrl": "https://github.com/kieker-monitoring/moobench",
   "entries": {
     "Kieker-java": [
@@ -133790,6 +133790,52 @@ window.BENCHMARK_DATA = {
             "value": 6852.08,
             "unit": "ns",
             "range": 508.034
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "David Georg Reichelt",
+            "username": "DaGeRe",
+            "email": "davidgeorg_reichelt@dagere.de"
+          },
+          "committer": {
+            "name": "David Georg Reichelt",
+            "username": "DaGeRe",
+            "email": "davidgeorg_reichelt@dagere.de"
+          },
+          "id": "3ca1b01bf6a740d75c9f71e163b9a356f49c2359",
+          "message": "Update to gradle 8.14.1",
+          "timestamp": "2025-05-25T17:03:30Z",
+          "url": "https://github.com/kieker-monitoring/moobench/commit/3ca1b01bf6a740d75c9f71e163b9a356f49c2359"
+        },
+        "date": 1749880489062,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "No instrumentation",
+            "value": 90.9356,
+            "unit": "ns",
+            "range": 0.0826443
+          },
+          {
+            "name": "Pinpoint Deactivated",
+            "value": 92.7966,
+            "unit": "ns",
+            "range": 3.36292
+          },
+          {
+            "name": "Pinpoint Basic",
+            "value": 11301.3,
+            "unit": "ns",
+            "range": 325.301
+          },
+          {
+            "name": "Pinpoint Sampling",
+            "value": 6565.54,
+            "unit": "ns",
+            "range": 137.523
           }
         ]
       }
