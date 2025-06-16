@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1750047954891,
+  "lastUpdate": 1750048145590,
   "repoUrl": "https://github.com/kieker-monitoring/moobench",
   "entries": {
     "Kieker-java": [
@@ -135002,6 +135002,46 @@ window.BENCHMARK_DATA = {
             "value": 22205.7,
             "unit": "ns",
             "range": 204.805
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "David Georg Reichelt",
+            "username": "DaGeRe",
+            "email": "davidgeorg_reichelt@dagere.de"
+          },
+          "committer": {
+            "name": "David Georg Reichelt",
+            "username": "DaGeRe",
+            "email": "davidgeorg_reichelt@dagere.de"
+          },
+          "id": "3ca1b01bf6a740d75c9f71e163b9a356f49c2359",
+          "message": "Update to gradle 8.14.1",
+          "timestamp": "2025-05-25T17:03:30Z",
+          "url": "https://github.com/kieker-monitoring/moobench/commit/3ca1b01bf6a740d75c9f71e163b9a356f49c2359"
+        },
+        "date": 1750048132288,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "No instrumentation",
+            "value": 90.9104,
+            "unit": "ns",
+            "range": 0.0963601
+          },
+          {
+            "name": "Instrumentation and Profiling",
+            "value": 25556.6,
+            "unit": "ns",
+            "range": 241.699
+          },
+          {
+            "name": "Disabled Profiling",
+            "value": 22365.9,
+            "unit": "ns",
+            "range": 276.872
           }
         ]
       }
