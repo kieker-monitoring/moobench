@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1751177253995,
+  "lastUpdate": 1751257586326,
   "repoUrl": "https://github.com/kieker-monitoring/moobench",
   "entries": {
     "Kieker-java": [
@@ -139032,6 +139032,52 @@ window.BENCHMARK_DATA = {
             "value": 91.0153,
             "unit": "ns",
             "range": 0.15153
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "David Georg Reichelt",
+            "username": "DaGeRe",
+            "email": "davidgeorg_reichelt@dagere.de"
+          },
+          "committer": {
+            "name": "David Georg Reichelt",
+            "username": "DaGeRe",
+            "email": "davidgeorg_reichelt@dagere.de"
+          },
+          "id": "3ca1b01bf6a740d75c9f71e163b9a356f49c2359",
+          "message": "Update to gradle 8.14.1",
+          "timestamp": "2025-05-25T17:03:30Z",
+          "url": "https://github.com/kieker-monitoring/moobench/commit/3ca1b01bf6a740d75c9f71e163b9a356f49c2359"
+        },
+        "date": 1751257570782,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "No instrumentation",
+            "value": 90.996,
+            "unit": "ns",
+            "range": 0.365178
+          },
+          {
+            "name": "Skywalking instrumentation",
+            "value": 4459.82,
+            "unit": "ns",
+            "range": 80.6594
+          },
+          {
+            "name": "Skywalking 20Hz Sampling",
+            "value": 4446.4,
+            "unit": "ns",
+            "range": 88.6267
+          },
+          {
+            "name": "Skywalking no data collection",
+            "value": 90.9764,
+            "unit": "ns",
+            "range": 0.122296
           }
         ]
       }
