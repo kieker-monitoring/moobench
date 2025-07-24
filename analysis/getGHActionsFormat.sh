@@ -21,7 +21,7 @@ do
    values=$(
    for file in $(ls raw-*-$size-$variant.csv)
    do
-      cat $file | awk -F';' '{print $2}' | getSum | awk '{print $2}'
+      cat $file | awk -F';' '{print $2}'
    done | getSum)
    value=$(echo $values | awk '{print $2}')
    standardDeviation=$(echo $values | awk '{print $5}')
