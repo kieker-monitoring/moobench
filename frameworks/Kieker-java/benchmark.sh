@@ -54,9 +54,7 @@ checkDirectory result-base "${PARENT}"
 
 checkFile receiver "receiver/receiver.jar"
 
-checkFile AspectJ-Agent "${AGENT_JAR}"
-checkFile aop-file "${AOP}"
-
+checkFile Agent "${AGENT_JAR}"
 
 checkExecutable java "${JAVA_BIN}"
 checkExecutable moobench "${MOOBENCH_BIN}"
@@ -91,6 +89,8 @@ WRITER_CONFIG[3]="-Dkieker.monitoring.enabled=true -Dkieker.monitoring.writer=ki
 WRITER_CONFIG[4]="-Dkieker.monitoring.enabled=true -Dkieker.monitoring.writer=kieker.monitoring.writer.filesystem.FileWriter -Dkieker.monitoring.writer.filesystem.FileWriter.logStreamHandler=kieker.monitoring.writer.filesystem.BinaryLogStreamHandler -Dkieker.monitoring.writer.filesystem.FileWriter.bufferSize=8192 -Dkieker.monitoring.writer.filesystem.FileWriter.customStoragePath=${DATA_DIR}/ -Dkieker.monitoring.writer.filesystem.FileWriter.maxLogFiles=100 -Dkieker.monitoring.core.controller.WriterController.QueuePutStrategy=kieker.monitoring.queue.putstrategy.YieldPutStrategy"
 WRITER_CONFIG[5]="-Dkieker.monitoring.writer=kieker.monitoring.writer.tcp.SingleSocketTcpWriter -Dkieker.monitoring.writer.tcp.SingleSocketTcpWriter.port=2345"
 RECEIVER[5]="java -jar receiver/receiver.jar 2345"
+
+export KIEKER_SIGNATURES_INCLUDE="* moobench.application.MonitoredClass.*();* moobench.application.MonitoredClassSimple.*();* moobench.application.MonitoredClassThreaded.*();"
 
 executeAllLoops
 
