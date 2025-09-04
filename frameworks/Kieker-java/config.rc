@@ -4,7 +4,7 @@
 source ${MAIN_DIR}/config.rc
 
 DATA_DIR="${BASE_DIR}/data"
-AGENT_JAR="${BASE_DIR}/kieker-2.0.2-SNAPSHOT-aspectj.jar"
+AGENT_JAR="${BASE_DIR}/kieker-agent.jar"
 
 #MORE_PARAMS="--quickstart"
 MORE_PARAMS="--application moobench.application.MonitoredClassSimple ${MORE_PARAMS}"

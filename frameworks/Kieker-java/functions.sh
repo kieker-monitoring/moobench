@@ -9,9 +9,10 @@ fi
 
 
 function getAgent() {
+	instrumentationTechnology="bytebuddy" # Replace by aspectj etc. if other technology is intended
 	info "Download the Kieker agent ${AGENT_JAR}"
 	export VERSION_PATH=`curl "https://oss.sonatype.org/service/local/repositories/snapshots/content/net/kieker-monitoring/kieker/" | grep '<resourceURI>' | sed 's/ *<resourceURI>//g' | sed 's/<\/resourceURI>//g' | grep '/$' | grep -v ".xml" | head -n 1`
-	export AGENT_PATH=`curl "${VERSION_PATH}" | grep 'aspectj.jar</resourceURI' | sort | sed 's/ *<resourceURI>//g' | sed 's/<\/resourceURI>//g' | tail -1`
+	export AGENT_PATH=`curl "${VERSION_PATH}" | grep 'bytebuddy.jar</resourceURI' | sort | sed 's/ *<resourceURI>//g' | sed 's/<\/resourceURI>//g' | tail -1`
 	curl "${AGENT_PATH}" > "${AGENT_JAR}"
 
 	if [ ! -f "${AGENT_JAR}" ] ; then
