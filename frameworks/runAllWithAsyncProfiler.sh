@@ -20,16 +20,16 @@ start=$(pwd)
 
 export MOOBENCH_CONFIGURATIONS="5"
 cd Kieker-java
-./benchmarks.sh
+./benchmark.sh
 cd "${start}"
 
-export MOOBENCH_CONFIGURATIONS="5"
+export MOOBENCH_CONFIGURATIONS="3"
 cd OpenTelemetry-java
-./benchmarks.sh
+./benchmark.sh
 cd "${start}"
 
 export MOOBENCH_CONFIGURATIONS="3"
 cd inspectIT-java
-./benchmarks.sh
+./benchmark.sh
 cd "${start}"
 
