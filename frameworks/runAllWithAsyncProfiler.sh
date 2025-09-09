@@ -33,3 +33,12 @@ cd inspectIT-java
 ./benchmark.sh
 cd "${start}"
 
+export MOOBENCH_CONFIGURATIONS="3"
+cd pinpoint-java
+./benchmark.sh
+cd "${start}"
+
+export MOOBENCH_CONFIGURATIONS="2"
+cd elasticapm-java
+./benchmark.sh
+cd "${start}"
