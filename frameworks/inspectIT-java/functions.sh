@@ -7,6 +7,11 @@ then
     exit 1
 fi
 
+if [ -z "$ASYNC_PROFILER_HOME" ]
+then
+	echo "\$ASYNC_PROFILER_HOME needs to be defined (and a folder)"
+	exit 1
+fi
 
 function getAgent() {
 	if [ ! -f "${BASE_DIR}/agent/inspectit-ocelot-agent-$INSPECTIT_VERSION.jar" ] ; then
@@ -46,7 +51,8 @@ function runNoInstrumentation {
     k=$1
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     export BENCHMARK_OPTS="${JAVA_ARGS_NOINSTR}"
-    java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+    sudo perf record -F 500 -g -o perf_"$index"_"$loop".data --delay $PERF_DELAY -- java -XX:+UnlockDiagnosticVMOptions -XX:+DumpPerfMapAtExit -XX:+PreserveFramePointer -XX:+DebugNonSafepoints \
+        $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
         -cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
         moobench.benchmark.BenchmarkMain \
         --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
@@ -110,7 +116,15 @@ function runInspectITZipkin {
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
         --force-terminate \
-        ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
+        ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt" &
+    PID=$!
+    sleep $WARMUP_TIME
+    
+    echo "Starting profiling of $PID"
+    $ASYNC_PROFILER_HOME/bin/asprof -f "flamegraph_${i}_${RECURSION_DEPTH}_${k}.html" start $PID
+    
+    wait $PID
+    
     stopBackgroundProcess
     sleep "${SLEEP_TIME}"
 }

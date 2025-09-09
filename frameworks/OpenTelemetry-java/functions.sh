@@ -108,12 +108,23 @@ function runOpenTelemetryZipkin {
     startZipkin
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     export BENCHMARK_OPTS="${JAVA_ARGS_OPENTELEMETRY_ZIPKIN}"
-    "${MOOBENCH_BIN}" --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
+    java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+        -cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
+        moobench.benchmark.BenchmarkMain \
+        --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
-        ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
+        ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt" &
+    PID=$!
+    sleep $WARMUP_TIME
+    
+    echo "Starting profiling of $PID"
+    $ASYNC_PROFILER_HOME/bin/asprof -f "flamegraph_${i}_${RECURSION_DEPTH}_${k}.html" start $PID
+    
+    wait $PID
+    
     stopBackgroundProcess
     sleep "${SLEEP_TIME}"
 }
