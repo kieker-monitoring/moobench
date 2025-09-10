@@ -118,10 +118,14 @@ function runOpenTelemetryZipkin {
         --recursion-depth "${RECURSION_DEPTH}" \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt" &
     PID=$!
+    echo "Waiting $WARMUP_TIME"
     sleep $WARMUP_TIME
     
     echo "Starting profiling of $PID"
-    $ASYNC_PROFILER_HOME/bin/asprof -f "flamegraph_${i}_${RECURSION_DEPTH}_${k}.html" start $PID
+    $ASYNC_PROFILER_HOME/bin/asprof \
+        -o collapsed \
+        -f "flamegraph_${i}_${RECURSION_DEPTH}_${k}.collapsed" \
+        start $PID
     
     wait $PID
     
