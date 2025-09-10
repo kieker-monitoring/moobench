@@ -66,13 +66,6 @@ function executeExperiment() {
 	RESULT_FILE="${RAWFN}-${loop}-${recursion}-${index}.csv"
 	LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
-	"${MOOBENCH_BIN}" \
-		--output-filename "${RESULT_FILE}" \
-		--total-calls "${TOTAL_NUM_OF_CALLS}" \
-		--method-time "${METHOD_TIME}" \
-		--total-threads $THREADS \
-		--recursion-depth "${recursion}" \
-		${MORE_PARAMS} &>"${LOG_FILE}"
 	java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
 		-cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
 		moobench.benchmark.BenchmarkMain \
@@ -84,6 +77,13 @@ function executeExperiment() {
 		${MORE_PARAMS} &>"${LOG_FILE}" &
 	PID=$!
 	sleep $WARMUP_TIME
+
+	echo "Starting profiling of $PID"
+	$ASYNC_PROFILER_HOME/bin/asprof \
+		-o collapsed \
+		-f "flamegraph_${loop}_${RECURSION_DEPTH}_${index}.collapsed" \
+		start $PID
+	wait $PID
 
 	echo "Starting profiling of $PID"
 	$ASYNC_PROFILER_HOME/bin/asprof -f "flamegraph_${i}_${RECURSION_DEPTH}_${k}.html" start $PID
@@ -136,4 +136,3 @@ function executeBenchmark() {
 		executeBenchmarkBody $index $i $recursion
 	done
 }
-
