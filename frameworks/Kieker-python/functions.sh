@@ -57,7 +57,7 @@ EOF
 function createMonitoring() {
     mode="$1"
 cat > "${BASE_DIR}/monitoring.ini" << EOF
-[Main]
+[General]
 mode = ${mode}
 
 [Tcp]
@@ -92,7 +92,9 @@ function executeExperiment() {
     createMonitoring ${mode}
     createConfig ${inactive} ${instrument} ${approach} ${loop}
 
+    cd ../../tools/pybenchmark/
     "${PYTHON}" "${MOOBENCH_BIN_PY}" "${BASE_DIR}/config.ini"
+    cd ${BASE_DIR}
 
     if [ ! -f "${RESULT_FILE}" ] ; then
         info "---------------------------------------------------"
@@ -130,7 +132,7 @@ function executeBenchmarkBody() {
     then
       kill -TERM "${RECEIVER_PID}"
     fi
-     unset RECEIVER_PID
+    unset RECEIVER_PID
   fi
 }
 
