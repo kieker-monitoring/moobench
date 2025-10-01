@@ -156,7 +156,7 @@ function waitForStartup {
 	fi
 }
 
-export PINOT_VERSION=1.3.0
+export PINOT_VERSION=1.4.0
 function startPinot() {
    echo "Starting Pinot $PINOT_VERSION"
    if [ ! -d apache-pinot-$PINOT_VERSION-bin ]
