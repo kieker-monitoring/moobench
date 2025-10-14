@@ -92,29 +92,31 @@ function periodicallyCurlPrometheus {
 }
 
 function startPrometheus {
-	if [ -d prometheus-3.6.0.linux-arm64 ]
+	if [ ${MACHINE_TYPE} == 'aarch64' ]
 	then
-	  startPrometheusARM64 &
+		startPrometheusARM64
 	else
-	  periodicallyCurlPrometheus $1 &
+		periodicallyCurlPrometheus $1 &
+		pid=$!
 	fi
-	pid=$!
 }
 
 function startPrometheusARM64 {
 	if [ ! -d prometheus-3.6.0.linux-arm64 ]
 	then
-	  wget https://github.com/prometheus/prometheus/releases/download/v3.6.0/prometheus-3.6.0.linux-arm64.tar.gz
+		wget https://github.com/prometheus/prometheus/releases/download/v3.6.0/prometheus-3.6.0.linux-arm64.tar.gz
 		tar -xvf prometheus-3.6.0.linux-arm64.tar.gz
 		rm prometheus-3.6.0.linux-arm64.tar.gz
 	fi
 	cd prometheus-3.6.0.linux-arm64
 	./prometheus &> prometheus.log &
+	echo $! > /tmp/prometheus.pid
 	cd ..
 }
 
 function stopBackgroundProcess {
-	kill $pid
+	kill $(cat /tmp/prometheus.pid)
+	rm /tmp/prometheus.pid
 }
 
 function writeConfiguration() {
