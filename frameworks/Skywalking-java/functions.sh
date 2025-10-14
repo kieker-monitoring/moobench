@@ -40,7 +40,8 @@ function startSkywalkingServer {
   ./oapService.sh &
   SKYWALKING_PID=$!
   cd "${BASE_DIR}"
-  while ! nc -z localhost 11800; do
+# while ! nc -z localhost 11800; do
+  while ! timeout 1 bash -c "cat < /dev/null > /dev/tcp/localhost/11800" 2>/dev/null; do
     sleep 2
   done
 }
