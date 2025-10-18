@@ -18,9 +18,23 @@ function getFileAverages {
 		                average=$(tail -n $afterWarmup $file | awk -F';' '{print $2}' | getSum | awk '{print $2}')
 		                echo $variant";"$size";"$average
 		        done
-		done >> $RESULTFOLDER/$framework.csv
-		echo "Written to $RESULTFOLDER/$framework.csv"
-		cat $RESULTFOLDER/$framework.csv
+		done >> $RESULTFOLDER/duration_$framework.csv
+		
+		for variant in $variants
+		do
+		        for file in $(ls $1/raw-*-$size-$variant.csv)
+		        do
+		        		
+		        		startValue=$(head -n 1 $file | awk -F';' '{print $3}')
+		        		endValue=$(tail -n 1 $file | awk -F';' '{print $3}')
+		        		gcs=$(cat $file | awk -F';' '{sum+=$4} END {print sum}')
+		        		echo $variant";"$size";"$startValue";"$endValue";"$gcs
+		        done
+		done >> $RESULTFOLDER/ram_$framework.csv
+		
+		
+		echo "Written to $RESULTFOLDER/duration_$framework.csv"
+		cat $RESULTFOLDER/duration_$framework.csv
 		rm $1/raw*
 	done
 }
@@ -28,20 +42,20 @@ function getFileAverages {
 function getFrameworkEvolutionFile {
 	folder=$1
 	framework=$2
-	if [ ! -f $RESULTFOLDER/$framework.csv ]
+	if [ ! -f $RESULTFOLDER/duration_$framework.csv ] || [ ! -f $RESULTFOLDER/ram_$framework.csv ]
 	then
 	     cd $folder/exp-results-$framework
 	     pwd
-		echo "" > $RESULTFOLDER/$framework.csv
+		echo "" > $RESULTFOLDER/duration_$framework.csv
 		getFileAverages $1/exp-results-$framework/
 	fi
-	variants=$(cat $RESULTFOLDER/$framework.csv | awk -F';' '{print $1}' | sort | uniq)
+	variants=$(cat $RESULTFOLDER/duration_$framework.csv | awk -F';' '{print $1}' | sort | uniq)
 	for size in 2 4 8 16 32 64 128
 	do
 		echo -n "$size;"
 		for variant in $variants
 		do
-			cat $RESULTFOLDER/$framework.csv | grep "^$variant;$size;" | awk -F';' '{print $3}' | getSum | awk '{print $2";"$5";"}' | tr -d "\n"
+			cat $RESULTFOLDER/duration_$framework.csv | grep "^$variant;$size;" | awk -F';' '{print $3}' | getSum | awk '{print $2";"$5";"}' | tr -d "\n"
 		done
 		echo
 	done > $RESULTFOLDER/evolution_$framework.csv
