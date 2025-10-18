@@ -4,14 +4,14 @@ function runAll {
 	start=$(pwd)
 	for benchmark in inspectIT-java OpenTelemetry-java Kieker-java Scouter-java elasticapm-java pinpoint-java
 	do
-		echo "Running $benchmark"
-		runSingle $benchmark
+		echo "Benchmarking Depth Scaling $benchmark"
+		runDepthScaling $benchmark
 	done
 }
 
-function runSingle {
-        benchmark=$1
-        cd "${benchmark}"
+function runDepthScaling {
+	benchmark=$1
+	cd "${benchmark}"
 
 	RESULTS_DIR="exp-results-${benchmark}"
 	checkDirectory RESULTS_DIR "${RESULTS_DIR}" create
