@@ -39,16 +39,8 @@ function getFileAverages {
 	done
 }
 
-function getFrameworkEvolutionFile {
-	folder=$1
-	framework=$2
-	if [ ! -f $RESULTFOLDER/duration_$framework.csv ] || [ ! -f $RESULTFOLDER/ram_$framework.csv ]
-	then
-	     cd $folder/exp-results-$framework
-	     pwd
-		echo "" > $RESULTFOLDER/duration_$framework.csv
-		getFileAverages $1/exp-results-$framework/
-	fi
+function getDurationEvolution {
+	framework=$1
 	variants=$(cat $RESULTFOLDER/duration_$framework.csv | awk -F';' '{print $1}' | sort | uniq)
 	for size in 2 4 8 16 32 64 128
 	do
@@ -59,6 +51,19 @@ function getFrameworkEvolutionFile {
 		done
 		echo
 	done > $RESULTFOLDER/evolution_$framework.csv
+}
+
+function getFrameworkEvolutionFile {
+	folder=$1
+	framework=$2
+	if [ ! -f $RESULTFOLDER/duration_$framework.csv ] || [ ! -f $RESULTFOLDER/ram_$framework.csv ]
+	then
+	     cd $folder/exp-results-$framework
+	     pwd
+		echo "" > $RESULTFOLDER/duration_$framework.csv
+		getFileAverages $1/exp-results-$framework/
+	fi
+	getDurationEvolution $framework
 }
 
 if [ "$#" -lt 1 ]; then
