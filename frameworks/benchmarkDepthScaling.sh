@@ -25,14 +25,13 @@ function runThreadScaling {
 	do
 		export THREADS=$threads
 		echo "Running $threads"
-		echo "REsults to "${RESULTS_DIR}/parallel_$threads.txt
 		./benchmark.sh &> ${RESULTS_DIR}/parallel_$threads.txt
 		if [ ! -f results-$benchmark/results.zip ]
 		then
 			echo "File results-$benchmark/results.zip missing; aborting"
 			exit 1
 		fi
-		mv results-$benchmark/results.zip ${RESULTS_DIR}/results-$RECURSION_DEPTH.zip
+		mv results-$benchmark/results.zip ${RESULTS_DIR}/results-$threads.zip
 	done
 	
 	cd "${start}"
