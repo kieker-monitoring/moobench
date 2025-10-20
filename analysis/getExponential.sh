@@ -11,7 +11,7 @@ function getFileAverages {
 		variants=$(ls $1 | grep raw | awk -F'[-.]' '{print $4}' | sort | uniq)
 		for variant in $variants
 		do
-		        for file in $(ls $1/raw-*-$size-$variant.csv)
+		        for file in $(ls $1/raw-*-$variant.csv)
 		        do
 		                fileSize=$(cat $file | wc -l)
 		                afterWarmup=$(($fileSize/2))
@@ -20,11 +20,9 @@ function getFileAverages {
 		        done
 		done >> $RESULTFOLDER/duration_$framework.csv
 		
-		exit 1
-		
 		for variant in $variants
 		do
-		        for file in $(ls $1/raw-*-$size-$variant.csv)
+		        for file in $(ls $1/raw-*-$variant.csv)
 		        do
 		        		
 		        		startValue=$(head -n 1 $file | awk -F';' '{print $3}')
@@ -33,7 +31,6 @@ function getFileAverages {
 		        		echo $variant";"$size";"$startValue";"$endValue";"$gcs
 		        done
 		done >> $RESULTFOLDER/ram_$framework.csv
-		
 		
 		echo "Written to $RESULTFOLDER/duration_$framework.csv"
 		cat $RESULTFOLDER/duration_$framework.csv
@@ -112,6 +109,13 @@ function getFrameworkEvolutionFile {
 	     	pwd
 			echo "" > $RESULTFOLDER/duration_$framework.csv
 			getFileAverages $1/exp-results-$framework/
+		fi
+		if [ -d $folder/parallel-results-$framework/ ]
+		then
+			cd $folder/parallel-results-$framework
+	     	pwd
+			echo "" > $RESULTFOLDER/duration_$framework.csv
+			getFileAverages $1/parallel-results-$framework/
 		fi
 	fi
 	getDurationEvolution $framework
