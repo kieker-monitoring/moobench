@@ -4,13 +4,13 @@ function getSum {
 
 function getFileAverages {
 	
-	for size in 2 4 8 16 32 64 128
+	sizes=$(ls | grep results- | awk -F'-' '{print $2}' | tr -d ".zip" | sort -n)
+	for size in $sizes
 	do
 		unzip $1/results-$size.zip
 		variants=$(ls $1 | grep raw | awk -F'[-.]' '{print $4}' | sort | uniq)
 		for variant in $variants
 		do
-		        allExecutions=$(cat $1/raw-*-$size-$variant.csv | wc -l)
 		        for file in $(ls $1/raw-*-$size-$variant.csv)
 		        do
 		                fileSize=$(cat $file | wc -l)
@@ -19,6 +19,8 @@ function getFileAverages {
 		                echo $variant";"$size";"$average
 		        done
 		done >> $RESULTFOLDER/duration_$framework.csv
+		
+		exit 1
 		
 		for variant in $variants
 		do
@@ -42,7 +44,8 @@ function getFileAverages {
 function getDurationEvolution {
 	framework=$1
 	variants=$(cat $RESULTFOLDER/duration_$framework.csv | awk -F';' '{print $1}' | sort | uniq)
-	for size in 2 4 8 16 32 64 128
+	sizes=$(ls | grep results- | awk -F'-' '{print $2}' | tr -d ".zip" | sort -n)
+	for size in $sizes
 	do
 		echo -n "$size;"
 		for variant in $variants
@@ -53,17 +56,68 @@ function getDurationEvolution {
 	done > $RESULTFOLDER/evolution_$framework.csv
 }
 
+function getRAMEvolution {
+	framework=$1
+	variants=$(cat $RESULTFOLDER/ram_$framework.csv | awk -F';' '{print $1}' | sort | uniq)
+	sizes=$(ls | grep results- | awk -F'-' '{print $2}' | tr -d ".zip" | sort -n)
+	for size in $sizes
+	do
+		echo -n "$size;"
+		for variant in $variants
+		do
+			cat $RESULTFOLDER/ram_$framework.csv | grep "^$variant;$size;" | awk -F';' '{print ($4-$3)/1000000}' | getSum | awk '{print $2";"$5";"}' | tr -d "\n"
+		done
+		echo
+	done > $RESULTFOLDER/evolution_ram_$framework.csv
+}
+
+function getAbsoluteRAMEvolution {
+	framework=$1
+	variants=$(cat $RESULTFOLDER/ram_$framework.csv | awk -F';' '{print $1}' | sort | uniq)
+	sizes=$(ls | grep results- | awk -F'-' '{print $2}' | tr -d ".zip" | sort -n)
+	for size in $sizes
+	do
+		echo -n "$size;"
+		for variant in $variants
+		do
+			cat $RESULTFOLDER/ram_$framework.csv | grep "^$variant;$size;" | awk -F';' '{print $4/1000000}' | getSum | awk '{print $2";"$5";"}' | tr -d "\n"
+		done
+		echo
+	done > $RESULTFOLDER/evolution_ram_absolute_$framework.csv
+}
+
+function getGCEvolution {
+	framework=$1
+	variants=$(cat $RESULTFOLDER/ram_$framework.csv | awk -F';' '{print $1}' | sort | uniq)
+	sizes=$(ls | grep results- | awk -F'-' '{print $2}' | tr -d ".zip" | sort -n)
+	for size in $sizes
+	do
+		echo -n "$size;"
+		for variant in $variants
+		do
+			cat $RESULTFOLDER/ram_$framework.csv | grep "^$variant;$size;" | awk -F';' '{print $5}' | getSum | awk '{print $2";"$5";"}' | tr -d "\n"
+		done
+		echo
+	done > $RESULTFOLDER/evolution_gc_$framework.csv
+}
+
 function getFrameworkEvolutionFile {
 	folder=$1
 	framework=$2
 	if [ ! -f $RESULTFOLDER/duration_$framework.csv ] || [ ! -f $RESULTFOLDER/ram_$framework.csv ]
 	then
-	     cd $folder/exp-results-$framework
-	     pwd
-		echo "" > $RESULTFOLDER/duration_$framework.csv
-		getFileAverages $1/exp-results-$framework/
+		if [ -d $folder/exp-results-$framework/ ]
+		then
+			cd $folder/exp-results-$framework
+	     	pwd
+			echo "" > $RESULTFOLDER/duration_$framework.csv
+			getFileAverages $1/exp-results-$framework/
+		fi
 	fi
 	getDurationEvolution $framework
+	getAbsoluteRAMEvolution $framework
+	getRAMEvolution $framework
+	getGCEvolution $framework
 }
 
 if [ "$#" -lt 1 ]; then
