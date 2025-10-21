@@ -115,8 +115,12 @@ function startPrometheusARM64 {
 }
 
 function stopBackgroundProcess {
-	kill $(cat /tmp/prometheus.pid)
-	rm /tmp/prometheus.pid
+	if [ -f /tmp/prometheus.pid ]
+	then
+		pid=$(cat /tmp/prometheus.pid)
+		rm /tmp/prometheus.pid
+	fi
+	kill $pid
 }
 
 function writeConfiguration() {
