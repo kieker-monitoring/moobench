@@ -26,8 +26,6 @@ else
 	exit 1
 fi
 
-MACHINE_TYPE=`uname -m`
-
 if [ -z "$MOOBENCH_CONFIGURATIONS" ]
 then
 	MOOBENCH_CONFIGURATIONS="0 1 3 4"
