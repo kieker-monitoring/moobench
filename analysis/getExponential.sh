@@ -34,8 +34,8 @@ function getFileAverages {
 		        for file in $(ls $1/raw-*-$variant.csv)
 		        do
 		        		minMax=$(awk -F';' '{print $3}' $file | getMinMax)
-		        		min=$(echo $minMax | awk '{print $2}')
-		        		max=$(echo $minMax | awk '{print $4}')
+		        		min=$(echo $minMax | awk '{print $2/1000000}') # RAM in MB
+		        		max=$(echo $minMax | awk '{print $4/1000000}')
 		        		gcs=$(cat $file | awk -F';' '{sum+=$4} END {print sum}')
 		        		echo $variant";"$size";"$min";"$max";"$gcs
 		        done
@@ -73,10 +73,10 @@ function getRAMEvolution {
 		echo -n "$size;"
 		for variant in $variants
 		do
-			cat $resultsfolder/ram_$framework.csv | grep "^$variant;$size;" | awk -F';' '{print ($4-$3)/1000000}' | getSum | awk '{print $2";"$5";"}' | tr -d "\n"
+			cat $resultsfolder/ram_$framework.csv | grep "^$variant;$size;" | awk -F';' '{print $3}' | getSum | awk '{print $2";"$5";"}' | tr -d "\n"
 		done
 		echo
-	done > $resultsfolder/evolution_ram_$framework.csv
+	done > $resultsfolder/evolution_ram_min_$framework.csv
 }
 
 function getAbsoluteRAMEvolution {
@@ -89,11 +89,10 @@ function getAbsoluteRAMEvolution {
 		echo -n "$size;"
 		for variant in $variants
 		do
-			cat $resultsfolder/ram_$framework.csv | grep "^$variant;$size;" | awk '{print $4/1000000}' \
-				| getSum | awk '{print $2";"$4";"}' | tr -d "\n"
+			cat $resultsfolder/ram_$framework.csv | grep "^$variant;$size;" | awk -F';' '{print $4}' | getSum | awk '{print $2";"$5";"}' | tr -d "\n"
 		done
 		echo
-	done > $resultsfolder/evolution_ram_minmax_$framework.csv
+	done > $resultsfolder/evolution_ram_max_$framework.csv
 }
 
 function getGCEvolution {
