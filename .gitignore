@@ -18,10 +18,12 @@
 # Do not store compile results
 compile-results/
 frameworks/Kieker-python/kieker-lang-pack-python/
-analysis/results/
+analysis/results_depth/
+analysis/results_threads
 
 # Do not store agents
 frameworks/elasticapm-java/elastic-apm-agent.jar
+frameworks/Kieker-java/kieker-agent.jar
 
 # Do not store measurement results
 frameworks/OpenTelemetry-java/raw*
