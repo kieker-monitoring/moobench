@@ -169,4 +169,14 @@ do
 done
 
 cd $start
-gnuplot -c plotExponential.plt
+if [ -d $1/exp-results-Kieker-java ]
+then
+	echo "Plotting depth"
+	gnuplot -e "type='depth'" -c plotExponential.plt
+fi
+
+if [ -d $1/parallel-results-Kieker-java ]
+then
+	echo "Plotting threads"
+	gnuplot -e "type='threads'" -c plotExponential.plt
+fi
