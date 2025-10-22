@@ -34,7 +34,7 @@ if [ -z $DEBUG ]; then
 	DEBUG=false		## false
 fi
 
-
+MACHINE_TYPE=`uname -m`
 
 # load configuration and common functions
 if [ -f "${BASE_DIR}/config.rc" ] ; then
