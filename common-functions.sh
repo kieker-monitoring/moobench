@@ -102,7 +102,7 @@ function stopBackgroundProcess {
 
 function writeConfiguration() {
 	uname -a > "${RESULTS_DIR}/configuration.txt"
-	"${JAVA_BIN}" "${JAVA_ARGS}" -version 2>> "${RESULTS_DIR}/configuration.txt"
+	"${JAVA_BIN}" ${JAVA_ARGS} -version 2>> "${RESULTS_DIR}/configuration.txt"
 	cat << EOF >> "${RESULTS_DIR}/configuration.txt"
 JAVA_ARGS: ${JAVA_ARGS}
 
