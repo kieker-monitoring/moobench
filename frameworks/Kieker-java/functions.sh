@@ -78,14 +78,18 @@ function executeExperiment() {
         --recursion-depth "${recursion}" \
         ${MORE_PARAMS} &> "${LOG_FILE}" &
     PID=$!
-    sleep $WARMUP_TIME
+	if [[ -z "$WARMUP_TIME" ]]; then
+		WARMUP_TIME=10
+	fi
+	sleep $WARMUP_TIME
     
-    echo "Starting profiling of $PID"
-    $ASYNC_PROFILER_HOME/bin/asprof \
-        -o collapsed \
-        -f "flamegraph_${loop}_${RECURSION_DEPTH}_${index}.collapsed" \
-        start $PID    
-    wait $PID
+	checkAsyncProf
+	echo "Starting profiling of $PID"
+	$ASYNC_PROFILER_HOME/bin/asprof \
+		-o collapsed \
+		-f "flamegraph_${loop}_${RECURSION_DEPTH}_${index}.collapsed" \
+		start $PID    
+	wait $PID
 
     if [ ! -f "${RESULT_FILE}" ] ; then
         info "---------------------------------------------------"

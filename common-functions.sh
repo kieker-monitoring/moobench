@@ -100,6 +100,14 @@ function stopBackgroundProcess {
 	kill $pid
 }
 
+function checkAsyncProf {
+	if [ -f "${ASYNC_PROFILER_HOME}/bin/asprof" ]
+	then
+		echo "asprof missing - please set \$ASYNC_PROFILER_HOME"
+		exit 1
+	fi
+}
+
 function writeConfiguration() {
 	uname -a > "${RESULTS_DIR}/configuration.txt"
 	"${JAVA_BIN}" ${JAVA_ARGS} -version 2>> "${RESULTS_DIR}/configuration.txt"
