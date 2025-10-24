@@ -67,16 +67,27 @@ function executeExperiment() {
 	LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
 	java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
-		-cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
-		moobench.benchmark.BenchmarkMain \
-		--output-filename "${RESULT_FILE}" \
-		--total-calls "${TOTAL_NUM_OF_CALLS}" \
-		--method-time "${METHOD_TIME}" \
-		--total-threads $THREADS \
-		--recursion-depth "${recursion}" \
-		${MORE_PARAMS} &>"${LOG_FILE}" &
+        -cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
+        moobench.benchmark.BenchmarkMain \
+        --output-filename "${RESULT_FILE}" \
+        --total-calls "${TOTAL_NUM_OF_CALLS}" \
+        --method-time "${METHOD_TIME}" \
+        --total-threads $THREADS \
+        --recursion-depth "${recursion}" \
+        ${MORE_PARAMS} &> "${LOG_FILE}" &
 	PID=$!
+	if [[ -z "$WARMUP_TIME" ]]; then
+		WARMUP_TIME=10
+	fi
 	sleep $WARMUP_TIME
+    
+	checkAsyncProf
+	echo "Starting profiling of $PID"
+	$ASYNC_PROFILER_HOME/bin/asprof \
+		-o collapsed \
+		-f "flamegraph_${loop}_${RECURSION_DEPTH}_${index}.collapsed" \
+		start $PID    
+	wait $PID
 
 	echo "Starting profiling of $PID"
 	$ASYNC_PROFILER_HOME/bin/asprof \
