@@ -31,6 +31,13 @@ function getAgent() {
 	fi
 }
 
+function checkReceiverPort {
+	if ss -tuln | grep -q ':2345'; then
+		echo "Port 2345 is used - but the TCP receiver needs to be started there"
+		exit 1
+	fi
+}
+
 # experiment setups
 
 #################################
@@ -94,6 +101,7 @@ function executeBenchmarkBody() {
   recursion="$3"
   if [[ "${RECEIVER[$index]}" ]] ; then
      debug "receiver ${RECEIVER[$index]}"
+     checkReceiverPort
      ${RECEIVER[$index]} >> "${DATA_DIR}/kieker.receiver-${loop}-${index}.log" &
      RECEIVER_PID=$!
      debug "PID ${RECEIVER_PID}"
