@@ -6,10 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.checkerframework.dataflow.qual.Deterministic;
-
 enum METHOD_TYPES {
-	GET_TIME, GET_METADATA, GET_CALL_TREE, ALLOCATE, USE_ALLOCATED
+	GET_TIME, GET_METADATA, GET_CALL_TREE, ALLOCATE, USE_ALLOCATED, QUEUE
 }
 
 public class FindMappings {
@@ -33,6 +31,14 @@ public class FindMappings {
 		knownMapping.put("co.elastic.apm.agent.impl.ElasticApmTracer#startRootTransaction", METHOD_TYPES.GET_METADATA);
 		knownMapping.put("co.elastic.apm.agent.impl.ElasticApmTracer#currentContext", METHOD_TYPES.GET_METADATA);
 		
+		knownMapping.put("kieker.monitoring.queue.behavior.BlockOnFailedInsertBehavior#insert", METHOD_TYPES.QUEUE);
+		knownMapping.put("kieker.monitoring.core.registry.ControlFlowRegistry#getAndStoreUniqueThreadLocalTraceId", METHOD_TYPES.GET_CALL_TREE);
+		knownMapping.put("kieker.monitoring.core.registry.ControlFlowRegistry#unsetThreadLocalTraceId", METHOD_TYPES.GET_CALL_TREE);
+		knownMapping.put("kieker.monitoring.core.registry.ControlFlowRegistry#incrementAndRecallThreadLocalEOI", METHOD_TYPES.GET_CALL_TREE);
+		knownMapping.put("kieker.common.record.controlflow.OperationExecutionRecord#<init>", METHOD_TYPES.ALLOCATE);
+		knownMapping.put("kieker.monitoring.core.registry.ControlFlowRegistry#recallAndIncrementThreadLocalESS", METHOD_TYPES.ALLOCATE);
+		knownMapping.put("kieker.monitoring.timer.SystemNanoTimer#getTime", METHOD_TYPES.GET_TIME);
+		knownMapping.put("kieker.monitoring.core.registry.ControlFlowRegistry#recallThreadLocalTraceId", METHOD_TYPES.GET_TIME);
 	}
 	
 	Map<METHOD_TYPES, Integer> detections = new HashMap<METHOD_TYPES, Integer>();
