@@ -124,6 +124,7 @@ function runOpenTelemetryZipkin {
     echo "Starting profiling of $PID"
     $ASYNC_PROFILER_HOME/bin/asprof \
         -o collapsed \
+        --event alloc \
         -f "flamegraph_${i}_${RECURSION_DEPTH}_${k}.collapsed" \
         start $PID
     
