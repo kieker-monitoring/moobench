@@ -87,6 +87,7 @@ function executeExperiment() {
 	echo "Starting profiling of $PID"
 	$ASYNC_PROFILER_HOME/bin/asprof \
 		-o collapsed \
+		--event alloc \
 		-f "flamegraph_${loop}_${RECURSION_DEPTH}_${index}.collapsed" \
 		start $PID    
 	wait $PID
