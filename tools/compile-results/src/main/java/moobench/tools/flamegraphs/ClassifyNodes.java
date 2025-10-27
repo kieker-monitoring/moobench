@@ -75,15 +75,21 @@ public class ClassifyNodes {
 //					System.out.println("Skipping [unknown_Java]");
 //					continue;
 //				}
-
+				
 				String[] frames = stack.split(";");
 				CallTreeNode current = root;
 				root.setCalls(root.getCalls() + count);
 				for (String frame : frames) {
 					// Split class/method by last '.'
 					int idx = frame.lastIndexOf('.');
-					if (idx < 0)
+					if (idx < 0) {
+						if (frame.equals("__clock_gettime_2")) {
+							current = current.getOrCreateChild("VSystem", "__clock_gettime_2");
+							current.setCalls(current.getCalls() + count);
+						}
 						continue; // malformed
+					}
+						
 					String clazz = frame.substring(0, idx).replace("/", ".");
 					String method = frame.substring(idx + 1);
 					current = current.getOrCreateChild(clazz, method);
