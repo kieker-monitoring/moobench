@@ -101,7 +101,7 @@ function stopBackgroundProcess {
 }
 
 function checkAsyncProf {
-	if [ -f "${ASYNC_PROFILER_HOME}/bin/asprof" ]
+	if [ ! -f "${ASYNC_PROFILER_HOME}/bin/asprof" ]
 	then
 		echo "asprof missing - please set \$ASYNC_PROFILER_HOME"
 		exit 1
