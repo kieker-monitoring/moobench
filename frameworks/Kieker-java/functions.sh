@@ -66,6 +66,7 @@ function executeExperiment() {
 	RESULT_FILE="${RAWFN}-${loop}-${recursion}-${index}.csv"
 	LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
+	FREE_A=$(df -k . | awk 'NR==2 {print $4}')
 	"${MOOBENCH_BIN}" \
 		--output-filename "${RESULT_FILE}" \
 		--total-calls "${TOTAL_NUM_OF_CALLS}" \
@@ -73,6 +74,10 @@ function executeExperiment() {
 		--total-threads $THREADS \
 		--recursion-depth "${recursion}" \
 		${MORE_PARAMS} &>"${LOG_FILE}"
+	FREE_B=$(df -k . | awk 'NR==2 {print $4}')
+	
+	DIFF=$((FREE_A - FREE_B))
+	echo "Memory Usage: $DIFF kB"
 
 	if [ ! -f "${RESULT_FILE}" ]; then
 		info "---------------------------------------------------"
