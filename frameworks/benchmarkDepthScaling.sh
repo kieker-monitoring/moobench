@@ -3,7 +3,7 @@
 function runAll {
 	MODE=$1
 	start=$(pwd)
-	for benchmark in inspectIT-java OpenTelemetry-java Kieker-java Scouter-java elasticapm-java pinpoint-java
+	for benchmark in inspectIT-java OpenTelemetry-java Kieker-java Scouter-java elasticapm-java pinpoint-java Skywalking-java
 	do
 		echo "Running Depth Scaling $benchmark"
 		if [ "$MODE" = "DEPTH" ]; then
