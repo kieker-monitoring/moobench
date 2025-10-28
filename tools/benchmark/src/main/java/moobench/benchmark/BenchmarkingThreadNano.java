@@ -16,6 +16,7 @@
 
 package moobench.benchmark;
 
+import java.io.File;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
@@ -66,8 +67,15 @@ public final class BenchmarkingThreadNano implements BenchmarkingThread {
         this.usedHeapMemory[index], separatorString,
         this.gcCollectionCountDiffs[index]);
   }
+  
+  public static long getFreeDiskSpaceKb() {
+    File f = new File(".");
+    return f.getFreeSpace() / 1024;
+  }
 
   public final void run() {
+    long freeA = getFreeDiskSpaceKb();
+	  
     long start_ns;
     long stop_ns;
     long lastGcCount = this.computeGcCollectionCount();
@@ -95,6 +103,9 @@ public final class BenchmarkingThreadNano implements BenchmarkingThread {
     }
 
     this.doneSignal.countDown();
+    
+    long freeB = getFreeDiskSpaceKb();
+    System.out.println("Disk usage: " + (freeA - freeB) + " kB");
   }
 
   private long computeGcCollectionCount() {
