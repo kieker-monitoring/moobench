@@ -54,6 +54,10 @@ function runDepthScaling {
 			echo "File results-$benchmark/results.zip missing; aborting"
 			exit 1
 		fi
+		
+		zip -jqr ${RESULTS_DIR}/output-$RECURSION_DEPTH.zip results-$benchmark/output_*
+  		rm results-$benchmark/output_*
+		
 		mv results-$benchmark/results.zip ${RESULTS_DIR}/results-$RECURSION_DEPTH.zip
 	done
 	
