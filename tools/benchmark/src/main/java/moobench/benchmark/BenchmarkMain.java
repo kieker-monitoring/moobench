@@ -17,6 +17,7 @@
 package moobench.benchmark;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.util.concurrent.CountDownLatch;
@@ -55,6 +56,7 @@ public final class BenchmarkMain {
         System.out.println(" # 4. Total-Calls " + parameter.getTotalCalls()); // NOPMD (System.out)
         System.out.println(" # 5. Method-Time " + parameter.getMethodTime()); // NOPMD (System.out)
 
+        long freeA = getFreeDiskSpaceKb();
         // 2. Initialize Threads and Classes
         final CountDownLatch doneSignal = new CountDownLatch(parameter.getTotalThreads());
         final BenchmarkingThread[] benchmarkingThreads = new BenchmarkingThread[parameter.getTotalThreads()];
@@ -115,9 +117,17 @@ public final class BenchmarkMain {
         System.out.println("done"); // NOPMD (System.out)
         System.out.println(" # "); // NOPMD (System.out)
 
+        long freeB = getFreeDiskSpaceKb();
+        System.out.println("Disk usage: " + (freeA - freeB) + " kB");
+        
         if (parameter.isForceTerminate()) {
             System.exit(0);
         }
+    }
+    
+    public static long getFreeDiskSpaceKb() {
+      File f = new File(".");
+      return f.getFreeSpace() / 1024;
     }
 
     public static void parseAndInitializeArguments(final String[] argv) {
