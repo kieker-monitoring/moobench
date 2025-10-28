@@ -18,11 +18,11 @@ public class FindMappings {
 
 	static {
 		knownMapping.put("co.elastic.apm.agent.impl.transaction.EpochTickClock#getEpochMicros", METHOD_TYPES.TIME);
+		knownMapping.put("co.elastic.apm.agent.impl.transaction.AbstractSpanImpl#getDurationMs", METHOD_TYPES.TIME);
 		knownMapping.put("co.elastic.apm.agent.impl.ActiveStack#deactivate", METHOD_TYPES.CALL_TREE);
 		knownMapping.put("TransactionImpl#beforeEnd", METHOD_TYPES.METADATA);
 		knownMapping.put("SpanImpl#beforeEnd", METHOD_TYPES.METADATA);
-		knownMapping.put("SpanImpl#afterEnd", METHOD_TYPES.METADATA);
-		knownMapping.put("SpanImpl#afterEnd", METHOD_TYPES.METADATA);
+//		knownMapping.put("SpanImpl#afterEnd", METHOD_TYPES.METADATA);
 		knownMapping.put("co.elastic.apm.agent.impl.transaction.TransactionImpl#trackMetrics", METHOD_TYPES.METADATA);
 		knownMapping.put("co.elastic.apm.agent.impl.transaction.AbstractSpanImpl$ChildDurationTimer#onSpanEnd",
 				METHOD_TYPES.METADATA);
@@ -30,10 +30,19 @@ public class FindMappings {
 		knownMapping.put("SpanAtomicReference#incrementReferencesAndGet", METHOD_TYPES.CALL_TREE);
 		knownMapping.put("co.elastic.apm.agent.impl.ElasticApmTracer#activate", METHOD_TYPES.CALL_TREE);
 		knownMapping.put("co.elastic.apm.agent.impl.ElasticApmTracer#deactivate", METHOD_TYPES.CALL_TREE);
+		knownMapping.put("co.elastic.apm.agent.impl.transaction.SpanImpl#incrementReferences", METHOD_TYPES.CALL_TREE);
+		knownMapping.put("java.util.concurrent.atomic.AtomicInteger#decrementAndGet", METHOD_TYPES.CALL_TREE);
+		
+//		knownMapping.put("co.elastic.apm.agent.impl.transaction.SpanImpl#decrementReferences", METHOD_TYPES.CALL_TREE);
+		
+		
+		
 		knownMapping.put("co.elastic.apm.agent.impl.ElasticApmTracer#createSpan", METHOD_TYPES.MEMORY);
+		knownMapping.put("co.elastic.apm.agent.impl.transaction.SpanImpl#recycle", METHOD_TYPES.MEMORY);
 		knownMapping.put("co.elastic.apm.agent.impl.transaction.SpanImpl#start", METHOD_TYPES.CALL_TREE);
 		knownMapping.put("co.elastic.apm.agent.impl.ElasticApmTracer#startRootTransaction", METHOD_TYPES.METADATA);
 		knownMapping.put("co.elastic.apm.agent.impl.ElasticApmTracer#currentContext", METHOD_TYPES.METADATA);
+		knownMapping.put("co.elastic.apm.agent.impl.ElasticApmTracer#reportSpan", METHOD_TYPES.METADATA);
 		// Storing extended metrics and metadata that are calculated ad hoc
 
 		knownMapping.put("kieker.monitoring.queue.behavior.BlockOnFailedInsertBehavior#insert", METHOD_TYPES.QUEUE);
