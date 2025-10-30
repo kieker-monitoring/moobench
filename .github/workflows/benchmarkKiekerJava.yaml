@@ -48,5 +48,4 @@ jobs:
           output-file-path: output.json
           fail-on-alert: true
           gh-repository: github.com/kieker-monitoring/moobench-data
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           auto-push: true
