@@ -72,7 +72,7 @@ jobs:
         run: |
           cd ../moobench-data
           git remote -v
-          mv dev/bench/data2.js dev/bench/data.js
+          sed '1s/^/window.BENCHMARK_DATA = /' dev/bench/data2.js > dev/bench/data.js
           git add dev/bench/data.js
           git commit -m "Benchmark Results $GITHUB_SHA"
           git push origin gh-pages
