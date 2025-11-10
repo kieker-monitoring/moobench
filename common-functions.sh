@@ -74,7 +74,17 @@ function startZipkin {
 	else
 		cd "${BASE_DIR}/zipkin"
 	fi
-	java -Xmx6g -jar "${BASE_DIR}/zipkin/zipkin.jar" &> "${BASE_DIR}/zipkin/zipkin.txt" &
+        
+	docker run -d --name cassandra \
+		-p 9042:9042 \
+		cassandra:4.1.10
+
+	sleep 90
+	export STORAGE_TYPE=cassandra3
+	export CASSANDRA_CONTACT_POINTS=127.0.0.1
+	export CASSANDRA_KEYSPACE=zipkin3
+
+	java -Xmx3g -jar "${BASE_DIR}/zipkin/zipkin.jar" &> "${BASE_DIR}/zipkin/zipkin.txt" &
 	pid=$!
 	sleep 5
 	cd "${BASE_DIR}"
@@ -97,6 +107,8 @@ function startPrometheus {
 }
 
 function stopBackgroundProcess {
+	docker logs cassandra &> cassandra_logs.txt
+	docker rm -f cassandra
 	kill $pid
 }
 
