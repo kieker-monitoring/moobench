@@ -12,7 +12,7 @@ permissions:
 jobs:
   benchmark:
     name: Performance measurement
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: r-lib/actions/setup-r@v2
@@ -26,6 +26,15 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 21
+      - name: Start ssh-agent and add private key
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_KEY_MOOBENCH_DATA }}
+      - name: Add github.com to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts          
       - name: Execute MooBench Benchmark
         run: |
           ./setup.sh
@@ -40,12 +49,30 @@ jobs:
           ../../../analysis/getGHActionsFormat.sh &> output.json
           cat output.json
           mv output.json ../../../
+      - name: Configure git user
+        run: |
+          git config --global user.email "ci-bot@kieker.org"
+          git config --global user.name  "Kieker CI"          
+      - name: Get old data
+        run: |
+           git clone -b gh-pages git@github.com:kieker-monitoring/moobench-data.git ../moobench-data
+           sed '1s/^window\.BENCHMARK_DATA = //' ../moobench-data/dev/bench/data.js > ../moobench-data/dev/bench/data2.js
       - name: Store benchmark result
         uses: benchmark-action/github-action-benchmark@v1
         with:
           name: 'Scouter-java'
           tool: 'customSmallerIsBetter'
+          external-data-json-path: ../moobench-data/dev/bench/data2.js
           output-file-path: output.json
           fail-on-alert: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-push: true
+          skip-fetch-gh-pages: false
+          auto-push: false
+      - name: Push data
+        run: |
+          cd ../moobench-data
+          git remote -v
+          sed '1s/^/window.BENCHMARK_DATA = /' dev/bench/data2.js > dev/bench/data.js
+          git add dev/bench/data.js
+          git commit -m "Benchmark Results $GITHUB_SHA"
+          git push origin gh-pages
