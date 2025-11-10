@@ -74,10 +74,12 @@ function startZipkin {
 	else
 		cd "${BASE_DIR}/zipkin"
 	fi
-        
+       
+	mkdir -p cassandra-data	
 	docker run -d --name cassandra \
+		-v $(pwd)/cassandra-data:/var/lib/cassandra \
 		-p 9042:9042 \
-		cassandra:4.1.10
+		cassandra:3.11.19
 
 	sleep 90
 	export STORAGE_TYPE=cassandra3
@@ -109,6 +111,9 @@ function startPrometheus {
 function stopBackgroundProcess {
 	docker logs cassandra &> cassandra_logs.txt
 	docker rm -f cassandra
+        docker run --rm \
+		-v $(pwd)/zipkin/cassandra-data:/data \
+		ubuntu bash -c "rm -rf /data/*"
 	kill $pid
 }
 
