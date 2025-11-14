@@ -89,18 +89,6 @@ function executeExperiment() {
 		start $PID    
 	wait $PID
 
-	echo "Starting profiling of $PID"
-	$ASYNC_PROFILER_HOME/bin/asprof \
-		-o collapsed \
-		-f "flamegraph_${loop}_${RECURSION_DEPTH}_${index}.collapsed" \
-		start $PID
-	wait $PID
-
-	echo "Starting profiling of $PID"
-	$ASYNC_PROFILER_HOME/bin/asprof -f "flamegraph_${i}_${RECURSION_DEPTH}_${k}.html" start $PID
-
-	wait $PID
-
 	if [ ! -f "${RESULT_FILE}" ]; then
 		info "---------------------------------------------------"
 		cat "${LOG_FILE}"
