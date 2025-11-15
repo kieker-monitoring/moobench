@@ -42,3 +42,13 @@ export MOOBENCH_CONFIGURATIONS="2"
 cd elasticapm-java
 ./benchmark.sh
 cd "${start}"
+
+export MOOBENCH_CONFIGURATIONS="1"
+cd Scouter-java
+./benchmark.sh
+cd "${start}"
+
+export MOOBENCH_CONFIGURATIONS="1"
+cd Skywalking-java
+./benchmark.sh
+cd "${start}"
