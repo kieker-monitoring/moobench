@@ -88,6 +88,9 @@ function runExperiment {
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt" &
         
 	PID=$!
+	if [[ -z "$WARMUP_TIME" ]]; then
+		WARMUP_TIME=10
+	fi
 	sleep $WARMUP_TIME
     
 	echo "Starting profiling of $PID"
