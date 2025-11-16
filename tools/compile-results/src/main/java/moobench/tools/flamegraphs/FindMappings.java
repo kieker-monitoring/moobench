@@ -1,5 +1,6 @@
 package moobench.tools.flamegraphs;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,11 +11,13 @@ import java.util.Set;
 import java.util.TreeSet;
 
 enum METHOD_TYPES {
-	TIME, METADATA, CALL_TREE, MEMORY, QUEUE
+	TIME, METADATA, CALL_TREE, MEMORY, QUEUE, INSTRUMENTATION
 }
 
 public class FindMappings {
 	static Map<String, METHOD_TYPES> knownMapping = new HashMap<>();
+	static Map<String, METHOD_TYPES> leftoverMapping = new HashMap<>();
+	
 
 	static {
 		knownMapping.put("co.elastic.apm.agent.impl.transaction.EpochTickClock#getEpochMicros", METHOD_TYPES.TIME);
@@ -99,7 +102,36 @@ public class FindMappings {
 				METHOD_TYPES.CALL_TREE);
 		knownMapping.put("io.opentelemetry.sdk.trace.export.BatchSpanProcessor$Worker#addSpan", METHOD_TYPES.QUEUE);
 		knownMapping.put("io.opentelemetry.sdk.trace.SdkSpan#<init>", METHOD_TYPES.MEMORY);
+		
+		knownMapping.put("org.apache.skywalking.apm.agent.core.context.TracingContext#finish", METHOD_TYPES.QUEUE);
+		knownMapping.put("org.apache.skywalking.apm.agent.core.context.ContextManager#createLocalSpan", METHOD_TYPES.MEMORY);
+		knownMapping.put("org.apache.skywalking.apm.plugin.customize.conf.MethodConfiguration#getOperationName", METHOD_TYPES.METADATA);
+		knownMapping.put("org.apache.skywalking.apm.plugin.customize.conf.CustomizeConfiguration#getConfiguration", METHOD_TYPES.METADATA);
+		knownMapping.put("org.apache.skywalking.apm.agent.core.util.CustomizeExpression#evaluationContext", METHOD_TYPES.METADATA);
+		knownMapping.put("java.lang.reflect.Method#getParameterTypes", METHOD_TYPES.METADATA);
+//		
+		knownMapping.put("org.apache.skywalking.apm.agent.core.so11y.AgentSo11y#durationOfInterceptor", METHOD_TYPES.METADATA);
+//
+		leftoverMapping.put("org.apache.skywalking.apm.agent.core.context.ContextManager#stopSpan", METHOD_TYPES.CALL_TREE);
+		leftoverMapping.put("org.apache.skywalking.apm.plugin.customize.interceptor.BaseInterceptorMethods#beforeMethod", METHOD_TYPES.METADATA);
+//		leftoverMapping.put("org.apache.skywalking.apm.plugin.customize.interceptor.BaseInterceptorMethods#afterMethod", METHOD_TYPES.METADATA);
 
+		
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.hook.actions.span.ContinueOrStartSpanAction#getSpanName", METHOD_TYPES.METADATA);
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.autotracing.StackTraceSampler#createAndEnterSpan", METHOD_TYPES.METADATA);
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.context.InspectitContextImpl#makeActive", METHOD_TYPES.METADATA);
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.hook.actions.span.WriteSpanAttributesAction#execute", METHOD_TYPES.METADATA);
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.hook.MethodReflectionInformation#getParameterTypes", METHOD_TYPES.METADATA);
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.context.InspectitContextImpl#setData", METHOD_TYPES.METADATA);
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.hook.actions.span.SetSpanStatusAction#execute", METHOD_TYPES.METADATA);
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.actions.bound.DynamicBoundGenericAction#getActionArguments", METHOD_TYPES.METADATA);
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.context.InspectitContextImpl#getAndClearCurrentRemoteSpanContext", METHOD_TYPES.CALL_TREE);
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.context.ContextManager#enterNewContext", METHOD_TYPES.CALL_TREE);
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.context.InspectitContextImpl#close", METHOD_TYPES.CALL_TREE);
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.hook.actions.span.EndSpanAction#execute", METHOD_TYPES.METADATA);
+		
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.hook.HookManager#getHook", METHOD_TYPES.INSTRUMENTATION);
+		knownMapping.put("rocks.inspectit.ocelot.core.instrumentation.actions.bound.BoundGenericAction#executeImpl", METHOD_TYPES.INSTRUMENTATION);
 		// Management of context via ThreadLocal Context object
 		// Storing span id + span kind
 
@@ -112,7 +144,12 @@ public class FindMappings {
 	private List<CallTreeNode> unassignedChildren = new LinkedList<>();
 
 	public void searchKnownMethods(CallTreeNode root) {
-		searchKnownMethods(root, root);
+		searchKnownMethods(root, root, knownMapping);
+		List<CallTreeNode> first = new LinkedList<>(unassignedChildren);
+		unassignedChildren.clear();
+		searchKnownMethods(root, root, leftoverMapping);
+		
+		unassignedChildren.retainAll(first);
 		System.out.println();
 
 		double sum = 0;
@@ -159,11 +196,11 @@ public class FindMappings {
 		}
 	}
 
-	public void searchKnownMethods(CallTreeNode current, CallTreeNode root) {
+	public void searchKnownMethods(CallTreeNode current, CallTreeNode root, Map<String, METHOD_TYPES> currentMapping) {
 		for (CallTreeNode child : current.getChildren()) {
 
 			boolean found = false;
-			for (Map.Entry<String, METHOD_TYPES> mapping : knownMapping.entrySet()) {
+			for (Map.Entry<String, METHOD_TYPES> mapping : currentMapping.entrySet()) {
 				if (child.toString().contains(mapping.getKey())) {
 //					System.out.println("Detected: " + child.toString());
 					found = true;
@@ -171,11 +208,12 @@ public class FindMappings {
 					detections.put(mapping.getValue(), addedValue);
 				}
 			}
+			
 			if (!found) {
 				if (!(child.getChildren().size() > 0)) {
 					unassignedChildren.add(child);
 				} else {
-					searchKnownMethods(child, root);
+					searchKnownMethods(child, root, currentMapping);
 				}
 			}
 		}
