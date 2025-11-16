@@ -51,7 +51,7 @@ function getDurationEvolution {
 	framework=$1
 	resultsfolder=$2
 	variants=$(cat $resultsfolder/duration_$framework.csv | awk -F';' '{print $1}' | sort | uniq)
-	sizes=$(cat $resultsfolder/duration_$framework.csv | awk -F';' '{print $2}' | sort | uniq)
+	sizes=$(cat $resultsfolder/duration_$framework.csv | awk -F';' '{print $2}' | sort -n | uniq)
 	for size in $sizes
 	do
 		echo -n "$size;"
@@ -67,7 +67,7 @@ function getRAMEvolution {
 	framework=$1
 	resultsfolder=$2
 	variants=$(cat $resultsfolder/ram_$framework.csv | awk -F';' '{print $1}' | sort | uniq)
-	sizes=$(cat $resultsfolder/duration_$framework.csv | awk -F';' '{print $2}' | sort | uniq)
+	sizes=$(cat $resultsfolder/duration_$framework.csv | awk -F';' '{print $2}' | sort -n | uniq)
 	for size in $sizes
 	do
 		echo -n "$size;"
@@ -83,7 +83,7 @@ function getAbsoluteRAMEvolution {
 	framework=$1
 	resultsfolder=$2
 	variants=$(cat $resultsfolder/ram_$framework.csv | awk -F';' '{print $1}' | sort | uniq)
-	sizes=$(cat $resultsfolder/duration_$framework.csv | awk -F';' '{print $2}' | sort | uniq)
+	sizes=$(cat $resultsfolder/duration_$framework.csv | awk -F';' '{print $2}' | sort -n | uniq)
 	for size in $sizes
 	do
 		echo -n "$size;"
@@ -99,7 +99,7 @@ function getGCEvolution {
 	framework=$1
 	resultsfolder=$2
 	variants=$(cat $resultsfolder/ram_$framework.csv | awk -F';' '{print $1}' | sort | uniq)
-	sizes=$(cat $resultsfolder/duration_$framework.csv | awk -F';' '{print $2}' | sort | uniq)
+	sizes=$(cat $resultsfolder/duration_$framework.csv | awk -F';' '{print $2}' | sort -n | uniq)
 	for size in $sizes
 	do
 		echo -n "$size;"
@@ -162,7 +162,7 @@ fi
 
 start=$(pwd)
 
-for framework in Kieker-java OpenTelemetry-java inspectIT-java elasticapm-java Skywalking-java pinpoint-java
+for framework in Kieker-java OpenTelemetry-java inspectIT-java elasticapm-java Skywalking-java pinpoint-java Scouter-java
 do
 	echo "Analysing $framework"
 	getFrameworkEvolutionFile $1 $framework
