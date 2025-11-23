@@ -92,8 +92,25 @@ function periodicallyCurlPrometheus {
 }
 
 function startPrometheus {
-	periodicallyCurlPrometheus $1 &
+	if [ -d prometheus-3.6.0.linux-arm64 ]
+	then
+	  startPrometheusARM64 &
+	else
+	  periodicallyCurlPrometheus $1 &
+	fi
 	pid=$!
+}
+
+function startPrometheusARM64 {
+	if [ ! -d prometheus-3.6.0.linux-arm64 ]
+	then
+	  wget https://github.com/prometheus/prometheus/releases/download/v3.6.0/prometheus-3.6.0.linux-arm64.tar.gz
+		tar -xvf prometheus-3.6.0.linux-arm64.tar.gz
+		rm prometheus-3.6.0.linux-arm64.tar.gz
+	fi
+	cd prometheus-3.6.0.linux-arm64
+	./prometheus &> prometheus.log &
+	cd ..
 }
 
 function stopBackgroundProcess {
