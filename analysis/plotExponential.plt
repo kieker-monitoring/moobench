@@ -12,7 +12,7 @@ set out resultsfolder.'/graphs/Kieker-java.pdf'
 set title 'Kieker-java Method Execution Durations'
 
 set xlabel 'Call Tree Depth'
-set ylabel 'Duration {/Symbol m}s'
+set ylabel 'Duration ns'
 
 set key right center
 
@@ -36,7 +36,7 @@ set out resultsfolder.'/graphs/OpenTelemetry-java.pdf'
 set title 'OpenTelemetry-java Method Execution Durations'
 
 set xlabel 'Call Tree Depth'
-set ylabel 'Duration {/Symbol m}s'
+set ylabel 'Duration ns'
 
 set key right center
 	
@@ -61,7 +61,7 @@ set out resultsfolder.'/graphs/inspectIT.pdf'
 set title 'inspectIT Method Execution Durations'
 
 set xlabel 'Call Tree Depth'
-set ylabel 'Duration {/Symbol m}s'
+set ylabel 'Duration ns'
 
 set key right center
 	
@@ -85,7 +85,7 @@ set out resultsfolder.'/graphs/scalability_overview.pdf'
 set title 'Overview of Method Execution Durations'
 
 set xlabel 'Call Tree Depth'
-set ylabel 'Duration {/Symbol m}s'
+set ylabel 'Duration ns'
 
 set key left top
 	
@@ -115,7 +115,7 @@ set out resultsfolder.'/graphs/overview_OpenTelemetry-java.pdf'
 set title 'Overview of Method Execution Durations'
 
 set xlabel 'Call Tree Depth'
-set ylabel 'Duration {/Symbol m}s'
+set ylabel 'Duration ns'
 
 set key left top
 	
