@@ -48,6 +48,7 @@ function executeBenchmark() {
          2) runOpenTelemetryLogging 2 ;;
          3) runOpenTelemetryZipkin 3 ;;
          4) runOpenTelemetryPrometheus 4 ;;
+         6) runOpenTelemetryZipkinCassandra 6 ;;
       esac
       
       cleanup
@@ -114,6 +115,24 @@ function runOpenTelemetryZipkin {
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
+    stopBackgroundProcess
+    sleep "${SLEEP_TIME}"
+}
+
+function runOpenTelemetryZipkinCassandra {
+    # OpenTelemetry Instrumentation Zipkin
+    k=$1
+    startCassandra
+    startZipkin
+    info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
+    export BENCHMARK_OPTS="${JAVA_ARGS_OPENTELEMETRY_ZIPKIN}"
+    "${MOOBENCH_BIN}" --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
+        --total-calls "${TOTAL_NUM_OF_CALLS}" \
+        --method-time "${METHOD_TIME}" \
+        --total-threads "${THREADS}" \
+        --recursion-depth "${RECURSION_DEPTH}" \
+        ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
+    stopCassandra
     stopBackgroundProcess
     sleep "${SLEEP_TIME}"
 }

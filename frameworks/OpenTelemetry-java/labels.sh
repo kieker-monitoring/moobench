@@ -8,3 +8,4 @@ then
 	TITLE[4]="Prometheus"
 	#TITLE[5]="OpenTelemetry Jaeger"
 fi
+TITLE[6]="Zipkin+Cassandra"

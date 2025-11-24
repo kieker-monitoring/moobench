@@ -118,6 +118,57 @@ EOF
 	sync
 }
 
+function startCassandra {
+	mkdir -p cassandra-data	
+	docker run -d --name cassandra \
+		-v $(pwd)/cassandra-data:/var/lib/cassandra \
+		-p 9042:9042 \
+		cassandra:3.11.19
+	container=$(docker ps | grep cassandra | awk '{print $1}')
+		
+	waitForDockerStartup $container "Startup complete"
+	
+	export STORAGE_TYPE=cassandra3
+	export CASSANDRA_CONTACT_POINTS=127.0.0.1
+	export CASSANDRA_KEYSPACE=zipkin3
+}
+
+function stopCassandra {
+	docker logs cassandra &> "${RESULTS_DIR}/cassandra_logs.txt"
+	docker rm -f cassandra
+}
+
+function waitForDockerStartup {
+	containerName=$1
+	textToWaitFor=$2
+	
+	sync
+	sleep 5
+	
+	echo "Waiting for container $containerName to print log $textToWaitFor"
+	attempt=0
+	while [ $attempt -le 150 ]; do
+	    attempt=$(( $attempt + 1 ))
+	    echo "Waiting for container $containerName to print log $textToWaitFor (attempt: $attempt)..."
+	    result=$(docker logs $containerName 2>&1)
+	    if grep -q "$textToWaitFor" <<< $result ; then
+	      echo "$containerName contains $textToWaitFor!"
+	      break
+	    fi
+	    sleep 5
+	done
+	
+	result=$(docker logs $containerName 2>&1)
+	if ! grep -q "$textToWaitFor" <<< $result 
+	then
+		echo "$containerName did not print $textToWaitFor even after waiting - exiting"
+		echo
+		echo
+		docker logs $containerName
+		exit 1
+	fi
+}
+
 function getStatisticsOfMeasurementFile {
 	RESULT_FILE=$1
 	raw_length=`cat "${RESULT_FILE}" | wc -l`

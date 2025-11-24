@@ -35,12 +35,13 @@ jobs:
           export NUM_OF_LOOPS=1 
           export TOTAL_NUM_OF_CALLS=10 
           export RECURSION_DEPTH=10 
+          export MOOBENCH_CONFIGURATIONS="0 1 2 3 4 6"
           ./benchmark.sh 
           unzip results-OpenTelemetry-java/results.zip 
           measuredValues=$(cat raw-1-10-* | wc -l) 
-          if [ $measuredValues -ne 40 ] 
+          if [ $measuredValues -ne 50 ] 
           then
-            echo "It should be 40 measured values, but was $measuredValues"
+            echo "It should be 50 measured values, but was $measuredValues"
             exit 1
           fi
 
