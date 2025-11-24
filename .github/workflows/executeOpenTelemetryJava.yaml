@@ -39,9 +39,9 @@ jobs:
           ./benchmark.sh 
           unzip results-OpenTelemetry-java/results.zip 
           measuredValues=$(cat raw-1-10-* | wc -l) 
-          if [ $measuredValues -ne 50 ] 
+          if [ $measuredValues -ne 60 ] 
           then
-            echo "It should be 50 measured values, but was $measuredValues"
+            echo "It should be 60 measured values, but was $measuredValues"
             exit 1
           fi
 
