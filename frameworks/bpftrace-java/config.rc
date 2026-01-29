@@ -1,0 +1,2 @@
+source ${MAIN_DIR}/config.rc
+MORE_PARAMS="--application moobench.application.MonitoredClassSimple ${MORE_PARAMS}"

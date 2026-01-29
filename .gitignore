@@ -25,6 +25,10 @@ analysis/results_threads
 frameworks/elasticapm-java/elastic-apm-agent.jar
 frameworks/Kieker-java/kieker-agent.jar
 
+frameworks/bpftrace-java/monitor_binary
+frameworks/bpftrace-java/monitor.skel.h
+frameworks/bpftrace-java/kieker.bin
+
 # Do not store measurement results
 frameworks/OpenTelemetry-java/raw*
 frameworks/OpenTelemetry-java/results-OpenTelemetry-java/
@@ -37,6 +41,7 @@ frameworks/Kieker-python/results-Kieker-python/
 frameworks/elasticapm-java/results-elasticapm-java/
 frameworks/pinpoint-java/results-pinpoint-java/
 frameworks/pinpoint-java/exp-results-pinpoint-java/
+frameworks/bpftrace-java/results-bpftrace-java/
 
 # Do not store pinpoint temporary data
 frameworks/pinpoint-java/logs/

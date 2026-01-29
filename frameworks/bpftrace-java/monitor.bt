@@ -1,0 +1,53 @@
+BEGIN {
+    printf("%-10s %-6s %-6s %-4s %s\n", "TIME_MS", "SEQ", "TID", "SIZE", "METHOD");
+    @global_seq = 0;
+}
+
+usdt:*:hotspot:method__entry /str(arg3) == "monitoredMethod"/ {
+    $t = tid;
+    $method = str(arg3);
+    
+    // 1. Stack Size erhöhen (lokal für Thread)
+    @depth[$t]++;
+    $d = @depth[$t];
+    
+    // 2. Globalen Order Index erhöhen
+    $seq = nsecs; // Alternativ: @global_seq++ für strikte 1,2,3 Folge
+    @global_seq++;
+
+    // 3. Startzeit für Dauer-Messung speichern (Stack-Emulation)
+    @start[$t, $d] = nsecs;
+
+    //printf("%-10u %-6d %-6d %-4d %s ENTER\n", 
+    //       elapsed / 1000000, @global_seq, $t, $d, $method);
+}
+
+usdt:*:hotspot:method__return /str(arg3) == "monitoredMethod"/ {
+    $t = tid;
+    $d = @depth[$t];
+
+    if ($d > 0) {
+        $startTime = @start[$t, $d];
+        $endTime = nsecs;
+        
+        printf("%s.%s;%d;%llu;%llu;%d;%d\n", 
+            str(arg1),        // Klasse
+            str(arg3),        // Methode
+            $t, 
+            $startTime, 
+            $endTime, 
+            @global_seq, 
+            $d
+        );
+
+        @global_seq++;
+        delete(@start[$t, $d]);
+        @depth[$t]--;
+    }
+}
+
+END {
+    clear(@start);
+    clear(@depth);
+    clear(@global_seq);
+}
