@@ -17,7 +17,7 @@
 package moobench.benchmark;
 
 /**
- * @author Jan Waller, Christian Wulf
+ * Interface for all benchmarking threads.
  */
 public interface BenchmarkingThread extends Runnable {
 

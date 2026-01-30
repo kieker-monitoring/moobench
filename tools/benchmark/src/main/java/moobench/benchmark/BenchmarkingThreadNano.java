@@ -16,7 +16,6 @@
 
 package moobench.benchmark;
 
-import java.io.File;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
@@ -26,7 +25,8 @@ import java.util.concurrent.CountDownLatch;
 import moobench.application.MonitoredClass;
 
 /**
- * @author Jan Waller, Aike Sass, Christian Wulf
+ * Instances of class measure the time consumption of the {@link} MonitoredClass in nanoseconds. This
+ * uses the System.nanoTime() as time measurement function; hence, it uses the systems *monontonic* timer.
  */
 public final class BenchmarkingThreadNano implements BenchmarkingThread {
 

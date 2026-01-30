@@ -21,7 +21,8 @@ import java.util.concurrent.CountDownLatch;
 import moobench.application.MonitoredClass;
 
 /**
- * @author Jan Waller
+ * Instances of class measure the time consumption of the {@link} MonitoredClass in nanoseconds. This
+ * uses the System.currentTimeInMillis() as time measurement function; hence, it uses the systems *realtime* timer.
  */
 public final class BenchmarkingThreadMilli implements BenchmarkingThread {
 
