@@ -43,9 +43,6 @@ public class BenchmarkParameter {
     @Parameter(names = { "--application", "-a" }, required = false, description = "Class implementing the MonitoredClass interface.")
     String applicationClassname;
     
-    @Parameter(names = { "--benchmark-thread", "-b" }, required = false, description = "Class implementing the BenchmarkingThread interface.")
-    String benchmarkClassname;
-
 	public int getTotalCalls() {
 		return totalCalls;
 	}
@@ -81,11 +78,4 @@ public class BenchmarkParameter {
 	public String getApplicationClassname() {
 		return applicationClassname;
 	}
-
-	public String getBenchmarkClassname() {
-		return benchmarkClassname;
-	}
-    
-    
-    
 }
