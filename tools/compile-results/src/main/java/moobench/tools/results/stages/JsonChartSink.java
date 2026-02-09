@@ -35,6 +35,10 @@ public class JsonChartSink extends AbstractConsumerStage<Chart> {
             final ObjectNode objectNode = mapper.createObjectNode();
             for (int i = 0;i < chart.getHeaders().size();i++) {
                 final String name = chart.getHeaders().get(i);
+		if (value.getValues().size() < i) {
+                    System.err.println("Problem in processing: i="+i+", size="+value.getValues().size());
+                    System.err.println("Chart: " + chart.getName() + " Header: " + name);
+		}
                 final Double number = value.getValues().get(i);
                 objectNode.put(name, number);
             }
