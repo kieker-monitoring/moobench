@@ -1,0 +1,78 @@
+name: Benchmark Kieker-python
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, continuous-gh-benchmarks ]
+  schedule: 
+    - cron: "0 3 * * *"
+
+
+permissions:
+  contents: write
+  deployments: write
+
+jobs:
+  benchmark:
+    name: Performance measurement
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '3.5.3'
+      - uses: actions/setup-go@v4
+        with:
+          go-version: "stable"
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+      - name: Start ssh-agent and add private key
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_KEY_MOOBENCH_DATA }}
+      - name: Add github.com to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts          
+      - name: Execute MooBench Benchmark
+        run: |
+          ./setup.sh
+          cd frameworks/Kieker-python/
+          export NUM_OF_LOOPS=10 
+          export MOOBENCH_CONFIGURATIONS="0 1 2 3 4 7 8"
+          ./benchmark.sh 
+          cd results-Kieker-python
+          unzip results.zip 
+          ../../../analysis/getGHActionsFormat.sh &> output.json
+          cat output.json
+          mv output.json ../../../
+      - name: Configure git user
+        run: |
+          git config --global user.email "ci-bot@kieker.org"
+          git config --global user.name  "Kieker CI"          
+      - name: Get old data
+        run: |
+           git clone -b gh-pages git@github.com:kieker-monitoring/moobench-data.git ../moobench-data
+           sed '1s/^window\.BENCHMARK_DATA = //' ../moobench-data/dev/bench/data.js > ../moobench-data/dev/bench/data2.js
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: 'Kieker-python'
+          tool: 'customSmallerIsBetter'
+          external-data-json-path: ../moobench-data/dev/bench/data2.js
+          output-file-path: output.json
+          fail-on-alert: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          skip-fetch-gh-pages: false
+          auto-push: false
+      - name: Push data
+        run: |
+          cd ../moobench-data
+          git remote -v
+          sed '1s/^/window.BENCHMARK_DATA = /' dev/bench/data2.js > dev/bench/data.js
+          git add dev/bench/data.js
+          git commit -m "Benchmark Results $GITHUB_SHA"
+          git push origin gh-pages
