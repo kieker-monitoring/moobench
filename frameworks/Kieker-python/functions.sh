@@ -25,7 +25,7 @@ function getAgent() {
 
   "${GIT}" checkout "${KIEKER_4_PYTHON_BRANCH}"
   "${PYTHON}" -m pip install --upgrade pip build
-        "${PIP}" install decorator
+  "${PIP}" install decorator
   "${PYTHON}" -m build
   "${PIP}" install dist/kieker_monitoring_for_python-0.0.1.tar.gz
   cd "${BASE_DIR}"
@@ -55,16 +55,22 @@ EOF
 }
 
 function createMonitoring() {
-    mode="$1"
-cat > "${BASE_DIR}/monitoring.ini" << EOF
+    local mode="$1"
+    local port="$2"
+    local tcp_section=""
+
+    # Nur wenn der Modus tcp ist, bauen wir die Sektion zusammen
+    if [[ "$mode" == "tcp" ]]; then
+        tcp_section="[Tcp]
+host = 127.0.0.1
+port = ${port}
+connection_timeout = 10"
+    fi
+
+    cat > "${BASE_DIR}/monitoring.ini" << EOF
 [Main]
 mode = ${mode}
-
-[Tcp]
-host = 127.0.0.1
-port = 5678
-connection_timeout = 10
-
+${tcp_section}
 [FileWriter]
 file_path = ${DATA_DIR}/kieker
 EOF
@@ -83,13 +89,14 @@ function executeExperiment() {
     inactive="$(cut -d " " -f2 <<< ${MONITORING_CONFIG[$index]})"
     instrument="$(cut -d " " -f3 <<< ${MONITORING_CONFIG[$index]})"
     approach="$(cut -d " " -f4 <<< ${MONITORING_CONFIG[$index]})"
+    port="$(cut -d " " -f5 <<< ${MONITORING_CONFIG[$index]})"
 
     info " # ${loop}.${recursion}.${index} ${title}"
 
     RESULT_FILE="${RAWFN}-${loop}-${recursion}-${index}.csv"
     LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
-    createMonitoring ${mode}
+    createMonitoring ${mode} ${port}
     createConfig ${inactive} ${instrument} ${approach} ${loop}
 
     "${PYTHON}" "${MOOBENCH_BIN_PY}" "${BASE_DIR}/config.ini"

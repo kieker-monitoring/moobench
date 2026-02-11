@@ -81,10 +81,10 @@ MONITORING_CONFIG[3]="dummy False True 1"
 MONITORING_CONFIG[4]="dummy False True 2"
 MONITORING_CONFIG[5]="text False True 1"
 MONITORING_CONFIG[6]="text False True 2"
-MONITORING_CONFIG[7]="tcp False True 1"
-MONITORING_CONFIG[8]="tcp False True 2"
+MONITORING_CONFIG[7]="tcp False True 1 5678"
+MONITORING_CONFIG[8]="tcp False True 2 5679"
 RECEIVER[7]="java -jar receiver/receiver.jar 5678"
-RECEIVER[8]="java -jar receiver/receiver.jar 5678"
+RECEIVER[8]="java -jar receiver/receiver.jar 5679"
 
 executeAllLoops
 
