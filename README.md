@@ -8,7 +8,7 @@ MooBench can measure the overhead that is created by obtaining any of these thre
 
 Continuous measurement results are available here:
 * Kiel University Server (Intel Xeon CPU E5620 @ 2.40 GHz, Debian 12): https://kieker-monitoring.net/performance-benchmarks/
-* GH Actions Runner (Ubuntu 22.04[^1]): https://kieker-monitoring.github.io/moobench/dev/bench/
+* GH Actions Runner (Ubuntu 22.04[^1]): https://kieker-monitoring.github.io/moobench-data/dev/bench/
 
 [^1]: According to https://docs.github.com/de/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners
 
