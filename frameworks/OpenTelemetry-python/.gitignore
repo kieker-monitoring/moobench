@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+kieker-lang-pack-python/
+results/
+config.ini
+*.log
+*.bak
+*.zip
+results-OpenTelemetry-python/
+.DS_Store
