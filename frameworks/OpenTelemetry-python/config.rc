@@ -1,0 +1,37 @@
+# OpenTelemetry-python configuration
+
+#resolve paths for windows
+RAW_BASE_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+# Check if we are running in Git Bash on Windows
+if command -v cygpath &>/dev/null; then
+    BASE_DIR=$(cygpath -w "$RAW_BASE_DIR")
+    RAW_MAIN_DIR="$RAW_BASE_DIR/../../"
+    MAIN_DIR=$(cygpath -w "$RAW_MAIN_DIR")
+    PYTHON_BIN="python"
+else
+    # Linux/Mac
+    BASE_DIR="$RAW_BASE_DIR"
+    MAIN_DIR="$RAW_BASE_DIR/../../"
+    PYTHON_BIN="python3"
+fi
+
+if [ -f "${MAIN_DIR}/config.rc" ]; then
+    source "${MAIN_DIR}/config.rc"
+fi
+
+export VENV_DIR="$BASE_DIR/venv"
+export REQUIREMENTS_FILE="$BASE_DIR/requirements.txt"
+export CONFIG_TEMPLATE="$BASE_DIR/config.ini.template"
+export CONFIG_FILE="$BASE_DIR/config.ini"
+
+export RESULTS_DIR="$BASE_DIR/results-OpenTelemetry-python"
+export RAWFN="$RESULTS_DIR/raw"
+
+KIEKER_REPO_URL="https://github.com/kieker-monitoring/kieker-lang-pack-python.git"
+KIEKER_DIR="$BASE_DIR/kieker-lang-pack-python"
+
+export PYTHON_SCRIPT="$MAIN_DIR/tools/pybenchmark/benchmark.py"
+export ZIPKIN_BIN="$BASE_DIR/zipkin.jar"
+
+mkdir -p "$RAW_BASE_DIR/results-OpenTelemetry-python"

@@ -60,3 +60,5 @@ frameworks/pinpoint-java/pinpoint/pinpoint-web-starter-*.jar
 frameworks/pinpoint-java/pinpoint/pinpoint-agent-*
 frameworks/pinpoint-java/pinpoint/pinpoint.tar.gz
 frameworks/pinpoint-java/scripts/*.json
+zipkin.jar
+zipkin.jar
