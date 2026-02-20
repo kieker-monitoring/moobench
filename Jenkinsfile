@@ -7,6 +7,7 @@ pipeline {
        filename 'Dockerfile'
        dir 'docker/'
        args env.DOCKER_ARGS
+       additionalBuildArgs '--build-arg UID=$(id -u)'
      }
   }
 
