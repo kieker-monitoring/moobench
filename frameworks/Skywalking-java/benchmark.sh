@@ -54,6 +54,7 @@ PARENT=`dirname "${RESULTS_DIR}"`
 checkDirectory result-base "${PARENT}"
 
 checkFile skywalking-agent "${AGENT}"
+checkDirectory skywalking-apm "apache-skywalking-apm-bin"
 
 checkExecutable java "${JAVA_BIN}"
 checkExecutable moobench "${MOOBENCH_BIN}"
