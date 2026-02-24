@@ -112,6 +112,10 @@ cd frameworks/OpenTelemetry-java/
   - getConfidenceIntervalTable = compute the confidence interval table
   - receiver = receiver for Kieker TCP probe output
 
+## Formatting
+
+All shell files should be formatted using `shfmt -w -i 2 -sr -kp`.
+
 ## Data Analysis
 
 Each benchmark execution calls an R script providing mean, standard deviation
