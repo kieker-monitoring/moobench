@@ -8,11 +8,11 @@ then
 fi
 
 # Skywalking Java Agent version
-AGENT_VERSION="9.5.0"
+AGENT_VERSION="9.6.0"
 # Skywalking APM version
-APM_VERSION="10.2.0"
+APM_VERSION="10.3.0"
 # Skywalking BanyanDB version, check config/bydb.dependencies.properties in Skywalking apm for version
-BANYANDB_VERSION="0.8.0"
+BANYANDB_VERSION="0.9.0"
 
 # Gets the skywalking agent and APM server
 # Commented code uses archive.apache.org which is too slow for Github actions but should be always available.
@@ -20,13 +20,13 @@ BANYANDB_VERSION="0.8.0"
 function getAgent {
 	mkdir "${BASE_DIR}/skywalking-agent"
 	cd "${BASE_DIR}"
-  #wget https://archive.apache.org/dist/skywalking/java-agent/${AGENT_VERSION}/apache-skywalking-java-agent-${AGENT_VERSION}.tgz
+  	#wget https://archive.apache.org/dist/skywalking/java-agent/${AGENT_VERSION}/apache-skywalking-java-agent-${AGENT_VERSION}.tgz
 	wget https://dlcdn.apache.org/skywalking/java-agent/${AGENT_VERSION}/apache-skywalking-java-agent-${AGENT_VERSION}.tgz
 	tar -xvzf apache-skywalking-java-agent-${AGENT_VERSION}.tgz
-	cp "${BASE_DIR}/skywalking-agent/optional-plugins/apm-customize-enhance-plugin-9.5.0.jar" "${BASE_DIR}/skywalking-agent/plugins/"
+	cp "${BASE_DIR}/skywalking-agent/optional-plugins/apm-customize-enhance-plugin-${AGENT_VERSION}.jar" "${BASE_DIR}/skywalking-agent/plugins/"
 	#wget https://archive.apache.org/dist/skywalking/${APM_VERSION}/apache-skywalking-apm-${APM_VERSION}.tar.gz
-	wget https://dlcdn.apache.org/skywalking/${APM_VERSION}/apache-skywalking-apm-${APM_VERSION}.tar.gz
-	tar -xvzf apache-skywalking-apm-${APM_VERSION}.tar.gz
+	wget https://dlcdn.apache.org/skywalking/${APM_VERSION}/apache-skywalking-apm-${APM_VERSION}-bin.tar.gz
+	tar -xvzf apache-skywalking-apm-${APM_VERSION}-bin.tar.gz
 	cd "${BASE_DIR}"
 }
 
