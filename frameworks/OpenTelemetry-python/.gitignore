@@ -8,3 +8,4 @@ config.ini
 *.zip
 results-OpenTelemetry-python/
 .DS_Store
+zipkin.jar

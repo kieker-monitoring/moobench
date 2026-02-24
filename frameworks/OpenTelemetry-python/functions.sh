@@ -1,8 +1,3 @@
-MOOBENCH_CONFIGURATIONS="0 1 2"
-TITLE[0]="No Instrumentation"
-TITLE[1]="OpenTelemetry No Export"
-TITLE[2]="OpenTelemetry Zipkin"
-
 export RECURSION_DEPTH="${RECURSION_DEPTH:-10}"
 
 # helper to inject filename
@@ -31,7 +26,7 @@ function runNoInstrumentation {
     updateConfigFilename "$CSV_FILE"
     export ENABLE_OTEL="false"
     
-    python3 "$PYTHON_SCRIPT" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
+    python3 "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 }
 
 function runOpenTelemetryNoExport {
@@ -50,7 +45,7 @@ function runOpenTelemetryNoExport {
     export OTEL_METRICS_EXPORTER="none"
     export OTEL_LOGS_EXPORTER="none"
     
-    python3 "$PYTHON_SCRIPT" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
+    python3 "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 }
 
 function runOpenTelemetryZipkin {
@@ -72,7 +67,7 @@ function runOpenTelemetryZipkin {
     export OTEL_METRICS_EXPORTER="none"
     export OTEL_LOGS_EXPORTER="none"
     
-    python3 "$PYTHON_SCRIPT" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
+    python3 "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 
     stopBackgroundProcess
 }

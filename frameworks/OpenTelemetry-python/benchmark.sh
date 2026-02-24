@@ -1,6 +1,6 @@
 DIR=$(cd "$(dirname "$0")" && pwd)
 source "$DIR/config.rc"
-
+source "$DIR/labels.sh"   
 source "$DIR/functions.sh"
 source "$DIR/../../common-functions.sh"
 
@@ -33,5 +33,4 @@ echo " # Starting Benchmark with $NUM_OF_LOOPS loops"
 executeAllLoops
 
 deactivate
-rm "$CONFIG_FILE" 2>/dev/null
 echo " # Completed."
