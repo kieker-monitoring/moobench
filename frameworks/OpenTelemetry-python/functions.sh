@@ -1,4 +1,4 @@
-export RECURSION_DEPTH="${RECURSION_DEPTH:-10}"
+
 
 # helper to inject filename
 function updateConfigFilename {
@@ -16,15 +16,15 @@ function runNoInstrumentation {
     local k=$1
     local i=$2 
     
-    # use the global RESULTS_DIR directly (Fixes the /output read-only error)
-    local RAW_CSV="${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv"
+    # Define Paths using variables from init.sh (RESULTS_DIR) and config.rc (RAWFN)
+    local RAW_CSV="${RESULTS_DIR}/raw-${i}-${RECURSION_DEPTH}-${k}.csv"
     local CSV_FILE=$(get_os_path "$RAW_CSV")
     local LOG_FILE="${RESULTS_DIR}/output-raw-${i}-${RECURSION_DEPTH}-${k}.txt"
     
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
     
     updateConfigFilename "$CSV_FILE"
-    export ENABLE_OTEL="false"
+    ENABLE_OTEL="false" \
     
     python3 "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 }
@@ -33,17 +33,17 @@ function runOpenTelemetryNoExport {
     local k=$1
     local i=$2
     
-    local RAW_CSV="${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv"
+    local RAW_CSV="${RESULTS_DIR}/raw-${i}-${RECURSION_DEPTH}-${k}.csv"
     local CSV_FILE=$(get_os_path "$RAW_CSV")
     local LOG_FILE="${RESULTS_DIR}/output-raw-${i}-${RECURSION_DEPTH}-${k}.txt"
     
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
     updateConfigFilename "$CSV_FILE"
     
-    export ENABLE_OTEL="true"
-    export OTEL_TRACES_EXPORTER="none"
-    export OTEL_METRICS_EXPORTER="none"
-    export OTEL_LOGS_EXPORTER="none"
+    ENABLE_OTEL="true" \
+    OTEL_TRACES_EXPORTER="none" \
+    OTEL_METRICS_EXPORTER="none" \
+    OTEL_LOGS_EXPORTER="none" \
     
     python3 "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 }
@@ -52,7 +52,7 @@ function runOpenTelemetryZipkin {
     local k=$1
     local i=$2
     
-    local RAW_CSV="${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv"
+    local RAW_CSV="${RESULTS_DIR}/raw-${i}-${RECURSION_DEPTH}-${k}.csv"
     local CSV_FILE=$(get_os_path "$RAW_CSV")
     local LOG_FILE="${RESULTS_DIR}/output-raw-${i}-${RECURSION_DEPTH}-${k}.txt"
     
@@ -60,12 +60,12 @@ function runOpenTelemetryZipkin {
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
     updateConfigFilename "$CSV_FILE"
     
-    export ENABLE_OTEL="true"
-    export OTEL_SERVICE_NAME="moobench-python"
-    export OTEL_TRACES_EXPORTER="zipkin"
-    export OTEL_EXPORTER_ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans"
-    export OTEL_METRICS_EXPORTER="none"
-    export OTEL_LOGS_EXPORTER="none"
+    ENABLE_OTEL="true" \
+    OTEL_SERVICE_NAME="moobench-python" \
+    OTEL_TRACES_EXPORTER="zipkin" \
+    OTEL_EXPORTER_ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans" \
+    OTEL_METRICS_EXPORTER="none" \
+    OTEL_LOGS_EXPORTER="none" \
     
     python3 "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 
