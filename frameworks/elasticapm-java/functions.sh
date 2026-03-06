@@ -11,7 +11,8 @@ fi
 function getAgent() {
 	info "Download the elastic agent ${AGENT_JAR}"
 	# get agent
-	curl -o $AGENT_JAR -L 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=co.elastic.apm&a=elastic-apm-agent&v=LATEST'
+	VERSION="1.55.4"
+	curl -o $AGENT_JAR -L 'https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/$VERSION/elastic-apm-agent-$VERSION.jar'
 }
 
 # experiment setups
