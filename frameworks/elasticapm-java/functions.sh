@@ -10,7 +10,9 @@ function getAgent() {
   info "Download the elastic agent ${AGENT_JAR}"
   # get agent
   VERSION="1.55.4"
-  curl -o $AGENT_JAR -L 'https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/$VERSION/elastic-apm-agent-$VERSION.jar'
+  URL="https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/$VERSION/elastic-apm-agent-$VERSION.jar"
+  echo "From: $URL"
+  curl -o $AGENT_JAR -L $URL
 }
 
 # experiment setups
