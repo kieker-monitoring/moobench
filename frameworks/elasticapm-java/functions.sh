@@ -1,18 +1,16 @@
 # Kieker specific functions
 
 # ensure the script is sourced
-if [ "${BASH_SOURCE[0]}" -ef "$0" ]
-then
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]; then
     echo "Hey, you should source this script, not execute it!"
     exit 1
 fi
 
-
 function getAgent() {
-	info "Download the elastic agent ${AGENT_JAR}"
-	# get agent
-	VERSION="1.55.4"
-	curl -o $AGENT_JAR -L 'https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/$VERSION/elastic-apm-agent-$VERSION.jar'
+  info "Download the elastic agent ${AGENT_JAR}"
+  # get agent
+  VERSION="1.55.4"
+  curl -o $AGENT_JAR -L 'https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/$VERSION/elastic-apm-agent-$VERSION.jar'
 }
 
 # experiment setups
@@ -35,11 +33,11 @@ function executeExperiment() {
     info " # ${loop}.${recursion}.${index} ${title}"
     echo " # ${loop}.${recursion}.${index} ${title}" >> "${DATA_DIR}/kieker.log"
 
-    if [  "${kieker_parameters}" == "" ] ; then
+    if [  "${kieker_parameters}" == "" ]; then
        export BENCHMARK_OPTS="${JAVA_ARGS}"
-    else
+  else
        export BENCHMARK_OPTS="${JAVA_ARGS} ${LTW_ARGS} ${KIEKER_ARGS} ${kieker_parameters}"
-    fi
+  fi
 
     debug "Run options: ${BENCHMARK_OPTS}"
 
@@ -47,25 +45,25 @@ function executeExperiment() {
     LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
     "${MOOBENCH_BIN}" \
-	--application moobench.application.MonitoredClassSimple \
+    --application moobench.application.MonitoredClassSimple \
         --output-filename "${RESULT_FILE}" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
         --total-threads $THREADS \
         --recursion-depth "${recursion}" &> "${LOG_FILE}"
 
-    if [ ! -f "${RESULT_FILE}" ] ; then
+    if [ ! -f "${RESULT_FILE}" ]; then
         info "---------------------------------------------------"
         cat "${LOG_FILE}"
         error "Result file '${RESULT_FILE}' is empty."
-    else
-       size=`wc -c "${RESULT_FILE}" | awk '{ print $1 }'`
-       if [ "${size}" == "0" ] ; then
+  else
+       size=$(wc -c "${RESULT_FILE}" | awk '{ print $1 }')
+       if [ "${size}" == "0" ]; then
            info "---------------------------------------------------"
            cat "${LOG_FILE}"
            error "Result file '${RESULT_FILE}' is empty."
-       fi
     fi
+  fi
     rm -rf "${DATA_DIR}"/kieker-*
 
     [ -f "${DATA_DIR}/hotspot.log" ] && mv "${DATA_DIR}/hotspot.log" "${RESULTS_DIR}/hotspot-${loop}-${recursion}-${index}.log"
@@ -79,7 +77,7 @@ function executeBenchmarkBody() {
   index="$1"
   loop="$2"
   recursion="$3"
-  if [[ "${RECEIVER[$index]}" ]] ; then
+  if [[ "${RECEIVER[$index]}" ]]; then
      debug "receiver ${RECEIVER[$index]}"
      ${RECEIVER[$index]} >> "${DATA_DIR}/kieker.receiver-${loop}-${index}.log" &
      RECEIVER_PID=$!
@@ -88,7 +86,7 @@ function executeBenchmarkBody() {
 
   executeExperiment "$loop" "$recursion" "$index"
 
-  if [[ "${RECEIVER_PID}" ]] ; then
+  if [[ "${RECEIVER_PID}" ]]; then
      kill -TERM "${RECEIVER_PID}"
      unset RECEIVER_PID
   fi
@@ -98,18 +96,15 @@ function executeBenchmarkBody() {
 function executeBenchmark() {
     recursion="${RECURSION_DEPTH}"
 
-    for index in $MOOBENCH_CONFIGURATIONS
-    do
-      if (( $index > 0 ))
-      then
+    for index in $MOOBENCH_CONFIGURATIONS; do
+      if (($index > 0)); then
         docker compose up -d
         executeBenchmarkBody $index $i $recursion
         docker compose down
-      else
+    else
         executeBenchmarkBody $index $i $recursion
-      fi
-    done
+    fi
+  done
 }
-
 
 # end
