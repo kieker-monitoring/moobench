@@ -1,0 +1,10 @@
+[Benchmark]
+total_calls = 2000000
+recursion_depth = 10
+method_time = 0
+config_path = /tmp/monitoring.ini
+inactive = False
+# so it doesn't use kieker instrumentation
+instrumentation_on = False
+approach = 1
+output_filename = results.csv
