@@ -39,6 +39,8 @@ Runtime behavior of a software is inherently difficult to understand due to the 
 
 The MooBench benchmark has been originally developed to examine the performance overhead of Kieker in Java and was extended as a general overhead measurement microbenchmark for various observability tools, currently within the Java and Python ecosystem. In this paper, we describe the MooBench microbenchmark.
 
+# Statement of need
+
 ## Foundations
 
 ### Observability
@@ -47,7 +49,7 @@ The MooBench benchmark has been originally developed to examine the performance 
 
 ## Architecture
 
-## Past Applications
+# Research impact
 
 ### Analysis
 
