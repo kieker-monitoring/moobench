@@ -24,8 +24,8 @@ function runNoInstrumentation {
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
     
     updateConfigFilename "$CSV_FILE"
+ 
     ENABLE_OTEL="false" \
-    
     python3 "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 }
 
@@ -44,7 +44,6 @@ function runOpenTelemetryNoExport {
     OTEL_TRACES_EXPORTER="none" \
     OTEL_METRICS_EXPORTER="none" \
     OTEL_LOGS_EXPORTER="none" \
-    
     python3 "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 }
 
@@ -59,14 +58,13 @@ function runOpenTelemetryZipkin {
     startZipkin
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
     updateConfigFilename "$CSV_FILE"
-    
+
     ENABLE_OTEL="true" \
     OTEL_SERVICE_NAME="moobench-python" \
     OTEL_TRACES_EXPORTER="zipkin" \
     OTEL_EXPORTER_ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans" \
     OTEL_METRICS_EXPORTER="none" \
     OTEL_LOGS_EXPORTER="none" \
-    
     python3 "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 
     stopBackgroundProcess

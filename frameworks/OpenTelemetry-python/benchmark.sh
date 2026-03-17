@@ -9,9 +9,6 @@ else
     BASE_DIR="$DIR"
     MAIN_DIR="$DIR/../../"
 fi
-source "$DIR/config.rc"
-source "$DIR/labels.sh"   
-source "$DIR/functions.sh"
 
 # init.sh loads common-functions.sh and creates directories
 if [ -f "${RAW_MAIN_DIR}/init.sh" ]; then
@@ -20,6 +17,10 @@ else
     echo "Missing library: ${RAW_MAIN_DIR}/init.sh"
     exit 1
 fi
+
+source "$DIR/config.rc"
+source "$DIR/labels.sh"   
+source "$DIR/functions.sh"
 
 echo " # Preparing Environment..."
 if [ -d "$VENV_DIR" ]; then rm -rf "$VENV_DIR"; fi
