@@ -20,6 +20,8 @@ compile-results/
 frameworks/Kieker-python/kieker-lang-pack-python/
 analysis/results_depth/
 analysis/results_threads
+frameworks/eBPF-USDT/java_tracer_usdt
+frameworks/eBPF-USDT/java_tracer_usdt.bpf.o
 
 # Do not store agents
 frameworks/elasticapm-java/elastic-apm-agent.jar
@@ -42,6 +44,8 @@ frameworks/elasticapm-java/results-elasticapm-java/
 frameworks/pinpoint-java/results-pinpoint-java/
 frameworks/pinpoint-java/exp-results-pinpoint-java/
 frameworks/bpftrace-java/results-bpftrace-java/
+frameworks/eBPF-USDT/results-eBPF-USDT/
+frameworks/eBPF-USDT/data/
 
 # Do not store pinpoint temporary data
 frameworks/pinpoint-java/logs/
