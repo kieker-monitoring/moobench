@@ -1,29 +1,26 @@
 # OpenTelemetry specific functions
 
 # ensure the script is sourced
-if [ "${BASH_SOURCE[0]}" -ef "$0" ]
-then
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]; then
     echo "Hey, you should source this script, not execute it!"
     exit 1
 fi
 
-
 function getAgent() {
-    if [ ! -f "${BASE_DIR}/lib/opentelemetry-javaagent.jar" ]
-    then
+    if [ ! -f "${BASE_DIR}/lib/opentelemetry-javaagent.jar" ]; then
         mkdir -p "${BASE_DIR}/lib"
         wget --output-document="${AGENT_JAR}" \
             https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
-    fi
+  fi
 }
 
 function startJaeger {
-    if [ ! -d "${BASE_DIR}/jaeger-1.24.0-linux-amd64" ] ; then
+    if [ ! -d "${BASE_DIR}/jaeger-1.24.0-linux-amd64" ]; then
         cd "${BASE_DIR}"
         wget https://github.com/jaegertracing/jaeger/releases/download/v1.24.0/jaeger-1.24.0-linux-amd64.tar.gz
         tar -xvf jaeger-1.24.0-linux-amd64.tar.gz
         rm jaeger-1.24.0-linux-amd64.tar.gz
-    fi
+  fi
 
     cd "${BASE_DIR}/jaeger-1.24.0-linux-amd64"
     "${BASE_DIR}/jaeger-1.24.0-linux-amd64/jaeger-all-in-one" &> "${BASE_DIR}/jaeger-1.24.0-linux-amd64/jaeger.log" &
@@ -40,8 +37,7 @@ function cleanup {
 
 ## Execute Benchmark
 function executeBenchmark() {
-   for index in $MOOBENCH_CONFIGURATIONS
-   do
+   for index in $MOOBENCH_CONFIGURATIONS; do
       case $index in
          0) runNoInstrumentation 0 ;;
          1) runOpenTelemetryNoLogging 1 ;;
@@ -49,12 +45,11 @@ function executeBenchmark() {
          3) runOpenTelemetryZipkin 3 ;;
          4) runOpenTelemetryPrometheus 4 ;;
          6) runOpenTelemetryZipkinCassandra 6 ;;
-      esac
-      
-      cleanup
-   done
-}
+    esac
 
+      cleanup
+  done
+}
 
 # experiment setups
 
@@ -95,12 +90,11 @@ function runOpenTelemetryLogging {
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
-    if [ ! "$DEBUG" = true ]
-    then
+    if [ ! "$DEBUG" = true ]; then
         rm "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
-    else
+  else
         debug "Keeping opentelemetry logging file"
-    fi
+  fi
 }
 
 function runOpenTelemetryZipkin {
