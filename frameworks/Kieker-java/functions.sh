@@ -30,9 +30,20 @@ function getAgent() {
 }
 
 function checkReceiverPort {
-  if ss -tuln | grep -q ':2345'; then
-    echo "Port 2345 is used - but the TCP receiver needs to be started there"
-    exit 1
+  PORT=2345
+
+  if command -v ss >/dev/null 2>&1; then
+    # Linux (ss available)
+    if ss -tuln | grep -q ":$PORT"; then
+      echo "Port $PORT is used - but the TCP receiver needs to be started there"
+      exit 1
+    fi
+  else
+    # MacOS fallback (lsof)
+    if lsof -iTCP:$PORT -sTCP:LISTEN >/dev/null 2>&1; then
+      echo "Port $PORT is used - but the TCP receiver needs to be started there"
+      exit 1
+    fi
   fi
 }
 
