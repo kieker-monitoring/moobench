@@ -30,7 +30,7 @@ function create_table_number_list() {
 
   # Create list with leading zeros
   NUM_LIST=()
-  for (( i=10#$START_INDEX; i<=10#$END_INDEX; i++ )); do
+  for ((i = 10#$START_INDEX; i <= 10#$END_INDEX; i++)); do
       NUM=$(printf "%0${PADDING_LENGTH}d" "$i")
       NUM_LIST+=("$NUM")
   done
@@ -41,7 +41,6 @@ function create_table_number_list() {
       exit 1
   fi
 }
-
 
 function generate_config() {
   local JSON_SUFFIX=$1
@@ -81,7 +80,7 @@ function add_schema_to_pinot() {
              -H 'accept: application/json' \
              -H 'Content-Type: application/json' \
              -d @"${JSON_FILE}" \
-             2>&1
+          2>&1
       )
       echo "  Response for ${JSON_FILE}: ${response}"
     fi
@@ -108,7 +107,7 @@ function add_table_to_pinot() {
              -H 'accept: application/json' \
              -H 'Content-Type: application/json' \
              -d @"${JSON_FILE}" \
-             2>&1
+          2>&1
       )
       echo "  Response for ${JSON_FILE}: ${response}"
     fi

@@ -9,8 +9,7 @@
 BASE_DIR=$(cd "$(dirname "$0")"; pwd)
 MAIN_DIR="${BASE_DIR}/../.."
 
-if [ -z "$JAVA_HOME" ]
-then
+if [ -z "$JAVA_HOME" ]; then
     echo "Pinpoint dependencies need JAVA_HOME to be set; please set it to start the benchmark"
     exit 1
 fi
@@ -19,22 +18,21 @@ fi
 # source functionality
 #
 
-if [ ! -d "${BASE_DIR}" ] ; then
-	echo "Base directory ${BASE_DIR} does not exist."
-	exit 1
+if [ ! -d "${BASE_DIR}" ]; then
+  echo "Base directory ${BASE_DIR} does not exist."
+  exit 1
 fi
 
-if [ -f "${MAIN_DIR}/init.sh" ] ; then
-	source "${MAIN_DIR}/init.sh"
+if [ -f "${MAIN_DIR}/init.sh" ]; then
+  source "${MAIN_DIR}/init.sh"
 else
-	echo "Missing library: ${MAIN_DIR}/init.sh"
-	exit 1
+  echo "Missing library: ${MAIN_DIR}/init.sh"
+  exit 1
 fi
 
-if [ -z "$MOOBENCH_CONFIGURATIONS" ]
-then
-	MOOBENCH_CONFIGURATIONS="0 1 2 3 4"
-	echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (all Pinpoint configurations)"
+if [ -z "$MOOBENCH_CONFIGURATIONS" ]; then
+  MOOBENCH_CONFIGURATIONS="0 1 2 3 4"
+  echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (all Pinpoint configurations)"
 fi
 echo "Running configurations: $MOOBENCH_CONFIGURATIONS"
 #
@@ -58,7 +56,7 @@ checkFile R-script "${RSCRIPT_PATH}"
 
 showParameter
 
-TIME=`expr ${METHOD_TIME} \* ${TOTAL_NUM_OF_CALLS} / 1000000000 \* 4 \* ${RECURSION_DEPTH} \* ${NUM_OF_LOOPS} + ${SLEEP_TIME} \* 4 \* ${NUM_OF_LOOPS}  \* ${RECURSION_DEPTH} + 50 \* ${TOTAL_NUM_OF_CALLS} / 1000000000 \* 4 \* ${RECURSION_DEPTH} \* ${NUM_OF_LOOPS} `
+TIME=$(expr ${METHOD_TIME} \* ${TOTAL_NUM_OF_CALLS} / 1000000000 \* 4 \* ${RECURSION_DEPTH} \* ${NUM_OF_LOOPS} + ${SLEEP_TIME} \* 4 \* ${NUM_OF_LOOPS} \* ${RECURSION_DEPTH} + 50 \* ${TOTAL_NUM_OF_CALLS} / 1000000000 \* 4 \* ${RECURSION_DEPTH} \* ${NUM_OF_LOOPS})
 info "Experiment will take circa ${TIME} seconds."
 
 # general server arguments
@@ -83,7 +81,7 @@ info "Running benchmark..."
 info "----------------------------------"
 
 ## Execute Benchmark
-for ((i=1;i<=${NUM_OF_LOOPS};i+=1)); do
+for ((i = 1; i <= ${NUM_OF_LOOPS}; i += 1)); do
     k=0
     info "## Starting iteration ${i}/${NUM_OF_LOOPS}"
     echo "## Starting iteration ${i}/${NUM_OF_LOOPS}" >> "${BASE_DIR}/OpenTelemetry.log"
