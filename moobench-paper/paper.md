@@ -36,7 +36,7 @@ aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
 
 Understanding the runtime behavior of software is inherently difficult due to the unpredictability of the behavior itself and the non-determinism of underlying layers, such as Just-In-Time (JIT) compilation in virtual machines, operating system scheduling, and CPU frequency scaling. Observability tools aim to answer questions regarding runtime behavior of software, such as "How much time did this request take?" or "How often did method A call method B?" [@majors2022observability]. These questions are answered using telemetry data, i.e., measurement data that is obtained from the code execution. To collect telemetry data, additional code needs to be executed, which introduces overhead. This overhead affects both system performance and the accuracy of the measurements themselves. The MooBench microbenchmark measures this overhead and contains factorial experiments that facilitate breaking down this overhead into its root causes.
 
-The MooBench benchmark has been originally developed to examine the performance overhead of Kieker in Java and was extended as a general overhead measurement microbenchmark for various observability tools, currently within the Java and Python ecosystem. In this paper, we describe the MooBench microbenchmark.
+The MooBench benchmark has been originally developed to examine the performance overhead of Kieker in Java [@waller2013benchmark] and was extended as a general overhead measurement microbenchmark for various observability tools, currently within the Java and Python ecosystem. In this paper, we describe the MooBench microbenchmark.
 
 # Statement of need
 
@@ -47,6 +47,8 @@ In the context of microservices, various studies have examined the overhead of t
 Besides the microservice context, tracing overhead has been examined for operating systems and High-Performance Computing (HPC). For operating system, the overhead of tools for tracing the kernel itself [@desnoyers2006lttng] [@gebai2018tracers] and eBPF, that allows to trace both within the kernel and the user space [@volpertEBPFOverhead] [@domaschka2023using] has been examined in case studies. In the context of HPC, research has addressed the impact of overhead [@hunold2022overhead] and the combination of instrumentation and sampling to reduce it [@ilsche2015combining].
 
 The aforementioned studies utilize macrobenchmarks to examine overhead in realistic use cases. While macrobenchmarks provide an indication of overhead in similar scenarios, they often fail to isolate the baseline overhead or identify its specific sources. When looking at specific distributed cases, the overhead sources are influenced by the processes running in parallel, their scheduling, and by the network behavior. MooBench addresses this by providing a microbenchmark that measures the fundamental overhead of observability frameworks in a controlled environment. Using different configurations, it enables factorial experiments that isolate root causes of overhead, specifically distinguishing between instrumentation, data collection, and data serialization.
+
+Furthermore, macrobenchmarks are also time-consuming to execute. The MooBench microbenchmark was included early in Kiekers CI setup [@waller2015including], enabling the detection of performance regressions and the check of performance improvements in daily development.
 
 # Software design
 
@@ -70,6 +72,8 @@ To measure performance in managed runtimes like the JVM, the managed runtime nee
 
 There have been numerious case studies that examined overhead and its root causes.
 
+## Overhead analysis
+
 Waller et al. [@waller2014application]...
 
 Eichelberger et al. [@eichelberger2014flexible]...
@@ -78,13 +82,15 @@ Knoche et al. [@knoche2018using]...
 
 Reichelt et al. [@reichelt2021overhead]...
 
+Waller et al. [@waller2012comparison]...
+
 ## Improvement Case Studies
 
-Strubel et al. [@strubel2016refactoring]...
+Strubel et al. [@strubel2016refactoring] examined how a rewriting Kiekers monitoring component could reduce the overhead of tracing. Using MooBench, they could show that their suggested rewrite reduced the overhead to 17% of the original overhead. 
 
-Reichelt et al. [@reichelt2023towards]...
+Reichelt et al. [@reichelt2023towards] examined different options for overhead reduction for tracing: Using source code instrumentation instead of AspectJ, storing only limited metadata, using a different queue and aggregating performance data before writing it to the monitoring queue. Using MooBench, they found that on their examined hardware, they could reduce the overhead from 4.77 ns to 0.4 ns per method call.
 
-Reichelt et al. [@reichelt2024overhead]...
+Reichelt et al. [@reichelt2024overhead] compared the overhead of the instrumentation frameworks AspectJ, ByteBuddy, DiSL, javassist and direct source code instrumentation. To do so, they extended the Kieker-java scripts of MooBench. By extensions of Kieker and MooBench, they find that while source code instrumentation has the lowest overhead, ByteBuddy, DiSL and javassist also have comparably low overhead. AspectJ has significantly higher overhead than the others. Based on that finding, the Kieker framework started using the Kieker ByteBuddy agent as default agent.
 
 Yang et al. [@yang2024evaluating]...
 
