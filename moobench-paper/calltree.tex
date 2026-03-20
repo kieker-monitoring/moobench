@@ -1,10 +1,9 @@
-\documentclass[tikz, border=2pt]{standalone}
+\documentclass[tikz, border=5pt]{standalone}
 \usetikzlibrary{positioning}
 
 \begin{document}
 
-\begin{figure}
-  \begin{tikzpicture}[node distance = 1em, auto, font=\footnotesize, align=center, every node/.style={line width=1pt,draw,shape=rectangle,minimum width = 1.0cm}]
+\begin{tikzpicture}[node distance = 1.0cm, auto, font=\footnotesize, align=center, every node/.style={line width=1pt,draw,shape=rectangle,minimum width = 1.5cm}]
     \node (main) [shape=circle]{main};
     \node (c0) [shape=circle, right=of main, inner sep=1pt]{$method$\\$(t, d)$};
     \node (c1) [shape=circle, right=of c0, inner sep=1pt]{$method$\\$(t, d-1)$};
@@ -17,9 +16,6 @@
     \draw [->] (c1) -- (cp);
     \draw [->] (cp) -- (cn);
     \draw [->] (cn) -- (work);
-  \end{tikzpicture}
-  \caption{Call Tree of MooBench}
-  \label{fig:MooBench}
-\end{figure}
+\end{tikzpicture}
 
 \end{document}
