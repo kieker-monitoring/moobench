@@ -18,6 +18,19 @@ function getSum {
   awk '{sum += $1; square += $1^2} END {print "Average: "sum/NR" Standard Deviation: "sqrt(square / NR - (sum/NR)^2)" Count: "NR}'
 }
 
+function getDefaultConfiguration {
+    case "$1" in
+        "Kieker-java")        echo "5"; exit ;; 
+        "OpenTelemetry-java") echo "4" ;;
+        "inspectIT-java")     echo "3" ;;
+        "pinpoint-java")      echo "4" ;;
+        "elasticapm-java")    echo "3" ;;
+        "Scouter-java")       echo "2" ;;
+        "Skywalking-java")    echo "2" ;;
+        *)                    echo "-1" ;;
+    esac
+}
+
 ## Clean up raw results
 function cleanupResults() {
   zip -jqr ${RESULTS_DIR}/results.zip ${RAWFN}*
