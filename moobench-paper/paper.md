@@ -7,7 +7,6 @@ authors:
   - name: David Georg Reichelt
     corresponding: true
     orcid: 0000-0002-1772-1416
-    equal-contrib: true
     affiliation: "1, 2"
   - name: Shinhyung Yang
     orcid: 0000-0002-8997-9942
@@ -39,7 +38,7 @@ Understanding the runtime behavior of software is inherently difficult due to th
 
 The MooBench benchmark has been originally developed to examine the performance overhead of Kieker in Java and was extended as a general overhead measurement microbenchmark for various observability tools, currently within the Java and Python ecosystem. In this paper, we describe the MooBench microbenchmark.
 
-# Statement of Need
+# Statement of need
 
 Observability tools are crucial for managing software system health and optimizing operational costs; consequently, a wide variety of tools compete in the market [@GartnerObservability2025]. The relevance of distributed tracing tools increased with the rise of microservice architectures, where system behavior across microservices needs to be understood [@sigelman2010dapper]. While observabiliy generally consists of the three pillars traces, metrics, and logs, especially distributed tracing is gaining wide adoption [@janes2023open].
 
@@ -49,19 +48,25 @@ Besides the microservice context, tracing overhead has been examined for operati
 
 The aforementioned studies utilize macrobenchmarks to examine overhead in realistic use cases. While macrobenchmarks provide an indication of overhead in similar scenarios, they often fail to isolate the baseline overhead or identify its specific sources. When looking at specific distributed cases, the overhead sources are influenced by the processes running in parallel, their scheduling, and by the network behavior. MooBench addresses this by providing a microbenchmark that measures the fundamental overhead of observability frameworks in a controlled environment. Using different configurations, it enables factorial experiments that isolate root causes of overhead, specifically distinguishing between instrumentation, data collection, and data serialization.
 
-# Architecture Overview
+# Software design
 
-## Foundations
+MooBench consists of two parts: the minimal and configurable system under test, and the automation of benchmarking the observability. These are described in the following.
 
-### Observability
+## System under test
 
-### Performance Meaurement
+The overhead of observability tools is caused by data collection. For tracing tools, this data collection is caused by method execution. The runtime behavior of the execution of methods is influenced by various factors, including class loading, Just-in-Time compilation (JIT), and garbage collection. To minimize these effects, MooBenchs SuT consists of only one method (`monitoredMethod`) that calls itself recursively `$RECURSION_DEPTH` times. Only this recursive calls could be removed by the JIT compiler, therefore, the last method call contains a busy wait for `$METHOD_TIME` nanoseconds.
 
-## Architecture
+Figure...
 
-# Research impact
+This system under test is currently implemented in Java and Python. It is planned to extend it for JavaScript and Go.
 
-### Analysis
+## Observability automation
+
+Each observability framework requires a different setup and has different capabilities. For example, OpenTelemetry can be attached to the JVM using `-javaagent`, requires the property otel.instrumentation.methods.include to be set to a list of classes, and can then export to Zipkin, Jaeger, or Prometheus. Furthermore, OpenTelemetry can be started with empty otel.instrumentation.methods.include or without export, which enables measuring the overhead of instrumentation without data collection or data collection without serialization. Due to these different configurations, it is necessary to implement configuration scripts for every framework individually. MooBench has these configuration scripts in `frameworks/$TECHNOLOGY-$LANGUAGE` (e.g., `frameworks/OpenTelemetry-java`). The scripts usually contain a `benchmark.sh` for starting the experiment, `functions.sh` with specific download or execution functions, `labels.sh` containing the names of the configurations and `config.rc` containing eventually necessary definitions of additional environment variables.
+
+To measure performance in managed runtimes like the JVM, the managed runtime needs to be started multiple times, inside of the managed runtime, the workload needs to be repeated until a given count of warmup iterations is finished, and finally, the measurement iterations within the managed runtime need to be executed [@georges2007statistically]. MooBench implements this process by executing `$NUM_OF_LOOPS` loops, where every loop runs all configurations of one framework. Inside of each run, `$TOTAL_NUM_OF_CALLS` defines the number of iterations, i.e., repetitions of all calls to `monitoredMethod`. The execution data are stored into csv files, and after the execution is finished, the warmup iterations are removed.
+
+# Research impact statement
 
 There have been numerious case studies that examined overhead and its root causes.
 
@@ -71,20 +76,25 @@ Eichelberger et al. [@eichelberger2014flexible]...
 
 Knoche et al. [@knoche2018using]...
 
-### Improvement Case Studies
+Reichelt et al. [@reichelt2021overhead]...
+
+## Improvement Case Studies
 
 Strubel et al. [@strubel2016refactoring]...
 
 Reichelt et al. [@reichelt2023towards]...
 
-## Related Work
+Reichelt et al. [@reichelt2024overhead]...
 
-## Summary and Outlook
+Yang et al. [@yang2024evaluating]...
 
-Main outlook ideas:
-- Extend MooBench for measuring power consumption
-- Extend MooBench for measuring observability for different technologies (JavaScript, c++, php, ...)
-- Extend MooBench for memory usage (hard disk and heap)
+## MooBench development papers
+
+...?
+
+# AI usage disclosure
+
+There is no known AI usage, however, AI usage in PRs is not monitored. 
 
 # Acknowledgements
 
