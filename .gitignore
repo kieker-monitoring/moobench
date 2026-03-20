@@ -21,6 +21,7 @@ compile-results/
 frameworks/Kieker-python/kieker-lang-pack-python/
 analysis/results_depth/
 analysis/results_threads
+moobench-paper/paper.pdf
 
 # Do not store agents
 frameworks/elasticapm-java/elastic-apm-agent.jar
