@@ -1,12 +1,10 @@
 # Kieker specific functions
 
 # ensure the script is sourced
-if [ "${BASH_SOURCE[0]}" -ef "$0" ]
-then
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]; then
     echo "Hey, you should source this script, not execute it!"
     exit 1
 fi
-
 
 function getAgent() {
   info "Setup Kieker4Python"
@@ -16,7 +14,7 @@ function getAgent() {
   checkExecutable git "${GIT}"
 
   # note: if it already exists
-  if [ -d "${KIEKER_4_PYTHON_DIR}" ] ; then
+  if [ -d "${KIEKER_4_PYTHON_DIR}" ]; then
     rm -rf "${KIEKER_4_PYTHON_DIR}"
   fi
   "${GIT}" clone "${KIEKER_4_PYTHON_REPO_URL}"
@@ -41,7 +39,7 @@ function createConfig() {
     instrument="$2"
     approach="$3"
     loop="$4"
-cat > "${BASE_DIR}/config.ini" << EOF
+  cat > "${BASE_DIR}/config.ini" << EOF
 [Benchmark]
 total_calls = ${TOTAL_NUM_OF_CALLS}
 recursion_depth = ${RECURSION_DEPTH}
@@ -65,7 +63,7 @@ function createMonitoring() {
 host = 127.0.0.1
 port = ${port}
 connection_timeout = 10"
-    fi
+  fi
 
     cat > "${BASE_DIR}/monitoring.ini" << EOF
 [Main]
@@ -83,7 +81,7 @@ function executeExperiment() {
     recursion="$2"
     index="$3"
     title="${TITLE[$index]}"
-    
+
     # Kieker-python specific parameters
     mode="$(cut -d " " -f1 <<< ${MONITORING_CONFIG[$index]})"
     inactive="$(cut -d " " -f2 <<< ${MONITORING_CONFIG[$index]})"
@@ -101,18 +99,18 @@ function executeExperiment() {
 
     "${PYTHON}" "${MOOBENCH_BIN_PY}" "${BASE_DIR}/config.ini"
 
-    if [ ! -f "${RESULT_FILE}" ] ; then
+    if [ ! -f "${RESULT_FILE}" ]; then
         info "---------------------------------------------------"
         cat "${LOG_FILE}"
         error "Result file '${RESULT_FILE}' is empty."
-    else
-       size=`wc -c "${RESULT_FILE}" | awk '{ print $1 }'`
-       if [ "${size}" == "0" ] ; then
+  else
+       size=$(wc -c "${RESULT_FILE}" | awk '{ print $1 }')
+       if [ "${size}" == "0" ]; then
            info "---------------------------------------------------"
            cat "${LOG_FILE}"
            error "Result file '${RESULT_FILE}' is empty."
-       fi
     fi
+  fi
     rm -rf "${DATA_DIR}"/kieker-*
 
     sync
@@ -123,7 +121,7 @@ function executeBenchmarkBody() {
   index="$1"
   loop="$2"
   recursion="$3"
-  if [[ "${RECEIVER[$index]}" ]] ; then
+  if [[ "${RECEIVER[$index]}" ]]; then
      debug "receiver ${RECEIVER[$index]}"
      ${RECEIVER[$index]} >> "${DATA_DIR}/kieker.receiver-${loop}-${index}.log" &
      RECEIVER_PID=$!
@@ -132,9 +130,8 @@ function executeBenchmarkBody() {
 
   executeExperiment "$loop" "$recursion" "$index"
 
-  if [[ "${RECEIVER_PID}" ]] ; then
-    if ps -p "${RECEIVER_PID}" > /dev/null
-    then
+  if [[ "${RECEIVER_PID}" ]]; then
+    if ps -p "${RECEIVER_PID}" > /dev/null; then
       kill -TERM "${RECEIVER_PID}"
     fi
      unset RECEIVER_PID
@@ -144,10 +141,9 @@ function executeBenchmarkBody() {
 function executeBenchmark() {
     recursion="${RECURSION_DEPTH}"
 
-    for index in $MOOBENCH_CONFIGURATIONS
-    do
+    for index in $MOOBENCH_CONFIGURATIONS; do
       executeBenchmarkBody $index $i $recursion
-    done
+  done
 }
 
 # end

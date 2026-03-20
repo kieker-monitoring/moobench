@@ -17,22 +17,21 @@ MAIN_DIR="${BASE_DIR}/../.."
 # source functionality
 #
 
-if [ ! -d "${BASE_DIR}" ] ; then
-	echo "Base directory ${BASE_DIR} does not exist."
-	exit 1
+if [ ! -d "${BASE_DIR}" ]; then
+  echo "Base directory ${BASE_DIR} does not exist."
+  exit 1
 fi
 
-if [ -f "${MAIN_DIR}/init.sh" ] ; then
-	source "${MAIN_DIR}/init.sh"
+if [ -f "${MAIN_DIR}/init.sh" ]; then
+  source "${MAIN_DIR}/init.sh"
 else
-	echo "Missing library: ${MAIN_DIR}/init.sh"
-	exit 1
+  echo "Missing library: ${MAIN_DIR}/init.sh"
+  exit 1
 fi
 
-if [ -z "$MOOBENCH_CONFIGURATIONS" ]
-then
-	MOOBENCH_CONFIGURATIONS="0 1 2 3 4 5 6 7 8"
-	echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (everything)"
+if [ -z "$MOOBENCH_CONFIGURATIONS" ]; then
+  MOOBENCH_CONFIGURATIONS="0 1 2 3 4 5 6 7 8"
+  echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (everything)"
 fi
 echo "Running configurations: $MOOBENCH_CONFIGURATIONS"
 
@@ -53,7 +52,7 @@ checkDirectory data-dir "${DATA_DIR}" create
 checkFile log "${DATA_DIR}/kieker.log" clean
 cleanupResults
 checkDirectory results-directory "${RESULTS_DIR}" recreate
-PARENT=`dirname "${RESULTS_DIR}"`
+PARENT=$(dirname "${RESULTS_DIR}")
 checkDirectory result-base "${PARENT}"
 
 # Find receiver and extract it
@@ -63,7 +62,7 @@ checkFile R-script "${RSCRIPT_PATH}"
 
 showParameter
 
-TIME=`expr ${METHOD_TIME} \* ${TOTAL_NUM_OF_CALLS} / 1000000000 \* 4 \* ${RECURSION_DEPTH} \* ${NUM_OF_LOOPS} + ${SLEEP_TIME} \* 4 \* ${NUM_OF_LOOPS}  \* ${RECURSION_DEPTH} + 50 \* ${TOTAL_NUM_OF_CALLS} / 1000000000 \* 4 \* ${RECURSION_DEPTH} \* ${NUM_OF_LOOPS} `
+TIME=$(expr ${METHOD_TIME} \* ${TOTAL_NUM_OF_CALLS} / 1000000000 \* 4 \* ${RECURSION_DEPTH} \* ${NUM_OF_LOOPS} + ${SLEEP_TIME} \* 4 \* ${NUM_OF_LOOPS} \* ${RECURSION_DEPTH} + 50 \* ${TOTAL_NUM_OF_CALLS} / 1000000000 \* 4 \* ${RECURSION_DEPTH} \* ${NUM_OF_LOOPS})
 info "Experiment will take circa ${TIME} seconds."
 
 # Receiver setup if necessary

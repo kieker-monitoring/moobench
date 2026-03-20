@@ -1,8 +1,6 @@
-
-
 function summarizeFile {
-	file=$1
-	awk -F';' -v B="$blocksize" '
+  file=$1
+  awk -F';' -v B="$blocksize" '
 	{
 	    sum2 += $2
 	    sum3 += $3
@@ -31,13 +29,12 @@ blocksize=1000
 
 mkdir -p graphs
 
-for framework in Kieker-java OpenTelemetry-java inspectIT-java elasticapm-java Skywalking-java pinpoint-java
-do
-	case "$framework" in
-		Kieker-java)
-			index=5
-			;;
-		Skywalking-java | scouter)
+for framework in Kieker-java OpenTelemetry-java inspectIT-java elasticapm-java Skywalking-java pinpoint-java; do
+  case "$framework" in
+  Kieker-java)
+    index=5
+    ;;
+  Skywalking-java | scouter)
             index=1
             ;;
         elasticapm-java)
@@ -46,17 +43,17 @@ do
         OpenTelemetry-java | inspectIT-java | pinpoint-java)
             index=3
             ;;
-		*)
-			index=0   # fallback, falls etwas nicht passt
-		;;
-	esac
-	echo "Analysing $framework"
-	cd $1/exp-results-$framework
-	unzip results-128.zip "raw-10-128-$index.csv"
-	ls
-	
-	summarizeFile raw-10-128-$index.csv
-	gnuplot -c $start/plotSingleFile.plt
-	
-	mv single-file-evolution.pdf $start/graphs/$framework.pdf
+  *)
+    index=0  # fallback, falls etwas nicht passt
+    ;;
+  esac
+  echo "Analysing $framework"
+  cd $1/exp-results-$framework
+  unzip results-128.zip "raw-10-128-$index.csv"
+  ls
+
+  summarizeFile raw-10-128-$index.csv
+  gnuplot -c $start/plotSingleFile.plt
+
+  mv single-file-evolution.pdf $start/graphs/$framework.pdf
 done

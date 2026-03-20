@@ -1,7 +1,7 @@
 DIR=$(cd "$(dirname "$0")" && pwd)
 RAW_MAIN_DIR="$DIR/../../"
 
-if command -v cygpath &>/dev/null; then
+if command -v cygpath &> /dev/null; then
     BASE_DIR=$(cygpath -w "$DIR")
     RAW_MAIN_DIR="$DIR/../../"
     MAIN_DIR=$(cygpath -w "$RAW_MAIN_DIR")
@@ -19,14 +19,14 @@ else
 fi
 
 source "$DIR/config.rc"
-source "$DIR/labels.sh"   
+source "$DIR/labels.sh"
 source "$DIR/functions.sh"
 
 echo " # Preparing Environment..."
 if [ -d "$VENV_DIR" ]; then rm -rf "$VENV_DIR"; fi
 
 # For Windows/Cygwin compatibility
-if command -v python3 &>/dev/null; then
+if command -v python3 &> /dev/null; then
     PYTHON_EXE=python3
 else
     PYTHON_EXE=python
