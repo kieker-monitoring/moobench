@@ -1,43 +1,40 @@
 # inspectIT specific functions
 
 # ensure the script is sourced
-if [ "${BASH_SOURCE[0]}" -ef "$0" ]
-then
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]; then
     echo "Hey, you should source this script, not execute it!"
     exit 1
 fi
 
-
 function getAgent() {
-	if [ ! -f "${BASE_DIR}/agent/inspectit-ocelot-agent-$INSPECTIT_VERSION.jar" ] ; then
-		mkdir "${BASE_DIR}/agent"
-		cd "${BASE_DIR}/agent"
-		wget https://github.com/inspectIT/inspectit-ocelot/releases/download/$INSPECTIT_VERSION/inspectit-ocelot-agent-$INSPECTIT_VERSION.jar
-		cd "${BASE_DIR}"
-	fi
+  if [ ! -f "${BASE_DIR}/agent/inspectit-ocelot-agent-$INSPECTIT_VERSION.jar" ]; then
+    mkdir "${BASE_DIR}/agent"
+    cd "${BASE_DIR}/agent"
+    wget https://github.com/inspectIT/inspectit-ocelot/releases/download/$INSPECTIT_VERSION/inspectit-ocelot-agent-$INSPECTIT_VERSION.jar
+    cd "${BASE_DIR}"
+  fi
 }
 
 function cleanup {
-	[ -f "${BASE_DIR}/hotspot.log" ] && mv "${BASE_DIR}/hotspot.log" "${RESULTS_DIR}/hotspot-${i}-${j}-${k}.log"
-	echo >> "${BASE_DIR}/inspectIT.log"
-	echo >> "${BASE_DIR}/inspectIT.log"
-	sync
-	sleep "${SLEEP_TIME}"
+  [ -f "${BASE_DIR}/hotspot.log" ] && mv "${BASE_DIR}/hotspot.log" "${RESULTS_DIR}/hotspot-${i}-${j}-${k}.log"
+  echo >> "${BASE_DIR}/inspectIT.log"
+  echo >> "${BASE_DIR}/inspectIT.log"
+  sync
+  sleep "${SLEEP_TIME}"
 }
 
 function executeBenchmark() {
-   for index in $MOOBENCH_CONFIGURATIONS
-   do
+   for index in $MOOBENCH_CONFIGURATIONS; do
       case $index in
          0) runNoInstrumentation 0 ;;
          1) runInspectITDeactivated 1 ;;
          2) runInspectITNullWriter 2 ;;
          3) runInspectITZipkin 3 ;;
          4) runInspectITPrometheus 4 ;;
-      esac
-      
+    esac
+
       cleanup
-   done
+  done
 }
 
 # experiment setups
@@ -92,7 +89,6 @@ function runInspectITNullWriter {
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
     sleep "${SLEEP_TIME}"
 }
-
 
 function runInspectITZipkin {
     # InspectIT (minimal)
