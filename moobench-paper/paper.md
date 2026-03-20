@@ -54,9 +54,9 @@ MooBench consists of two parts: the minimal and configurable system under test, 
 
 ## System under test
 
-The overhead of observability tools is caused by data collection. For tracing tools, this data collection is caused by method execution. The runtime behavior of the execution of methods is influenced by various factors, including class loading, Just-in-Time compilation (JIT), and garbage collection. To minimize these effects, MooBenchs SuT consists of only one method (`monitoredMethod`) that calls itself recursively `$RECURSION_DEPTH` times. Only this recursive calls could be removed by the JIT compiler, therefore, the last method call contains a busy wait for `$METHOD_TIME` nanoseconds. Figure [@fig:moobench] visualizes the call tree.
+The overhead of observability tools is caused by data collection. For tracing tools, this data collection is caused by method execution. The runtime behavior of the execution of methods is influenced by various factors, including class loading, Just-in-Time compilation (JIT), and garbage collection. To minimize these effects, MooBenchs SuT consists of only one method (`monitoredMethod`) that calls itself recursively `$RECURSION_DEPTH` times. Only this recursive calls could be removed by the JIT compiler, therefore, the last method call contains a busy wait for `$METHOD_TIME` nanoseconds. \autoref{fig:calltree} visualizes the call tree.
 
-![Call tree of the MooBench microbenchmark showing the recursive method calls to control the stack depth. \label{fig:moobench}](calltree-1.svg)
+![Call tree of the MooBench microbenchmark showing the recursive method calls to control the stack depth. From: [@reichelt2023towards] \label{fig:calltree}](calltree-1.svg){width=100% }
 
 This system under test is currently implemented in Java and Python. It is planned to extend it for JavaScript and Go.
 
