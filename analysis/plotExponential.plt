@@ -85,26 +85,28 @@ set out resultsfolder.'/graphs/scalability_overview.pdf'
 set title 'Overview of Method Execution Durations'
 
 set xlabel 'Call Tree Depth'
-set ylabel 'Duration ns'
+set ylabel 'Duration / {/Symbol m}s'
 
 set key left top
-	
-plot resultsfolder.'/evolution_inspectIT-java.csv' u 1:2 w linespoint lc "red" title 'Baseline', \
-	resultsfolder.'/evolution_inspectIT-java.csv' u 1:($2-$3):($2+$3) w filledcurves lc "red" notitle fs transparent solid 0.5, \
-     resultsfolder.'/evolution_Kieker-java.csv' u 1:10 w linespoint lc "blue" title 'Kieker-java (TCP)', \
-     resultsfolder.'/evolution_Kieker-java.csv' u 1:($10-$11):($10+$11) w filledcurves lc "blue" notitle fs transparent solid 0.5, \
-     resultsfolder.'/evolution_inspectIT-java.csv' u 1:6 w linespoint lc rgb "#c66900" title 'inspectIT (Zipkin)', \
-	resultsfolder.'/evolution_inspectIT-java.csv' u 1:($6-$7):($6+$7) w filledcurves lc rgb "#c66900" notitle fs transparent solid 0.5, \
-     resultsfolder.'/evolution_OpenTelemetry-java.csv' u 1:8 w linespoint lc "green" title 'OpenTelemetry (Zipkin)', \
-	resultsfolder.'/evolution_OpenTelemetry-java.csv' u 1:($8-$9):($8+$9) w filledcurves lc "green" notitle fs transparent solid 0.5, \
-     resultsfolder.'/evolution_elasticapm-java.csv' u 1:6 w linespoint lc rgb "#FF50FF" title 'Elastic APM', \
-	resultsfolder.'/evolution_elasticapm-java.csv' u 1:($6-$7):($6+$7) w filledcurves lc rgb "#FF50FF" notitle fs transparent solid 0.5, \
-	resultsfolder.'/evolution_Skywalking-java.csv' u 1:4 w linespoint lc rgb "#FFAAFF" title 'Skywalking', \
-	resultsfolder.'/evolution_Skywalking-java.csv' u 1:($4-$5):($4+$5) w filledcurves lc rgb "#FFAAFF" notitle fs transparent solid 0.5, \
-	resultsfolder.'/evolution_pinpoint-java.csv' u 1:8 w linespoint lc rgb "#FFAA00" title 'Pinpoint', \
-	resultsfolder.'/evolution_pinpoint-java.csv' u 1:($8-$9):($8+$9) w filledcurves lc rgb "#FFAA00" notitle fs transparent solid 0.5, \
-	resultsfolder.'/evolution_Scouter-java.csv' u 1:4 w linespoint lc "purple" title 'Scouter', \
-	resultsfolder.'/evolution_Scouter-java.csv' u 1:($4-$5):($4+$5) w filledcurves lc "purple" notitle fs transparent solid 0.5
+
+k = 1000.0
+
+plot resultsfolder.'/evolution_inspectIT-java.csv' u 1:($2/k) w linespoint lc "red" title 'Baseline', \
+    resultsfolder.'/evolution_inspectIT-java.csv' u 1:(($2-$3)/k):(($2+$3)/k) w filledcurves lc "red" notitle fs transparent solid 0.5, \
+    resultsfolder.'/evolution_Kieker-java.csv' u 1:($10/k) w linespoint lc "blue" title 'Kieker-java (TCP)', \
+    resultsfolder.'/evolution_Kieker-java.csv' u 1:(($10-$11)/k):(($10+$11)/k) w filledcurves lc "blue" notitle fs transparent solid 0.5, \
+    resultsfolder.'/evolution_inspectIT-java.csv' u 1:($6/k) w linespoint lc rgb "#c66900" title 'inspectIT (Zipkin)', \
+    resultsfolder.'/evolution_inspectIT-java.csv' u 1:(($6-$7)/k):(($6+$7)/k) w filledcurves lc rgb "#c66900" notitle fs transparent solid 0.5, \
+    resultsfolder.'/evolution_OpenTelemetry-java.csv' u 1:($8/k) w linespoint lc "green" title 'OpenTelemetry (Zipkin)', \
+    resultsfolder.'/evolution_OpenTelemetry-java.csv' u 1:(($8-$9)/k):(($8+$9)/k) w filledcurves lc "green" notitle fs transparent solid 0.5, \
+    resultsfolder.'/evolution_elasticapm-java.csv' u 1:($6/k) w linespoint lc rgb "#FF50FF" title 'Elastic APM', \
+    resultsfolder.'/evolution_elasticapm-java.csv' u 1:(($6-$7)/k):(($6+$7)/k) w filledcurves lc rgb "#FF50FF" notitle fs transparent solid 0.5, \
+    resultsfolder.'/evolution_Skywalking-java.csv' u 1:($4/k) w linespoint lc rgb "#FFAAFF" title 'Skywalking', \
+    resultsfolder.'/evolution_Skywalking-java.csv' u 1:(($4-$5)/k):(($4+$5)/k) w filledcurves lc rgb "#FFAAFF" notitle fs transparent solid 0.5, \
+    resultsfolder.'/evolution_pinpoint-java.csv' u 1:($8/k) w linespoint lc rgb "#FFAA00" title 'Pinpoint', \
+    resultsfolder.'/evolution_pinpoint-java.csv' u 1:(($8-$9)/k):(($8+$9)/k) w filledcurves lc rgb "#FFAA00" notitle fs transparent solid 0.5, \
+    resultsfolder.'/evolution_Scouter-java.csv' u 1:($4/k) w linespoint lc "purple" title 'Scouter', \
+    resultsfolder.'/evolution_Scouter-java.csv' u 1:(($4-$5)/k):(($4+$5)/k) w filledcurves lc "purple" notitle fs transparent solid 0.5
 
 	
 unset output
