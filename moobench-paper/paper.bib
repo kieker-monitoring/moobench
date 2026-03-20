@@ -1,3 +1,158 @@
+@techreport{GartnerObservability2025,
+  author      = {Gregg Siegfried and Crossley, Matt and Byrne, Padraig and Bridges, Andre and Caren, Martin},
+  title       = {Magic Quadrant for Observability Platforms},
+  institution = {Gartner, Inc.},
+  year        = {2025},
+  month       = {July},
+  type        = {Research Report},
+  url         = {https://www.gartner.com/doc/reprints?id=1-2LF3Y49A&ct=250709&st=sb},
+  note        = {Accessed: 2026-03-20}
+}
+
+@article{janes2023open,
+  title={Open tracing tools: Overview and critical comparison},
+  author={Janes, Andrea and Li, Xiaozhou and Lenarduzzi, Valentina},
+  journal={Journal of Systems and Software},
+  volume={204},
+  pages={111793},
+  year={2023},
+  publisher={Elsevier}
+}
+
+@book{majors2022observability,
+  title={Observability engineering},
+  author={Majors, Charity and Fong-Jones, Liz and Miranda, George},
+  year={2022},
+  publisher={" O'Reilly Media, Inc."}
+}
+
+@article{sigelman2010dapper,
+  title={Dapper, a large-scale distributed systems tracing infrastructure},
+  author={Sigelman, Benjamin H and Barroso, Luiz Andr{\'e} and Burrows, Mike and Stephenson, Pat and Plakal, Manoj and Beaver, Donald and Jaspan, Saul and Shanbhag, Chandan},
+  year={2010},
+  publisher={Technical report, Google, Inc}
+}
+
+
+@article{gebai2018tracers,
+author     = {Gebai, Mohamad and Dagenais, Michel R.},
+title      = {Survey and Analysis of Kernel and Userspace Tracers on Linux: Design, Implementation, and Overhead},
+year       = {2018},
+issue_date = {March 2019},
+publisher  = {Association for Computing Machinery},
+address    = {New York, NY, USA},
+volume     = {51},
+number     = {2},
+issn       = {0360-0300},
+url        = {https://doi.org/10.1145/3158644},
+doi        = {10.1145/3158644},
+abstract   = {As applications and operating systems are becoming more complex,
+              the last decade has seen the rise of many tracing tools all
+              across the software stack. This article presents a hands-on
+              comparison of modern tracers on Linux systems, both in user space
+              and kernel space. The authors implement microbenchmarks that not
+              only quantify the overhead of different tracers, but also sample
+              fine-grained metrics that unveil insights into the tracers’
+              internals and show the cause of each tracer’s overhead. Internal
+              design choices and implementation particularities are discussed,
+              which helps us to understand the challenges of developing
+              tracers. Furthermore, this analysis aims to help users choose and
+              configure their tracers based on their specific requirements to
+              reduce their overhead and get the most of out of them.},
+journal    = {ACM Comput. Surv.},
+month      = {mar},
+articleno  = {26},
+numpages   = {33},
+keywords   = {Linux, kernel, lockless, monitoring, performance, reentrancy,
+              ring buffer, tracer, userspace}
+}
+
+@inproceedings{domaschka2023using,
+  title={Using eBPF for Database Workload Tracing: An Explorative Study},
+  author={Domaschka, J{\"o}rg and Volpert, Simon and Maier, Kevin and Eisenhart, Georg and Seybold, Daniel},
+  booktitle={Companion of the 2023 ACM/SPEC International Conference on Performance Engineering},
+  pages={311--317},
+  year={2023}
+}
+
+@inproceedings{volpertEBPFOverhead,
+author = {Volpert, Simon and Winkelhofer, Sascha and Domaschka, J\"{o}rg and Wesner, Stefan},
+title = {Towards eBPF Overhead Quantification: An Exemplary Comparison of eBPF and SystemTap},
+year = {2025},
+isbn = {9798400711305},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3680256.3721311},
+doi = {10.1145/3680256.3721311},
+abstract = {Quantifying the performance overhead of instrumentation tools is crucial to maximize their effectiveness in performance analysis and monitoring. This paper presents a methodology for precisely measuring the overhead introduced by eBPF and SystemTap, two prominent tools for dynamic instrumentation. We employ a fixed-time benchmark approach, that targets common system call functions (open and mmap) with various probe types, to isolate and quantify the overhead under controlled conditions. Our results demonstrate that both eBPF and SystemTap impose measurable overhead, with user-space probes being the most expensive. Furthermore, we find that data transfer significantly impacts SystemTap's performance, while eBPF remains relatively unaffected. Our findings, validated by comparison with ftrace and internal eBPF statistics, provide valuable insights for informed decision-making when applying instrumentation. The presented methodology offers a robust, repeatable and reproducible approach for quantifying instrumentation overhead that can be applied to any target system.},
+booktitle = {Companion of the 16th ACM/SPEC International Conference on Performance Engineering},
+pages = {122–129},
+numpages = {8},
+keywords = {benchmark, ebpf, instrumentation, overhead, performance, systemtap},
+location = {Toronto ON, Canada},
+series = {ICPE '25}
+}
+
+@inproceedings{desnoyers2006lttng,
+  title={The lttng tracer: A low impact performance and behavior monitor for gnu/linux},
+  author={Desnoyers, Mathieu and Dagenais, Michel R},
+  booktitle={OLS (Ottawa Linux Symposium)},
+  volume={2006},
+  pages={209--224},
+  year={2006},
+  organization={Citeseer}
+}
+
+@inproceedings{ilsche2015combining,
+  title={Combining instrumentation and sampling for trace-based application performance analysis},
+  author={Ilsche, Thomas and Schuchart, Joseph and Sch{\"o}ne, Robert and Hackenberg, Daniel},
+  booktitle={Tools for High Performance Computing 2014: Proceedings of the 8th International Workshop on Parallel Tools for High Performance Computing, October 2014, HLRS, Stuttgart, Germany},
+  pages={123--136},
+  year={2015},
+  organization={Springer}
+}
+
+@inproceedings{hunold2022overhead,
+  title={An overhead analysis of mpi profiling and tracing tools},
+  author={Hunold, Sascha and Ajanohoun, Jordy I and Vardas, Ioannis and Tr{\"a}ff, Jesper Larsson},
+  booktitle={Proceedings of the 2nd Workshop on Performance EngineeRing, Modelling, Analysis, and VisualizatiOn Strategy},
+  pages={5--13},
+  year={2022}
+}
+
+@inproceedings{nou2025investigating,
+  title={Investigating performance overhead of distributed tracing in microservices and serverless systems},
+  author={N{\~o}u, Anders and Talluri, Sacheendra and Iosup, Alexandru and Bonetta, Daniele},
+  booktitle={Companion of the 16th ACM/SPEC International Conference on Performance Engineering},
+  pages={162--166},
+  year={2025}
+}
+
+@inproceedings{eder2023comparison,
+  title={A Comparison of Distributed Tracing Tools in Serverless Applications},
+  author={Eder, Christina and Winzinger, Stefan and Lichtenth{\"a}ler, Robin},
+  booktitle={2023 IEEE International Conference on Service-Oriented System Engineering (SOSE)},
+  pages={98--105},
+  year={2023},
+  organization={IEEE},
+  doi={10.1109/SOSE58276.2023.00018}
+}
+
+@InProceedings{ahmed2016studying,
+  title		= {Studying the effectiveness of application performance
+		  management {(APM)} tools for detecting performance
+		  regressions for web applications: an experience report},
+  author	= {Ahmed, Tarek M and Bezemer, Cor-Paul and Chen, Tse-Hsun
+		  and Hassan, Ahmed E and Shang, Weiyi},
+  booktitle	= {Proceedings of the 13th International Workshop on Mining
+		  Software Repositories},
+  pages		= {1--12},
+  year		= {2016},
+  organization	= {ACM},
+  doi = {10.1145/2901739.2901774}
+}
+
+
 @article{waller2014application,
   title={Application performance monitoring: Trade-off between overhead reduction and maintainability},
   author={Waller, Jan and Fittkau, Florian and Hasselbring, Wilhelm},
@@ -5,6 +160,9 @@
   publisher={University of Stuttgart},
   journal={Proceedings of the Symposium on Software Performance}
 }
+
+
+
 
 @article{eichelberger2014flexible,
   title={Flexible resource monitoring of {Java} programs},
