@@ -72,13 +72,11 @@ To measure performance in managed runtimes like the JVM, the managed runtime nee
 
 # Research impact statement
 
-There have been numerous case studies that examined overhead and its root causes.
-
-Different authors worked on continuously executing MooBench benchmarks for spotting performance regressions in observability frameworks. Waller et al. [@waller2014application] started to include MooBench's benchmarking into CI. To reduce perturbations from external frameworks, they configured Jenkins to execute measurements on a separate server. This setup continued running since its initialization. Additionally, a performance measurement setup for GitHub Actions was developed [@reichelt2024overhead]. This additional setup utilizes GitHubs default runners, that, despite sharing the execution infrastructure with others, show low standard deviation and lower execution times than the original Jenkins setup. The values from GitHub have been sent in Nyrkiö, a performance change detection tool for GitHub Actions. Using this tool, past regressions could be reproduced. In the future, it is expected that regressions will be automatically detected [@yang2025detection].
+There have been numerous case studies that examined overhead and its root causes. Furthermore, there have been studies working on MooBenchs continuous execution.
 
 ## Overhead analysis
 
-Eichelberger et al. [@eichelberger2014flexible] describe and develop SPASS-meter, an observability tool for Java and Android applications. To evaluate its overhead, they integrated SPASS-meter into MooBench. Based on this work, Knoche et al. [@knoche2018using] compared the overhead measurement of SPASS-meter and Kieker on a Raspberry Pi. They found that the results were reproducible across different Raspberry Pi units, indicating that such hardware provides a viable means for researchers to achieve reproducible performance benchmarks.
+Eichelberger et al. [@eichelberger2014flexible] describe and develop SPASS-meter, an observability tool for Java and Android applications. To evaluate its overhead, they integrated SPASS-meter into MooBench [@eichelberger2016reproducibility]. Based on this work, Knoche et al. [@knoche2018using] compared the overhead measurement of SPASS-meter and Kieker on a Raspberry Pi. They found that the results were reproducible across different Raspberry Pi units, indicating that such hardware provides a viable means for researchers to achieve reproducible performance benchmarks.
 
 Reichelt et al. [@reichelt2021overhead] integrated OpenTelemetry into MooBench and compared the overhead of Kieker, OpenTelemetry and inspectIT using MooBench. They found that the tracing overhead for Kieker was 4.6 $\mu$s, OpenTelemetry was 6.8 $\mu$s, and inspectIT was 10.9 $\mu$s. This indicates that Kiekers overhead was significantly lower than the overhead of OpenTelemetry at the time of the study.
 
@@ -96,13 +94,17 @@ Reichelt et al. [@reichelt2023towards] examined different options for overhead r
 
 Reichelt et al. [@reichelt2024overhead] compared the overhead of the instrumentation frameworks AspectJ, ByteBuddy, DiSL, Javassist and direct source code instrumentation. To do so, they extended the Kieker-java scripts of MooBench. Through these extensions of Kieker and MooBench, they found that while source code instrumentation has the lowest overhead, ByteBuddy, DiSL and Javassist also have comparably low overhead. AspectJ causes significantly higher overhead than the others. Based on these findings, the Kieker framework transitioned to using the Kieker ByteBuddy agent as its default.
 
+## Continuous execution
+
+Different authors worked on continuously executing MooBench benchmarks for spotting performance regressions in observability frameworks. Waller et al. [@waller2014application] started to include MooBench's benchmarking into CI. To reduce perturbations from external frameworks, they configured Jenkins to execute measurements on a separate server. This setup continued running since its initialization. Additionally, a performance measurement setup for GitHub Actions was developed [@reichelt2024overhead]. This additional setup utilizes GitHubs default runners, that, despite sharing the execution infrastructure with others, show low standard deviation and lower execution times than the original Jenkins setup. The values from GitHub have been sent in Nyrkiö, a performance change detection tool for GitHub Actions. Using this tool, past regressions could be reproduced. In the future, it is expected that regressions will be automatically detected [@yang2025detection].
+
 # AI usage disclosure
 
 There is no known AI usage, however, AI usage in PRs is not monitored. 
 
 # Acknowledgements
 
-We acknowledge contributions from André van Hoorn, Reiner Jung, Thomas Düllmann, ...
+We acknowledge contributions from André van Hoorn, Jan Waller, Reiner Jung, ...
 
 # References
 
