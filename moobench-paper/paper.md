@@ -36,7 +36,7 @@ aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
 
 Understanding the runtime behavior of software is inherently difficult due to the unpredictability of the behavior itself and the non-determinism of underlying layers, such as Just-In-Time (JIT) compilation in virtual machines, operating system scheduling, and CPU frequency scaling. Observability tools aim to answer questions regarding runtime behavior of software, such as "How much time did this request take?" or "How often did method A call method B?" [@majors2022observability]. These questions are answered using telemetry data, i.e., measurement data that is obtained from the code execution. To collect telemetry data, additional code needs to be executed, which introduces overhead. This overhead affects both system performance and the accuracy of the measurements themselves. The MooBench microbenchmark measures this overhead and contains factorial experiments that facilitate breaking down this overhead into its root causes.
 
-The MooBench benchmark has been originally developed to examine the performance overhead of Kieker in Java [@waller2013benchmark] and was extended as a general overhead measurement microbenchmark for various observability tools, currently within the Java and Python ecosystem. In this paper, we describe the MooBench microbenchmark.
+The MooBench benchmark has been originally developed to examine the performance overhead of Kieker [@kieker2012] [@yang2025kieker] [@Kieker2020] in Java [@waller2013benchmark] and was extended as a general overhead measurement microbenchmark for various observability tools, currently within the Java and Python ecosystem. In this paper, we describe the MooBench microbenchmark.
 
 # Statement of need
 
@@ -72,17 +72,19 @@ To measure performance in managed runtimes like the JVM, the managed runtime nee
 
 There have been numerious case studies that examined overhead and its root causes.
 
+Different authors worked on continuously executing MooBench benchmarks for spotting performance regressions in observability frameworks. Waller et al. [@waller2014application] started to include MooBenchs continuous benchmarking into CI. To reduce perturbations by external frameworks, they let Jenkins execute measurements on a separate server. This setup continued running since its initialization. Additionally, a performance measurement setup for GitHub Actions was built [@reichelt2024overhead]. This additional setup uses GitHubs default runners, that, despite sharing the execution infrastructure with others, show low standard deviation and lower execution times than the original Jenkins setup. The values from GitHub have been included in Nyrkiö, a performance change detection tool for GitHub Actions. Using this tool, past regressions could be reproduced and in the future, it is expected that regressions will be automatically detected [@yang2025detection].
+
 ## Overhead analysis
 
-Waller et al. [@waller2014application]...
+Eichelberger et al. [@eichelberger2014flexible] describe and develop SPASS-meter, an observability tool for Java and Android apps. To evaluate the overhead of SPASS-meter, they integrate it into MooBench. Based on this work, Knoche et al. [@knoche2018using] compare the overhead measurement of SPASS-meter and Kieker on a Raspberry Pi. They find that the overhead results are reproducible on different Raspberry Pis, indicating that performance measurements on a Raspberry Pi are one way to make performance benchmarks reproducible for other researchers.
 
-Eichelberger et al. [@eichelberger2014flexible]...
+Reichelt et al. [@reichelt2021overhead] integrated OpenTelemetry into MooBench and compared the overhead of Kieker, OpenTelemetry and inspectIT using MooBench. They found that the overhead for tracing of Kieker is 4.6 $\mu$s, OpenTelemetry is 6.8 $\mu$s, and inspectIT is 10.9 $\mu$s. This indicates that Kiekers overhead was significantly lower than the overhead of OpenTelemetry at this time.
 
-Knoche et al. [@knoche2018using]...
+Waller et al. [@waller2012comparison] examine how multi-core environments influence the overhead of observability with Kieker. They find that for all available systems, asynchronous writing on multi-core systems leads to a significant reduction in overhead.
 
-Reichelt et al. [@reichelt2021overhead]...
+Yang et al. [@yang2024evaluating] compares the overhead of the Cloudprofiler [@yang2023cloudprofilertscbasedinternodeprofiling], a monitoring application for stream processing workloads, to Kieker and OpenTelemetry. They found that Cloudprofilers overhead (2.28 $\mu$s) is on average lower than the overhead introduced by Kieker (7.127 $\mu$s) and OpenTelemetry (higher, but only visible in a graph).
 
-Waller et al. [@waller2012comparison]...
+In our most recent study [@reichelt2026benchmarking], we integrate Pinpoint, Scouter, Skywalking and Elastic APM into MooBench, measured the overhead of all frameworks, and examined the root causes of overhead. We find that the overhead is Kieker < OpenTelemetry < Elastic APM < Skywalking < inspectIT and that all of these scale linearly. For Scouter and Pinpoint, we find that their overhead increases very slow since they loose records, i.e., they contain functional bugs. By profiling the overhead using async profiler, we find attribute the overhead to time, metadata management, call tree collection, memory management, and queue management. Amongst others, we find that big shares of the overhead is caused by extensive metadata management.
 
 ## Improvement Case Studies
 
@@ -91,12 +93,6 @@ Strubel et al. [@strubel2016refactoring] examined how a rewriting Kiekers monito
 Reichelt et al. [@reichelt2023towards] examined different options for overhead reduction for tracing: Using source code instrumentation instead of AspectJ, storing only limited metadata, using a different queue and aggregating performance data before writing it to the monitoring queue. Using MooBench, they found that on their examined hardware, they could reduce the overhead from 4.77 ns to 0.4 ns per method call.
 
 Reichelt et al. [@reichelt2024overhead] compared the overhead of the instrumentation frameworks AspectJ, ByteBuddy, DiSL, javassist and direct source code instrumentation. To do so, they extended the Kieker-java scripts of MooBench. By extensions of Kieker and MooBench, they find that while source code instrumentation has the lowest overhead, ByteBuddy, DiSL and javassist also have comparably low overhead. AspectJ has significantly higher overhead than the others. Based on that finding, the Kieker framework started using the Kieker ByteBuddy agent as default agent.
-
-Yang et al. [@yang2024evaluating]...
-
-## MooBench development papers
-
-Should include [@yang2025detection], [@reichelt2024overhead]?
 
 # AI usage disclosure
 
