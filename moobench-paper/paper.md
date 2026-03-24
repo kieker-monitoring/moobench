@@ -64,7 +64,7 @@ This system under test is currently implemented in Java and Python. It is planne
 
 ## Observability automation
 
-Each observability framework requires a unique setup and has different capabilities. For example, OpenTelemetry can be attached to the JVM using `-javaagent`, requires the property `otel.instrumentation.methods.include` to be set to a specific list of classes, and can export to Zipkin, Jaeger, or Prometheus. Furthermore, OpenTelemetry can be started with an empty `otel.instrumentation.methods.include` or without export, which enables measuring the overhead of instrumentation without data collection or data collection without serialization. Due to these different configurations, it is necessary to implement configuration scripts for every framework individually. 
+Each observability framework requires a unique setup and has different capabilities. For example, OpenTelemetry can be attached to the JVM using `-javaagent`, requires the property `otel.instrumentation.methods.include` to be set to a specific list of classes, and can export to Zipkin, Jaeger, or Prometheus. Furthermore, OpenTelemetry can be started with an empty `otel.instrumentation.methods.include` or without export, which enables measuring the overhead of instrumentation without data collection or data collection without serialization. Due to these different configurations, it is necessary to implement configuration scripts for every framework individually.
 
 MooBench stores these configuration scripts in `frameworks/$TECHNOLOGY-$LANGUAGE` (e.g., `frameworks/OpenTelemetry-java`). The scripts typically contain a `benchmark.sh` for starting the experiment, `functions.sh` with specific download or execution functions, `labels.sh` containing the names of the configurations and `config.rc` containing eventually necessary definitions of additional environment variables.
 
@@ -90,9 +90,9 @@ In our most recent study [@reichelt2026benchmarking], we integrated Pinpoint, Sc
 
 Strubel et al. [@strubel2016refactoring] examined how rewriting Kieker’s monitoring component could reduce tracing overhead. Using MooBench, they demonstrated that their suggested rewrite reduced the overhead to 17% of the original measurement.
 
-Reichelt et al. [@reichelt2023towards] examined different options for overhead reduction for tracing: Using source code instrumentation instead of AspectJ, storing only limited metadata, using a different queue and aggregating performance data before writing it to the monitoring queue. Using MooBench, they found that on their examined hardware, they could reduce the overhead from 4.77 ns to 0.4 ns per method call.
+Reichelt et al. [@reichelt2023towards] examined different options for overhead reduction for tracing: Using source code instrumentation instead of AspectJ [@eclipse2026aspectj], storing only limited metadata, using a different queue and aggregating performance data before writing it to the monitoring queue. Using MooBench, they found that on their examined hardware, they could reduce the overhead from 4.77 ns to 0.4 ns per method call.
 
-Reichelt et al. [@reichelt2024overhead] compared the overhead of the instrumentation frameworks AspectJ, ByteBuddy, DiSL, Javassist and direct source code instrumentation. To do so, they extended the Kieker-java scripts of MooBench. Through these extensions of Kieker and MooBench, they found that while source code instrumentation has the lowest overhead, ByteBuddy, DiSL and Javassist also have comparably low overhead. AspectJ causes significantly higher overhead than the others. Based on these findings, the Kieker framework transitioned to using the Kieker ByteBuddy agent as its default.
+Reichelt et al. [@reichelt2024overhead] compared the overhead of the instrumentation frameworks AspectJ, ByteBuddy [@rafael2025bytebuddy], DiSL [@marek2012disl], Javassist and [shigeru2023disl] direct source code instrumentation. To do so, they extended the Kieker-java scripts of MooBench. Through these extensions of Kieker and MooBench, they found that while source code instrumentation has the lowest overhead, ByteBuddy, DiSL and Javassist also have comparably low overhead. AspectJ causes significantly higher overhead than the others. Based on these findings, the Kieker framework transitioned to using the Kieker ByteBuddy agent as its default.
 
 ## Continuous execution
 
@@ -100,7 +100,7 @@ Different authors worked on continuously executing MooBench benchmarks for spott
 
 # AI usage disclosure
 
-There is no known AI usage, however, AI usage in PRs is not monitored. 
+There is no known AI usage, however, AI usage in PRs is not monitored.
 
 # Acknowledgements
 
