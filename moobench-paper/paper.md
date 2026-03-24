@@ -1,5 +1,5 @@
 ---
-title: 'MooBench: A micro-benchmark for performance overhead of observability tools'
+title: 'MooBench: A micro-benchmark for performance overhead measurement of observability tools'
 tags:
   - Java
   - ...
