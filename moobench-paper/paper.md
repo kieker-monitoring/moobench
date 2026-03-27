@@ -36,7 +36,7 @@ aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
 
 Understanding the runtime behavior of software is inherently difficult due to the unpredictability of the software's behavior itself and the non-determinism of underlying layers, such as Just-In-Time (JIT) compilation in virtual machines, operating system scheduling, and CPU frequency scaling. Observability tools aim to answer questions regarding runtime behavior of software, such as "How much time did this request take?" or "How often did method A call method B?" [@majors2022observability]. These questions are answered using telemetry data, i.e., measurement data that is obtained from the code execution. To collect telemetry data, additional code needs to be executed, which introduces overhead. This overhead affects both system performance and the accuracy of the measurements themselves. The MooBench microbenchmark measures this overhead and contains factorial experiments that facilitate breaking down this overhead into its root causes.
 
-The MooBench benchmark was originally developed to examine the performance overhead of the Kieker monitoring framwork [@kieker2012] [@yang2025kieker] [@Kieker2020] in Java [@waller2013benchmark] and was extended as a general overhead measurement microbenchmark for various observability tools, currently within the Java and Python ecosystem. In this paper, we describe why it is needed, how it is structured, and how it is used in research.
+The MooBench benchmark was originally developed to examine the performance overhead of the Kieker observability framwork [@kieker2012] [@yang2025kieker] [@Kieker2020] in Java [@waller2013benchmark] and was extended as a general overhead measurement microbenchmark for various observability tools, currently within the Java and Python ecosystem. In this paper, we describe why it is needed, how it is structured, and how it is used in research.
 
 # Statement of need
 
@@ -64,7 +64,7 @@ The overhead of observability tools is caused by data collection. The amount of 
 
 This system under test is currently implemented in Java and Python. It is planned to extend it for JavaScript and Go.
 
-## Automation of benchmarking observability frameworks
+## Automated setup of observability frameworks
 
 Each observability framework requires a unique setup and has different capabilities. For example, OpenTelemetry can be attached to the JVM using `-javaagent`, which requires the property `otel.instrumentation.methods.include` to be set to a specific list of classes. OpenTelemetry can export data to Zipkin, Jaeger, or Prometheus. Furthermore, OpenTelemetry can be started with an empty `otel.instrumentation.methods.include` or without export, which enables measuring the overhead of instrumentation without data collection or data collection without serialization. Due to these different configurations, it is necessary to implement configuration scripts for each framework individually.
 
