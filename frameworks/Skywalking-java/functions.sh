@@ -81,4 +81,7 @@ function runExperiment {
 	if  [[ "$k" -gt 0 ]]; then
 		stopSkywalkingServer
 	fi
+
+	sync
+	sleep "$SLEEP_TIME"
 }
