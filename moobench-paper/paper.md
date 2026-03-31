@@ -40,7 +40,7 @@ The MooBench benchmark was originally developed to examine the performance overh
 
 # Statement of need
 
-Observability tools are crucial for managing software system health and optimizing operational costs; consequently, a wide variety of tools compete in the market [@GartnerObservability2025]. The relevance of distributed tracing tools increased with the rise of microservice architectures, where system behavior across microservices needs to be understood [@sigelman2010dapper]. While observability generally consists of the three pillars traces, metrics, and logs, especially distributed tracing is gaining wide adoption [@janes2023open].
+Observability tools are crucial for managing software system health and optimizing operational costs; consequently, a wide variety of tools compete in the market [@GartnerObservability2025]. The relevance of distributed tracing tools increased with the rise of microservice architectures, where system behavior across microservices needs to be understood [@sigelman2010dapper]. While observability generally consists of the three pillars traces, metrics, and logs, especially distributed tracing is gaining wide adoption [@janes2023open]. Concerning the categorization of research software [@Categorization2025], MooBench is technology research software [@TRS2026]: It is developed and used in research, but it is also intended for use in non-academic contexts for evaluating and selecting observability tools.
 
 # State of the field
 
