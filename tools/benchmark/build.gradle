@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     implementation 'com.beust:jcommander:1.72'
-    implementation 'ch.qos.logback:logback-classic:1.5.18'
+    implementation 'ch.qos.logback:logback-classic:1.5.32'
 }
 
 application {
