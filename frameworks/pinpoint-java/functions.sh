@@ -54,7 +54,7 @@ sed -i '/<configuration>/a <property><name>hbase.master.port</name><value>16000<
     -e KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT \
     -e KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:9093 \
     -e CLUSTER_ID=abcdefghijklmnopqrstuv \
-    confluentinc/cp-kafka:7.6.0
+    confluentinc/cp-kafka:7.7.8
 }
 
 function startHBase() {
