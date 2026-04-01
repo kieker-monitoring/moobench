@@ -80,8 +80,6 @@ function stopHBase() {
   docker rm -f hbase
 }
 
-export KAFKA_VERSION=4.1.0
-export SCALA_VERSION=2.13
 function startKafka() {
   echo "Starting Kafka"
   docker exec kafka kafka-topics \
