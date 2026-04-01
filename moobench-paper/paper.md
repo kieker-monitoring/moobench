@@ -72,6 +72,10 @@ MooBench stores these configuration scripts in `frameworks/$TECHNOLOGY-$LANGUAGE
 
 To measure performance in managed runtimes like the JVM, the managed runtime needs to be started multiple times. Within each instance, the workload must be repeated until a given count of warmup iterations is finished, and finally, the measurement iterations within the managed runtime need to be executed [@georges2007statistically]. MooBench implements this process by executing `$NUM_OF_LOOPS` loops, where each loop runs all configurations of one framework. Inside of each run, `$TOTAL_NUM_OF_CALLS` defines the number of iterations, i.e., repetitions of all calls to `monitoredMethod`. The execution data are stored into CSV files, and after the execution is finished, the warmup iterations are truncated.
 
+## Continuous Integration
+
+Continuous testing is done via GitHub Actions: For every framework with name `$FRAMEWORK`, a workflow named `execute$FRAMEWORK.yaml` exist, that checks whether executing the default configuration for the framework yields the expected count of measurements. Furthermore, continuous benchmarking is executed via GitHub Actions. To avoid polluting the repositoy with data, the results are stored into the repository [moobench-data](https://github.com/kieker-monitoring/moobench-data).
+
 # Research impact statement
 
 There have been numerous case studies that examined overhead of observability frameworks, and its root causes. Furthermore, there have been studies working on MooBench's continuous execution for regression benchmarking.
