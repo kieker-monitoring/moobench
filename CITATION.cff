@@ -1,0 +1,37 @@
+# YAML 1.2
+---
+abstract: "MooBench is a micro-benchmark for quantification of the performance overhead caused by observability frameworks. It consists of a minimal system under test for injection of observability frameworks, the automation of the overhead measurement process and analysis scripts."
+authors:
+  -
+    affiliation: "Lancaster University"
+    family-names: Reichelt
+    given-names: David Georg
+    orcid: "https://orcid.org/0000-0002-1772-1416"
+  -
+    affiliation: "Kiel University"
+    family-names: Yang
+    given-names: Shinhyung
+    orcid: "https://orcid.org/0000-0002-8997-9942"
+  -
+    affiliation: "University of Hamburg"
+    family-names: Hansson
+    given-names: Marcel
+    orcid: "https://orcid.org/0009-0000-6524-037X"
+  -
+    affiliation: "Kiel University"
+    family-names: Hasselbring
+    given-names: Wilhelm
+    orcid: "https://orcid.org/0000-0001-6625-4335"
+cff-version: "1.2.0"
+doi: "10.5281/zenodo.19386367"
+keywords:
+  - "Observability Engineering"
+  - "Tracing"
+  - "Benchmark"
+  - "Application Performance Monitoring"
+  - "Monitoring Framework"
+license: "Apache-2.0"
+message: "If you use this software, please cite https://doi.org/10.5281/zenodo.19386367"
+repository-code: "https://github.com/kieker-monitoring/moobench"
+title: MooBench
+version: "1.0.1"
