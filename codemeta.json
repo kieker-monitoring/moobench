@@ -1,0 +1,67 @@
+{
+  "@context": "https://raw.githubusercontent.com/codemeta/codemeta/master/codemeta.jsonld",
+  "@type": "Code",
+  "author": [
+    {
+      "@id": "https://orcid.org/0000-0002-1772-1416",
+      "@type": "Person",
+      "email": "d.g.reichelt@lancaster.ac.uk",
+      "name": "David Georg Reichelt",
+      "affiliation": "Lancaster University Leipzig"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-5464-8561",
+      "givenName": "Reiner",
+      "familyName": "Jung",
+      "email": "reiner.jung@stk.landsh.de",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "ZIT SH"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0001-6625-4335",
+      "givenName": "Wilhelm",
+      "familyName": "Hasselbring",
+      "email": "hasselbring@email.uni-kiel.de",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Kiel University"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-8997-9942",
+      "givenName": "Shinhyung",
+      "familyName": "Yang",
+      "email": "shinhyung.yang@email.uni-kiel.de",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Kiel University"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://orcid.org/0009-0000-6524-037X",
+      "givenName": "Marcel",
+      "familyName": "Hansson",
+      "email": "marcel.hansson@uni-hamburg.de",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "University of Hamburg"
+      }
+    }
+  ],
+  "identifier": "https://doi.org/10.5281/zenodo.19386366",
+  "codeRepository": "https://github.com/kieker-monitoring/moobench",
+  "datePublished": "2026-04-02",
+  "dateModified": "2026-04-02",
+  "dateCreated": "2013-10-15",
+  "description": "MooBench is a micro-benchmark for quantification of the performance overhead caused by observability frameworks. It consists of a minimal system under test for injection of observability frameworks, the automation of the overhead measurement process and analysis scripts.",
+  "keywords": "Observability Engineering, Tracing, Benchmark, Application Performance Monitoring",
+  "license": "Apache 2.0",
+  "title": "MooBench",
+  "version": "v1.0.1"
+}
