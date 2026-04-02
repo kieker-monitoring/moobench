@@ -17,7 +17,7 @@ jar {
 
     manifest {
         attributes 'Implementation-Title': 'Moobench Benchmark',
-                   'Implementation-Version': '0.1-SNAPSHOT',
+                   'Implementation-Version': '1.0.0',
                    'Main-Class': 'moobench.benchmark.BenchmarkMain'
     }
     
