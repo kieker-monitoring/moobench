@@ -23,7 +23,7 @@ authors:
     given-names: Wilhelm
     orcid: "https://orcid.org/0000-0001-6625-4335"
 cff-version: "1.2.0"
-doi: "10.5281/zenodo.19386367"
+doi: "10.5281/zenodo.19386366"
 keywords:
   - "Observability Engineering"
   - "Tracing"
@@ -31,7 +31,7 @@ keywords:
   - "Application Performance Monitoring"
   - "Monitoring Framework"
 license: "Apache-2.0"
-message: "If you use this software, please cite https://doi.org/10.5281/zenodo.19386367"
+message: "If you use this software, please cite https://doi.org/10.5281/zenodo.19386366"
 repository-code: "https://github.com/kieker-monitoring/moobench"
 title: MooBench
 version: "1.0.1"
