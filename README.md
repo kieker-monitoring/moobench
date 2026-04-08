@@ -1,22 +1,25 @@
 # The MooBench Observability Overhead Micro-Benchmark 
 
 The MooBench micro-benchmarks can be used to quantify the performance overhead caused by observability framework components and different observability frameworks. Observability is achieved through its three pillars:
-- Logs, i.e., timestamped information about system events,
-- Metrics, i.e., numerical measurements of system behaviour, and
-- Traces, i.e., representations of request, transaction or operation executions.
+* Logs, i.e., timestamped information about system events,
+* Metrics, i.e., numerical measurements of system behaviour, and
+* Traces, i.e., representations of request, transaction or operation executions.
+
 MooBench can measure the overhead that is created by obtaining any of these three pillars of observability from program execution. 
 
 Continuous measurement results are available here:
 * Kiel University Server (Intel Xeon CPU E5620 @ 2.40 GHz, Debian 12): https://kieker-monitoring.net/performance-benchmarks/
 * GH Actions Runner (Ubuntu 24.04 -- see `.github/workflows/benchmark*.yaml` for curent version): https://kieker-monitoring.github.io/moobench-data/dev/bench/
 
-[^1]: According to https://docs.github.com/de/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners
-
 Currenly (fully) supported observability frameworks are:
+* Elastic APM with Java (https://github.com/elastic/apm-agent-java)
+* inspectIT with Java (https://inspectit.rocks/)
 * Kieker with Java (http://kieker-monitoring.net)
 * OpenTelemetry with Java (https://opentelemetry.io/)
-* inspectIT with Java (https://inspectit.rocks/)
-For all combinations of supported observability frameworks $FRAMEWORK and languages $LANGUAGE, the folder frameworks contains a folder $FRAMEWORK-$LANGUAGE.
+* PinPoint with Java (https://github.com/pinpoint-apm/pinpoint)
+* Scouter with Java (https://github.com/scouter-project/scouter)
+
+For all combinations of supported observability frameworks $FRAMEWORK and languages $LANGUAGE, the folder `frameworks` contains a folder $FRAMEWORK-$LANGUAGE.
 
 ## Approach
 
