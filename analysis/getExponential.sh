@@ -134,13 +134,18 @@ function getFrameworkEvolutionFile {
 }
 
 if [ "$#" -lt 1 ]; then
-  echo "Please pass the folder where exp-results-Kieker, exp-results-OpenTelemetry and exp-results-inspectIT are"
-  exit 1
+	echo "ERROR: Please pass the folder where exp-results-Kieker, exp-results-OpenTelemetry and exp-results-inspectIT are"
+	exit 1
 fi
 
 if [ ! -d $1 ]; then
-  echo "$1 should be a folder, but is not."
-  exit 1
+	echo "ERROR: $1 should be a folder, but is not."
+	exit 1
+fi
+
+if [[ "$1" != /* ]]; then
+	echo "ERROR: Absolute path is required (PRs fixing the code for relative paths will be accepted)"
+	return 1
 fi
 
 start=$(pwd)
