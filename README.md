@@ -52,13 +52,27 @@ flowchart TD;
 
 ## Benchmark Execution
 
-Initially, the following steps are required:
-1. Make sure, that you've installed R (http://www.r-project.org/) to generate
-   the results , awk to install intermediate results and curl to download
-   processing tools (Ubuntu: `sudo apt install r-base gawk curl`).
-2. Compile the application and install it in the repository root directory.
-   This can be done automatically be calling
-   `./setup.sh`
+### Prerequisites
+
+To use MooBench, please make sure the following tools are installed:
+- A linux system, capable of running bash 5.x (or newer), including `curl` and `awk` (`sudo dnf install gawk curl`)
+- A recent R installation (Rocky Linux: `sudo dnf install epel-release; sudo dnf config-manager --set-enabled crb; sudo dnf install R`)
+- For Pinpoint and Skywalking: Docker 28.0.0 or newer (for containers that manage observability data persistence)
+- For Java agents (Kieker, OpenTelemetry, Pinpoint, inspectIT, Skywalking)
+    * A recent JDK installation (OpenJDK 17 or newer); `$JAVA_HOME` needs to be set
+- For Python agents (Kieker, OpenTelemetry)
+    * Python 3.11 or newer
+
+### Benchmark Execution
+
+Compile the application and install it in the repository root directory. This can be done automatically be calling `./setup.sh`. Afterwards, you can switch to the benchmark folder (`frameworks` and then `$AGENT-$TECHNOLOGY`, e.g., OpenTelemetry as observability agent in Java) and run `./benchmark.sh`.
+
+For example, a simple benchmark execution is:
+```
+./setup.sh
+cd frameworks/OpenTelemetry-java/
+./benchmark.sh
+```
 
 All experiments are started with the provided "External Controller" scripts.
 The following scripts are available for every supported framework ($FRAMEWORK) and language ($LANGUAGE):
@@ -76,44 +90,19 @@ times for repeatability), which will be:
 - execution with serialization to tcp receiver, which might be a simple receiver
   (Kieker), or Zikpin and Prometheus (OpenTelemetry and inspectIT)
 
-All scripts have been tested on Ubuntu and Raspbian. 
+All scripts have been tested on Ubuntu, Rocky 9.6 and Raspbian. 
 
 The execution may be parameterized by the following environment variables:
-* SLEEP_TIME           between executions (default 30 seconds)
-* NUM_OF_LOOPS         number of repetitions (default 10)
-* THREADS              concurrent benchmarking threads (default 1)
-* RECURSION_DEPTH      recursion up to this depth (default 10)
-* TOTAL_NUM_OF_CALLS   the duration of the benchmark (deafult 2,000,000 calls)
-* METHOD_TIME          the time per monitored call (default 0 ns or 500 us)
+* `SLEEP_TIME`           between executions (default 30 seconds)
+* `NUM_OF_LOOPS`         number of repetitions (default 10)
+* `THREADS`              concurrent benchmarking threads (default 1)
+* `RECURSION_DEPTH`      recursion up to this depth (default 10)
+* `TOTAL_NUM_OF_CALLS`   the duration of the benchmark (deafult 2,000,000 calls)
+* `METHOD_TIME`          the time per monitored call (default 0 ns or 500 us)
 
 If they are unset, the values are set via `frameworks/common-function.sh`.
 
-Typical call (using Ubuntu):
-```
-export SLEEP_TIME=1 
-./gradlew assemble 
-cd frameworks/OpenTelemetry-java/
-./benchmark.sh
-```
 
-## Directory Structure
-
-- analysis = analysis scripts
-- benchmark = moobench code
-- continuous-integration = obsolete
-- docker = Dockerfile to be used in automated runs on our intrestructure
-- frameworks = benchmark setups for the different frameworks for the respective language (in the form $FRAMEWORK-$LANGUAGE)
-  - Kieker-java
-  - Kieker-python
-  - OpenTelementry-java
-  - inspectIT-java
-  - ...
-- gradle = build system, gradle libraries
-- tools = tooling used to support benchmarks and process results
-  - compile-results = adds new results to a result log and computes partial
-    views of the results for presentation in websites
-  - getConfidenceIntervalTable = compute the confidence interval table
-  - receiver = receiver for Kieker TCP probe output
 
 ## Formatting
 
