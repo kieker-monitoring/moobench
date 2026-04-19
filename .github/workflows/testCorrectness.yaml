@@ -1,5 +1,5 @@
 ---
-name: Execution Check Kieker-java
+name: Correctness check (run all bats tests)
 on:
   push:
   pull_request:
@@ -31,7 +31,7 @@ jobs:
           java-version: ${{ matrix.java }}
           distribution: 'temurin'
       - name: Setup (Compile and move benchmark application)
-        ./setup.sh
+        run: ./setup.sh
       - name: Kieker correctness check
         run: |
           cd frameworks/Kieker-java/testing
