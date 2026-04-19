@@ -36,4 +36,8 @@ jobs:
         run: |
           cd frameworks/Kieker-java/testing
           ../../../test/bats/bin/bats --print-output-on-failure .
+      - name: OpenTelemetry correctness check
+        run: |
+          cd frameworks/OpenTelemetry-java/testing
+          ../../../test/bats/bin/bats --print-output-on-failure .          
 
