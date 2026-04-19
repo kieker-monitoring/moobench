@@ -56,6 +56,8 @@ Furthermore, macrobenchmarks are also time-consuming to execute. The MooBench mi
 
 MooBench consists of two parts: the minimal and configurable system under test, and the automation of benchmarking observability frameworks. These are described in the following.
 
+![Architecture of MooBench. \label{fig:architecture}](architecture.pdf){width=100% }
+
 ## System under test
 
 The overhead of observability tools is caused by data collection. The amount of collected data -- and therefore the overhead -- scales with the number of observed method executions. However, the resource consumption of both, the application methods and the associated telemetry code, is non-deterministic and influenced by various factors, including class loading, Just-in-Time compilation (JIT), and garbage collection. To reduce the variance, the core of MooBench’s SuT is a single method (`monitoredMethod`) that calls itself recursively `$RECURSION_DEPTH` times. Because the JIT compiler could potentially optimize away these recursive calls, the last method call contains a busy wait for `$METHOD_TIME` nanoseconds. \autoref{fig:calltree} visualizes the call tree.
