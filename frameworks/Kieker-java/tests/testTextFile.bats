@@ -38,7 +38,7 @@ setup() {
   expected=$(( RECURSION_DEPTH * TOTAL_NUM_OF_CALLS ))
   assert_output "$expected"
 
-  unset -f
+  unset -f rm
 }
 
 @test "Check result value creation" {
