@@ -34,10 +34,10 @@ jobs:
         run: ./setup.sh
       - name: Kieker correctness check
         run: |
-          cd frameworks/Kieker-java/testing
+          cd frameworks/Kieker-java/tests
           ../../../test/bats/bin/bats --print-output-on-failure .
       - name: OpenTelemetry correctness check
         run: |
-          cd frameworks/OpenTelemetry-java/testing
+          cd frameworks/OpenTelemetry-java/tests
           ../../../test/bats/bin/bats --print-output-on-failure .          
 
