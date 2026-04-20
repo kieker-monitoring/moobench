@@ -32,13 +32,24 @@ setup() {
   unset -f kill
 
   ps -aux | grep zipkin
-  json=$(curl -s "http://localhost:9411/api/v2/traces?serviceName=moobench-inspectit&lookback=86400000&limit=1000" | jq)
-  traceCount=$(echo "$json" | jq '. | length')
-  if [ $traceCount -ne 4 ]; then
-    echo "It should be 4 traces, but was $traceCount"
-    echo $json
-    exit 1
-  fi
+  try_count=1
+  while [ "$try_count" -ne 5 ]; do
+    json=$(curl -s "http://localhost:9411/api/v2/traces?serviceName=moobench-inspectit&lookback=86400000&limit=1000" | jq)
+    traceCount=$(echo "$json" | jq '. | length')
+    if [ $traceCount -eq 0 ]; then
+      echo "Re-try ($try_count/5)"
+    elif [ $traceCount -ne 4 ]; then
+      echo "It should be 4 traces, but was $traceCount"
+      echo $json
+      zipkinPID=$(ps -aux | grep zipkin | awk '{print $2}')
+      kill $zipkinPID
+      exit 1
+    elif [ $traceCount -eq 4 ]; then
+      sleep 1
+      break
+    fi
+    try_count=$(( $try_count + 1 ))
+  done
 
   zipkinPID=$(ps -aux | grep zipkin | awk '{print $2}')
   kill $zipkinPID
