@@ -44,4 +44,7 @@ jobs:
         run: |
           cd frameworks/OpenTelemetry-java/tests
           ../../../test/bats/bin/bats --print-output-on-failure *.sh          
-
+      - name: inspectIT correctness check
+        run: |
+          cd frameworks/inspectIT-java/tests
+          ../../../test/bats/bin/bats --print-output-on-failure *.sh          
