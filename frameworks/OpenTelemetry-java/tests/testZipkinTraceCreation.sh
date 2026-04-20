@@ -8,7 +8,7 @@ setup() {
   PATH="$DIR/../src:$PATH"
 }
 
-@test "Check result value creation" {
+@test "Check Zipkin that OpenTelemetry-java created traces" {
   cd "$BATS_TEST_DIRNAME/.." || exit 1
   rm -rf results-OpenTelemetry-java/
 
@@ -37,6 +37,8 @@ setup() {
   if [ $traceCount -ne 4 ]; then
     echo "It should be 4 traces, but was $traceCount"
     echo $json
+    zipkinPID=$(ps -aux | grep zipkin | awk '{print $2}')
+    kill $zipkinPID
     exit 1
   fi
 
