@@ -39,9 +39,9 @@ jobs:
       - name: Kieker correctness check
         run: |
           cd frameworks/Kieker-java/tests
-          ../../../test/bats/bin/bats --print-output-on-failure .
+          ../../../test/bats/bin/bats --print-output-on-failure *.sh
       - name: OpenTelemetry correctness check
         run: |
           cd frameworks/OpenTelemetry-java/tests
-          ../../../test/bats/bin/bats --print-output-on-failure .          
+          ../../../test/bats/bin/bats --print-output-on-failure *.sh          
 
