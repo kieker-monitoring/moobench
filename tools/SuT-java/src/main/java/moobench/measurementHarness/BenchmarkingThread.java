@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-package moobench.benchmark;
+package moobench.measurementHarness;
 
 /**
  * Interface for all benchmarking threads.

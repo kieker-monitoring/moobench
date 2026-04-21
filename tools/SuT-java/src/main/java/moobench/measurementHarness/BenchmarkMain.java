@@ -14,20 +14,20 @@
  * limitations under the License.
  ***************************************************************************/
 
-package moobench.benchmark;
+package moobench.measurementHarness;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.ParameterException;
-
 import moobench.application.MonitoredClass;
 import moobench.application.MonitoredClassThreaded;
+
+
 
 /**
  * @author Jan Waller

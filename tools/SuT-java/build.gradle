@@ -9,7 +9,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'moobench.benchmark.BenchmarkMain'
+    mainClass = 'moobench.measurementHarness.BenchmarkMain'
 }
 
 jar {
@@ -18,7 +18,7 @@ jar {
     manifest {
         attributes 'Implementation-Title': 'Moobench SuT-Java',
                    'Implementation-Version': '1.0.0',
-                   'Main-Class': 'moobench.benchmark.BenchmarkMain'
+                   'Main-Class': 'moobench.measurementHarness.BenchmarkMain'
     }
     
     from sourceSets.main.output

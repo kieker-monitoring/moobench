@@ -14,11 +14,11 @@
  * limitations under the License.
  ***************************************************************************/
 
-package moobench.benchmark;
+package moobench.measurementHarness;
 
 import java.util.concurrent.CountDownLatch;
-
 import moobench.application.MonitoredClass;
+
 
 /**
  * Instances of class measure the time consumption of the {@link} MonitoredClass in nanoseconds. This
@@ -49,6 +49,7 @@ public final class BenchmarkingThreadMilli implements BenchmarkingThread {
     }
   }
 
+  @Override
   public String print(final int index, final String separatorString) {
     return "" + this.timings[index];
   }

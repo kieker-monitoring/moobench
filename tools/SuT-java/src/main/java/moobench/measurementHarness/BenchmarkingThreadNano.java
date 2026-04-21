@@ -14,15 +14,15 @@
  * limitations under the License.
  ***************************************************************************/
 
-package moobench.benchmark;
+package moobench.measurementHarness;
 
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-
 import moobench.application.MonitoredClass;
+
 
 /**
  * Instances of class measure the time consumption of the {@link} MonitoredClass in nanoseconds. This
@@ -61,6 +61,7 @@ public final class BenchmarkingThreadNano implements BenchmarkingThread {
     this.collector = ManagementFactory.getGarbageCollectorMXBeans();
   }
 
+  @Override
   public String print(final int index, final String separatorString) {
     return String.format("%d%s%d%s%d",
         this.executionTimes[index], separatorString,

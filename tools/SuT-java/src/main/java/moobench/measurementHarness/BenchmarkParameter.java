@@ -1,12 +1,12 @@
 /**
  * 
  */
-package moobench.benchmark;
-
-import java.io.File;
+package moobench.measurementHarness;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.converters.FileConverter;
+import java.io.File;
+
 
 /**
  * @author Reiner Jung
