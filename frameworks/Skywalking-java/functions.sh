@@ -70,7 +70,7 @@ function runExperiment {
 	if  [[ "$k" -gt 0 ]]; then
 		startSkywalkingServer
 	fi
-	export  BENCHMARK_OPTS="${SKYWALKING_CONFIG[$k]}"
+	export  SU_T_JAVA_OPTS="${SKYWALKING_CONFIG[$k]}"
 	"${MOOBENCH_BIN}" \
 		--output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
 		--total-calls     "${TOTAL_NUM_OF_CALLS}" \

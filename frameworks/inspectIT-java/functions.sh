@@ -42,8 +42,8 @@ function executeBenchmark() {
 function runNoInstrumentation {
     k=$1
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
-    export BENCHMARK_OPTS="${JAVA_ARGS_NOINSTR}"
-    java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+    export SU_T_JAVA_OPTS="${JAVA_ARGS_NOINSTR}"
+    java $DEFAULT_JVM_OPTS $JAVA_OPTS $SU_T_JAVA_OPTS \
         -cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
         moobench.benchmark.BenchmarkMain \
         --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
@@ -58,8 +58,8 @@ function runInspectITDeactivated {
     k=$1
     info " # ${i}.$RECURSION_DEPTH.${k} "${TITLE[$k]}
     sleep "${SLEEP_TIME}"
-    export BENCHMARK_OPTS="${JAVA_ARGS_INSPECTIT_DEACTIVATED}"
-    java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+    export SU_T_JAVA_OPTS="${JAVA_ARGS_INSPECTIT_DEACTIVATED}"
+    java $DEFAULT_JVM_OPTS $JAVA_OPTS $SU_T_JAVA_OPTS \
         -cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
         moobench.benchmark.BenchmarkMain \
         --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
@@ -76,8 +76,8 @@ function runInspectITNullWriter {
     k=$1
     info " # ${i}.$RECURSION_DEPTH.${k} "${TITLE[$k]}
     sleep "${SLEEP_TIME}"
-    export BENCHMARK_OPTS="${JAVA_ARGS_INSPECTIT_NULLWRITER}"
-    java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+    export SU_T_JAVA_OPTS="${JAVA_ARGS_INSPECTIT_NULLWRITER}"
+    java $DEFAULT_JVM_OPTS $JAVA_OPTS $SU_T_JAVA_OPTS \
         -cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
         moobench.benchmark.BenchmarkMain \
         --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
@@ -96,8 +96,8 @@ function runInspectITZipkin {
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     startZipkin
     sleep "${SLEEP_TIME}"
-    export BENCHMARK_OPTS="${JAVA_ARGS_INSPECTIT_ZIPKIN}"
-    java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+    export SU_T_JAVA_OPTS="${JAVA_ARGS_INSPECTIT_ZIPKIN}"
+    java $DEFAULT_JVM_OPTS $JAVA_OPTS $SU_T_JAVA_OPTS \
         -cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
         moobench.benchmark.BenchmarkMain \
         --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
@@ -117,8 +117,8 @@ function runInspectITPrometheus {
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     startPrometheus 8888
     sleep "${SLEEP_TIME}"
-    export BENCHMARK_OPTS="${JAVA_ARGS_INSPECTIT_PROMETHEUS}"
-    java $DEFAULT_JVM_OPTS $JAVA_OPTS $BENCHMARK_OPTS \
+    export SU_T_JAVA_OPTS="${JAVA_ARGS_INSPECTIT_PROMETHEUS}"
+    java $DEFAULT_JVM_OPTS $JAVA_OPTS $SU_T_JAVA_OPTS \
         -cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
         moobench.benchmark.BenchmarkMain \
         --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \

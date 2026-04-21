@@ -16,7 +16,7 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     manifest {
-        attributes 'Implementation-Title': 'Moobench Benchmark',
+        attributes 'Implementation-Title': 'Moobench SuT-Java',
                    'Implementation-Version': '1.0.0',
                    'Main-Class': 'moobench.benchmark.BenchmarkMain'
     }

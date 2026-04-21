@@ -255,7 +255,7 @@ function executeBenchmark() {
 function runNoInstrumentation {
     # No instrumentation
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
-    export BENCHMARK_OPTS="${JAVA_ARGS_NOINSTR}"
+    export SU_T_JAVA_OPTS="${JAVA_ARGS_NOINSTR}"
     "${MOOBENCH_BIN}" --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
@@ -311,9 +311,9 @@ function setPinpointConfig {
 
 function runPinpointBasic {
    k=$1
-   export BENCHMARK_OPTS=$2
+   export SU_T_JAVA_OPTS=$2
    info " # ${i}.$RECURSION_DEPTH.${k} "${TITLE[$k]}
-   echo "Running with $BENCHMARK_OPTS"
+   echo "Running with $SU_T_JAVA_OPTS"
    setPinpointConfig
    startPinpointServers
 

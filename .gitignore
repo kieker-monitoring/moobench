@@ -10,6 +10,7 @@
 /.gradle/
 /build/
 /benchmark/**
+/SuT-java/
 
 # Ignore eclipse project files
 .project

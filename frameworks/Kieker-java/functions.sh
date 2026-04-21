@@ -67,12 +67,12 @@ function executeExperiment() {
   info " # ${loop}.${recursion}.${index} ${title}"
 
   if [ "${kieker_parameters}" == "" ]; then
-    export BENCHMARK_OPTS="${JAVA_ARGS}"
+    export SU_T_JAVA_OPTS="${JAVA_ARGS}"
   else
-    export BENCHMARK_OPTS="${JAVA_ARGS} ${LTW_ARGS} ${KIEKER_ARGS} ${kieker_parameters}"
+    export SU_T_JAVA_OPTS="${JAVA_ARGS} ${LTW_ARGS} ${KIEKER_ARGS} ${kieker_parameters}"
   fi
 
-  debug "Run options: ${BENCHMARK_OPTS}"
+  debug "Run options: ${SU_T_JAVA_OPTS}"
 
   RESULT_FILE="${RAWFN}-${loop}-${recursion}-${index}.csv"
   LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"

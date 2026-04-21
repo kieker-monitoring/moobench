@@ -44,7 +44,7 @@ function runExperiment {
     if [[ "$k" -gt 0 ]]; then
      startScouterServer
   fi
-    export BENCHMARK_OPTS="${SCOUTER_CONFIG[$k]}"
+    export SU_T_JAVA_OPTS="${SCOUTER_CONFIG[$k]}"
     "${MOOBENCH_BIN}" \
     --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
