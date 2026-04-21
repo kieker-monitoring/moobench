@@ -29,7 +29,7 @@ setup() {
   }
   export -f rm
 
-  run ./start.sh
+  run ./measure.sh
   assert_output --partial '# 1.10.0 No instrumentation'
   assert_output --partial '# 1.10.3 Text file'
   

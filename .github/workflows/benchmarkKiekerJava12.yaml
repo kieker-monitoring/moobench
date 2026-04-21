@@ -35,7 +35,7 @@ jobs:
           export THREADS=12
           export NUM_OF_LOOPS=10 
           export MOOBENCH_CONFIGURATIONS="0 1 2 4"
-          ./start.sh 
+          ./measure.sh 
           cd results-Kieker-java
           unzip results.zip 
           ../../../analysis/getGHActionsFormat.sh &> output.json
