@@ -28,7 +28,7 @@ setup() {
   export RECURSION_DEPTH=10 
   export MOOBENCH_CONFIGURATIONS="0 3"
   export MORE_PARAMS="--quickstart"
-  ./benchmark.sh 
+  ./measure.sh 
   unset -f kill
 
   ps -aux | grep zipkin
