@@ -17,7 +17,7 @@ setup() {
   export TOTAL_NUM_OF_CALLS=10 
   export RECURSION_DEPTH=10 
   export MOOBENCH_CONFIGURATIONS="0 1 2 3 4 6"
-  ./benchmark.sh 
+  ./measure.sh 
 
   cd results-OpenTelemetry-java/
   count=$(ls *.csv 2>/dev/null | wc -l)
