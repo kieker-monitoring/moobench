@@ -16,7 +16,7 @@ setup() {
   export NUM_OF_LOOPS=1 
   export TOTAL_NUM_OF_CALLS=10 
   export RECURSION_DEPTH=10 
-  ./benchmark.sh 
+  run ./start.sh
 
   cd results-Kieker-java/
   count=$(ls *.csv 2>/dev/null | wc -l)
