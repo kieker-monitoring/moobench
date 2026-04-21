@@ -57,7 +57,7 @@ function runNoInstrumentation {
     # No instrumentation
     k=$1
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
-    export JAVSU_T_JAVA_OPTSA_OPTS="${JAVA_ARGS_NOINSTR}"
+    export SU_T_JAVA_OPTS="${JAVA_ARGS_NOINSTR}"
     "${MOOBENCH_BIN}" --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
