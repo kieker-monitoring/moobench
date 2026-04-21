@@ -44,8 +44,8 @@ function runNoInstrumentation {
     info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
     export SU_T_JAVA_OPTS="${JAVA_ARGS_NOINSTR}"
     java $DEFAULT_JVM_OPTS $JAVA_OPTS $SU_T_JAVA_OPTS \
-        -cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
-        moobench.benchmark.BenchmarkMain \
+        -cp ../../SuT-java/lib/SuT-java.jar:../../SuT-java/lib/jcommander-1.72.jar \
+        moobench.measurementHarness.BenchmarkMain \
         --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
@@ -60,8 +60,8 @@ function runInspectITDeactivated {
     sleep "${SLEEP_TIME}"
     export SU_T_JAVA_OPTS="${JAVA_ARGS_INSPECTIT_DEACTIVATED}"
     java $DEFAULT_JVM_OPTS $JAVA_OPTS $SU_T_JAVA_OPTS \
-        -cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
-        moobench.benchmark.BenchmarkMain \
+        -cp ../../SuT-java/lib/SuT-java.jar:../../SuT-java/lib/jcommander-1.72.jar \
+        moobench.measurementHarness.BenchmarkMain \
         --output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
@@ -78,8 +78,8 @@ function runInspectITNullWriter {
     sleep "${SLEEP_TIME}"
     export SU_T_JAVA_OPTS="${JAVA_ARGS_INSPECTIT_NULLWRITER}"
     java $DEFAULT_JVM_OPTS $JAVA_OPTS $SU_T_JAVA_OPTS \
-        -cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
-        moobench.benchmark.BenchmarkMain \
+        -cp ../../SuT-java/lib/SuT-java.jar:../../SuT-java/lib/jcommander-1.72.jar \
+        moobench.measurementHarness.BenchmarkMain \
         --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
@@ -98,8 +98,8 @@ function runInspectITZipkin {
     sleep "${SLEEP_TIME}"
     export SU_T_JAVA_OPTS="${JAVA_ARGS_INSPECTIT_ZIPKIN}"
     java $DEFAULT_JVM_OPTS $JAVA_OPTS $SU_T_JAVA_OPTS \
-        -cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
-        moobench.benchmark.BenchmarkMain \
+        -cp ../../SuT-java/lib/SuT-java.jar:../../SuT-java/lib/jcommander-1.72.jar \
+        moobench.measurementHarness.BenchmarkMain \
         --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
@@ -119,8 +119,8 @@ function runInspectITPrometheus {
     sleep "${SLEEP_TIME}"
     export SU_T_JAVA_OPTS="${JAVA_ARGS_INSPECTIT_PROMETHEUS}"
     java $DEFAULT_JVM_OPTS $JAVA_OPTS $SU_T_JAVA_OPTS \
-        -cp ../../benchmark/lib/benchmark.jar:../../benchmark/lib/jcommander-1.72.jar \
-        moobench.benchmark.BenchmarkMain \
+        -cp ../../SuT-java/lib/SuT-java.jar:../../SuT-java/lib/jcommander-1.72.jar \
+        moobench.measurementHarness.BenchmarkMain \
         --output-filename "${RAWFN}-${i}-${RECURSION_DEPTH}-${k}.csv" \
         --total-calls "${TOTAL_NUM_OF_CALLS}" \
         --method-time "${METHOD_TIME}" \
