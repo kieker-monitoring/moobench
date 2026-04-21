@@ -43,7 +43,7 @@ jobs:
           cd frameworks/OpenTelemetry-java/
           export NUM_OF_LOOPS=10 
           export MOOBENCH_CONFIGURATIONS="0 1 3 4"
-          ./benchmark.sh 
+          ./measure.sh 
           cd results-OpenTelemetry-java
           unzip results.zip 
           ../../../analysis/getGHActionsFormat.sh &> output.json

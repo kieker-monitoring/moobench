@@ -41,7 +41,7 @@ jobs:
           cd frameworks/Skywalking-java/
           export MOOBENCH_CONFIGURATIONS="0 1 2 3"
           export NUM_OF_LOOPS=10
-          ./benchmark.sh 
+          ./measure.sh 
           cd results-Skywalking-java
           unzip results.zip
           pwd

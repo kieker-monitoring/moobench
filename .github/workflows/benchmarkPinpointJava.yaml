@@ -43,7 +43,7 @@ jobs:
           cd frameworks/pinpoint-java/
           export MOOBENCH_CONFIGURATIONS="0 1 3 4"
           export NUM_OF_LOOPS=10
-          ./benchmark.sh 
+          ./measure.sh 
           cd results-pinpoint-java
           unzip results.zip 
           ../../../analysis/getGHActionsFormat.sh > output.json

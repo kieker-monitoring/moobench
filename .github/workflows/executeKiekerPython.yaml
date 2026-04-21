@@ -34,7 +34,7 @@ jobs:
           export NUM_OF_LOOPS=1 
           export TOTAL_NUM_OF_CALLS=10 
           export RECURSION_DEPTH=10 
-          ./benchmark.sh 
+          ./measure.sh 
           unzip results-Kieker-python/results.zip 
           measuredValues=$(cat raw-1-10-* | wc -l) 
           if [ $measuredValues -ne 90 ] 

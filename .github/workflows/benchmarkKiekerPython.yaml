@@ -43,7 +43,7 @@ jobs:
           cd frameworks/Kieker-python/
           export NUM_OF_LOOPS=10 
           export MOOBENCH_CONFIGURATIONS="0 1 2 3 4 7 8"
-          ./benchmark.sh 
+          ./measure.sh 
           cd results-Kieker-python
           unzip results.zip 
           ../../../analysis/getGHActionsFormat.sh &> output.json
