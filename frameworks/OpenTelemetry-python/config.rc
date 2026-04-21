@@ -5,5 +5,5 @@ REQUIREMENTS_FILE="$BASE_DIR/requirements.txt"
 CONFIG_TEMPLATE="$BASE_DIR/config.ini.template"
 CONFIG_FILE="$BASE_DIR/config.ini"
 
-MOOBENCH_BIN_PY="$MAIN_DIR/tools/pybenchmark/benchmark.py"
+MOOBENCH_BIN_PY="$MAIN_DIR/tools/SuT-python/benchmark.py"
 
