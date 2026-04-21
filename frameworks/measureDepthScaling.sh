@@ -3,57 +3,57 @@
 function runAll {
   MODE=$1
   start=$(pwd)
-  for benchmark in inspectIT-java OpenTelemetry-java Kieker-java Scouter-java elasticapm-java pinpoint-java Skywalking-java; do
-    echo "Running Depth Scaling $benchmark"
+  for framework in inspectIT-java OpenTelemetry-java Kieker-java Scouter-java elasticapm-java pinpoint-java Skywalking-java; do
+    echo "Running Depth Scaling $framework"
     if [ "$MODE" = "DEPTH" ]; then
-      runDepthScaling "$benchmark"
+      runDepthScaling "$framework"
     else
-      runThreadScaling "$benchmark"
+      runThreadScaling "$framework"
     fi
   done
 }
 
 function runThreadScaling {
-  benchmark=$1
-  cd "${benchmark}"
+  framework=$1
+  cd "${framework}"
 
-  RESULTS_DIR="parallel-results-${benchmark}"
+  RESULTS_DIR="parallel-results-${framework}"
   checkDirectory RESULTS_DIR "${RESULTS_DIR}" create
 
   for threads in 1 2 3 4; do
     export THREADS=$threads
     echo "Running $threads"
-    ./benchmark.sh &> ${RESULTS_DIR}/parallel_$threads.txt
-    if [ ! -f results-$benchmark/results.zip ]; then
-      echo "File results-$benchmark/results.zip missing; aborting"
+    ./measure.sh &> ${RESULTS_DIR}/parallel_$threads.txt
+    if [ ! -f results-$framework/results.zip ]; then
+      echo "File results-$framework/results.zip missing; aborting"
       exit 1
     fi
-    mv results-$benchmark/results.zip ${RESULTS_DIR}/results-$threads.zip
+    mv results-$framework/results.zip ${RESULTS_DIR}/results-$threads.zip
   done
 
   cd "${start}"
 }
 
 function runDepthScaling {
-  benchmark=$1
-  cd "${benchmark}"
+  framework=$1
+  cd "${framework}"
 
-  RESULTS_DIR="exp-results-${benchmark}"
+  RESULTS_DIR="exp-results-${framework}"
   checkDirectory RESULTS_DIR "${RESULTS_DIR}" create
 
   for depth in 2 4 8 16 32 64 128; do
     export RECURSION_DEPTH=$depth
     echo "Running $depth"
-    ./benchmark.sh &> ${RESULTS_DIR}/depth_$depth.txt
-    if [ ! -f results-$benchmark/results.zip ]; then
-      echo "File results-$benchmark/results.zip missing; aborting"
+    ./measure.sh &> ${RESULTS_DIR}/depth_$depth.txt
+    if [ ! -f results-$framework/results.zip ]; then
+      echo "File results-$framework/results.zip missing; aborting"
       exit 1
     fi
 
-    zip -jqr ${RESULTS_DIR}/output-$RECURSION_DEPTH.zip results-$benchmark/output_*
-    rm results-$benchmark/output_*
+    zip -jqr ${RESULTS_DIR}/output-$RECURSION_DEPTH.zip results-$framework/output_*
+    rm results-$framework/output_*
 
-    mv results-$benchmark/results.zip ${RESULTS_DIR}/results-$RECURSION_DEPTH.zip
+    mv results-$framework/results.zip ${RESULTS_DIR}/results-$RECURSION_DEPTH.zip
   done
 
   cd "${start}"

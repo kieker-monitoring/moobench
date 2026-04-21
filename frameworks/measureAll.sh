@@ -22,10 +22,10 @@ fi
 cd "${BASE_DIR}"
 
 start=$(pwd)
-for benchmark in inspectIT-java OpenTelemetry-java Kieker-java Scouter-java elasticapm-java pinpoint-java Skywalking-java; do
-  echo "Running $benchmark"
-        cd "${benchmark}"
-        ./benchmark.sh &> "${start}/log_${benchmark}.txt"
+for framework in inspectIT-java OpenTelemetry-java Kieker-java Scouter-java elasticapm-java pinpoint-java Skywalking-java; do
+  echo "Running $framework"
+        cd "${framework}"
+        ./measure.sh &> "${start}/log_${framework}.txt"
         cd "${start}"
 done
 
