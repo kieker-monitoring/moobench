@@ -9,9 +9,9 @@ fi
 # Skywalking Java Agent version
 AGENT_VERSION="9.6.0"
 # Skywalking APM version
-APM_VERSION="10.3.0"
+APM_VERSION="10.4.0"
 # Skywalking BanyanDB version, check config/bydb.dependencies.properties in Skywalking apm for version
-BANYANDB_VERSION="0.9.0"
+BANYANDB_VERSION="0.10.1"
 
 # Gets the skywalking agent and APM server
 # Commented code uses archive.apache.org which is too slow for Github actions but should be always available.
