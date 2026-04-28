@@ -47,4 +47,12 @@ jobs:
       - name: inspectIT correctness check
         run: |
           cd frameworks/inspectIT-java/tests
-          ../../../test/bats/bin/bats --print-output-on-failure *.sh          
+          ../../../test/bats/bin/bats --print-output-on-failure *.sh
+      - name: Scouter correctness check
+        run: |
+          cd frameworks/Scouter-java/tests
+          ../../../test/bats/bin/bats --print-output-on-failure *.sh
+      - name: Skywalking correctness check
+        run: |
+          cd frameworks/Skywalking-java/tests
+          ../../../test/bats/bin/bats --print-output-on-failure *.sh
