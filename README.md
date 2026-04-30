@@ -52,6 +52,8 @@ flowchart TD;
 
 ## Benchmark Execution
 
+By one execution of the MooBench, we can measure the overhead of one observability framework.
+
 ### Prerequisites
 
 To use MooBench, please make sure the following tools are installed:
@@ -71,12 +73,12 @@ For example, a simple benchmark execution is:
 ```
 ./setup.sh
 cd frameworks/OpenTelemetry-java/
-./benchmark.sh
+./measure.sh
 ```
 
 All experiments are started with the provided "External Controller" scripts.
 The following scripts are available for every supported framework ($FRAMEWORK) and language ($LANGUAGE):
-* In `frameworks/$FRAMEWORK-$LANGUAGE/benchmark.sh` a script is provided for regular
+* In `frameworks/$FRAMEWORK-$LANGUAGE/measure.sh` a script is provided for regular
   execution (with default parameters)
 * In `frameworks/$FRAMEWORK-$LANGUAGE/runExponentialSizes.sh` a script is provided for
   execution with different call tree depth sizes (exponentially growing from 2)
