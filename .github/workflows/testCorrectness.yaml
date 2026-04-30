@@ -40,15 +40,15 @@ jobs:
         run: |
           cd frameworks/Kieker-java/tests
           ../../../test/bats/bin/bats --print-output-on-failure *.sh
-      - name: OpenTelemetry correctness check
+      - name: OpenTelemetry-java correctness check
         run: |
           cd frameworks/OpenTelemetry-java/tests
           ../../../test/bats/bin/bats --print-output-on-failure *.sh          
-      - name: inspectIT correctness check
+      - name: inspectIT-java correctness check
         run: |
           cd frameworks/inspectIT-java/tests
           ../../../test/bats/bin/bats --print-output-on-failure *.sh
-      - name: Scouter correctness check
+      - name: Scouter-java correctness check
         run: |
           cd frameworks/Scouter-java/tests
           ../../../test/bats/bin/bats --print-output-on-failure *.sh
@@ -56,7 +56,11 @@ jobs:
         run: |
           cd frameworks/Skywalking-java/tests
           ../../../test/bats/bin/bats --print-output-on-failure *.sh
-      - name: Skywalking correctness check
+      - name: Kieker-python correctness check
         run: |
           cd frameworks/Kieker-python/tests
+          ../../../test/bats/bin/bats --print-output-on-failure *.sh
+      - name: Pinpoint-java correctness check
+        run: |
+          cd frameworks/Pinpoint-java/tests
           ../../../test/bats/bin/bats --print-output-on-failure *.sh
