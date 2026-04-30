@@ -62,5 +62,5 @@ jobs:
           ../../../test/bats/bin/bats --print-output-on-failure *.sh
       - name: Pinpoint-java correctness check
         run: |
-          cd frameworks/Pinpoint-java/tests
+          cd frameworks/pinpoint-java/tests
           ../../../test/bats/bin/bats --print-output-on-failure *.sh
