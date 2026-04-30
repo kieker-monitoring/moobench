@@ -54,13 +54,17 @@ Furthermore, macrobenchmarks are also time-consuming to execute. The MooBench mi
 
 # Software design
 
-MooBench consists of two parts: the minimal and configurable system under test, and the automation of benchmarking observability frameworks. These are described in the following.
+MooBench consists of two parts: the minimal and configurable system under test, and the automation of benchmarking observability frameworks. \autoref{fig:calltree} gives an overview over the structure. The components are described in the following.
 
 ![Architecture of MooBench. \label{fig:architecture}](architecture.pdf){width=100% }
 
 ## System under test
 
-The overhead of observability tools is caused by data collection. The amount of collected data -- and therefore the overhead -- scales with the number of observed method executions. However, the resource consumption of both, the application methods and the associated telemetry code, is non-deterministic and influenced by various factors, including class loading, Just-in-Time compilation (JIT), and garbage collection. To reduce the variance, the core of MooBench’s SuT is a single method (`monitoredMethod`) that calls itself recursively `$RECURSION_DEPTH` times. Because the JIT compiler could potentially optimize away these recursive calls, the last method call contains a busy wait for `$METHOD_TIME` nanoseconds. \autoref{fig:calltree} visualizes the call tree.
+The system under test consists of two parts: The measurement harness, and the application itself. 
+
+The measurement harness manages start and end of executions, and the storage of result data.
+
+The structure of the application itself is build to represent the overhead of observability tools in the most simple way. The overhead of observability tools is caused by data collection. The amount of collected data -- and therefore the overhead -- scales with the number of observed method executions. However, the resource consumption of both, the application methods and the associated telemetry code, is non-deterministic and influenced by various factors, including class loading, Just-in-Time compilation (JIT), and garbage collection. To reduce the variance, the core of MooBench’s SuT is a single method (`monitoredMethod`) that calls itself recursively `$RECURSION_DEPTH` times. Because the JIT compiler could potentially optimize away these recursive calls, the last method call contains a busy wait for `$METHOD_TIME` nanoseconds. \autoref{fig:calltree} visualizes the call tree.
 
 <!--- Recompile with pdflatex calltree.tex for update  -->
 ![Call tree of the MooBench microbenchmark showing the recursive method calls to control the stack depth [@reichelt2023towards]. \label{fig:calltree}](calltree.pdf){width=100% }
@@ -71,7 +75,7 @@ This system under test is currently implemented in Java and Python. It is planne
 
 Each observability framework requires a unique setup and has different capabilities. For example, OpenTelemetry can be attached to the JVM using `-javaagent`, which requires the property `otel.instrumentation.methods.include` to be set to a specific list of classes. OpenTelemetry can export data to Zipkin, Jaeger, or Prometheus. Furthermore, OpenTelemetry can be started with an empty `otel.instrumentation.methods.include` or without export, which enables measuring the overhead of instrumentation without data collection or data collection without serialization. Due to these different configurations, it is necessary to implement configuration scripts for each framework individually.
 
-MooBench stores these configuration scripts in `frameworks/$TECHNOLOGY-$LANGUAGE` (e.g., `frameworks/OpenTelemetry-java`). The scripts typically contain a `benchmark.sh` for starting the experiment, `functions.sh` with specific download or execution functions, `labels.sh` containing the names of the configurations and `config.rc` containing optional definitions of additional environment variables.
+MooBench stores these configuration scripts in `frameworks/$TECHNOLOGY-$LANGUAGE` (e.g., `frameworks/OpenTelemetry-java`). The scripts typically contain a `measure.sh` for starting the experiment, `functions.sh` with specific download or execution functions, `labels.sh` containing the names of the configurations and `config.rc` containing optional definitions of additional environment variables.
 
 To measure performance in managed runtimes like the JVM, the managed runtime needs to be started multiple times. Within each instance, the workload must be repeated until a given count of warmup iterations is finished, and finally, the measurement iterations within the managed runtime need to be executed [@georges2007statistically]. MooBench implements this process by executing `$NUM_OF_LOOPS` loops, where each loop runs all configurations of one framework. Inside of each run, `$TOTAL_NUM_OF_CALLS` defines the number of iterations, i.e., repetitions of all calls to `monitoredMethod`. The execution data are stored into CSV files, and after the execution is finished, the warmup iterations are truncated.
 
