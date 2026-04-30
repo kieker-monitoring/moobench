@@ -16,7 +16,6 @@ setup() {
   export NUM_OF_LOOPS=1 
   export TOTAL_NUM_OF_CALLS=10 
   export RECURSION_DEPTH=10 
-  export MOOBENCH_CONFIGURATIONS="0 1 2 3"
   ./measure.sh 
 
   cd results-pinpoint-java/
