@@ -19,7 +19,7 @@ setup() {
   export MOOBENCH_CONFIGURATIONS="0 1 2 3"
   ./measure.sh 
 
-  cd results-Pinpoint-java/
+  cd results-pinpoint-java/
   count=$(ls *.csv 2>/dev/null | wc -l)
   assert_equal "$count" "0" \
     "0 .csv files should exist after the run, files should only be in the zipped folder"
