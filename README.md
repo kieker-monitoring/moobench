@@ -76,6 +76,22 @@ cd frameworks/OpenTelemetry-java/
 ./measure.sh
 ```
 
+After each run, the main results are displayed in stdout, for example:
+
+```
+      1          2           3          4          5          6         
+mean  "  0.2300" "  7.8581"  "      NA" " 10.5748" " 11.0599" "      NA"
+sd    "  0.1356" "115.0105"  "      NA" "  3.2623" "  3.4707" "      NA"
+ci95% "  0.0038" "  3.1879"  "      NA" "  0.0904" "  0.0962" "      NA"
+md25% "  0.1900" "  4.2380"  "      NA" "  8.0750" "  8.7310" "      NA"
+md50% "  0.1910" "  4.5580"  "      NA" " 11.2710" " 11.3110" "      NA"
+md75% "  0.2800" "  8.0450"  "      NA" " 11.5620" " 12.5040" "      NA"
+max   "  6.5920" "8135.7560" "      NA" " 89.2280" " 99.5470" "      NA"
+min   "  0.1800" "  4.0970"  "      NA" "  7.5140" "  7.0230" "      NA"
+```
+For each configuration (1-6), this gives us statistics of the execution. For example, here we see that configuration 4 (Writing OpenTelemetry traces to Zipkin) has a mean execution time of 10.5748 microseconds and configuration 0 (baseline, no instrumentation at all) has an a mean execution time of 0.2300 microseconds. 
+
+
 All experiments are started with the provided "External Controller" scripts.
 The following scripts are available for every supported framework ($FRAMEWORK) and language ($LANGUAGE):
 * In `frameworks/$FRAMEWORK-$LANGUAGE/measure.sh` a script is provided for regular
