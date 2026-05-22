@@ -1,0 +1,10 @@
+# config.rc - Core paths for MooBench
+
+# eBPF probe attachment requires minimum method time to attach 
+METHOD_TIME=500000
+
+DATA_DIR="${BASE_DIR}/data"
+MOOBENCH_BIN="${MAIN_DIR}/benchmark/bin/benchmark"
+
+# path to the R analysis script
+RSCRIPT_PATH="${MAIN_DIR}/frameworks/statistics.r"
