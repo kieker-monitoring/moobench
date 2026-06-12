@@ -16,7 +16,6 @@ jobs:
         java:
           - 17
           - 21
-          - 25
       fail-fast: false
     runs-on: ${{ matrix.os }}
     name: Java ${{ matrix.java }} OS ${{ matrix.os }} sample
