@@ -28,6 +28,7 @@ affiliations:
    index: 4
 date: 12 March 2026
 bibliography: paper.bib
+rsecon26: accepted
 
 aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
 ---
