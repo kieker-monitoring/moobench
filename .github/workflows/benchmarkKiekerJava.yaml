@@ -26,7 +26,7 @@ jobs:
           distribution: 'temurin'
           java-version: 21
       - name: Start ssh-agent and add private key
-        uses: webfactory/ssh-agent@v0.9.1
+        uses: webfactory/ssh-agent@v0.10.0
         with:
           ssh-private-key: ${{ secrets.DEPLOY_KEY_MOOBENCH_DATA }}
       - name: Add github.com to known_hosts
