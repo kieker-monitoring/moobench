@@ -55,7 +55,7 @@ Furthermore, macrobenchmarks are also time-consuming to execute. The MooBench mi
 
 # Software design
 
-MooBench consists of two parts: the minimal and configurable system under test, and the automation of benchmarking observability frameworks. \autoref{fig:calltree} gives an overview over the structure. The components are described in the following.<!-- TODO the following diagram? perhaps link explicitly to the figure fig:architecture? -->
+MooBench consists of two parts: the minimal and configurable system under test, and the automation of benchmarking observability frameworks. \autoref{fig:calltree} gives an overview over the structure. The components are described in \autoref{fig:architecture}.
 
 ![Architecture of MooBench. \label{fig:architecture}](architecture.pdf){width=100% }
 
