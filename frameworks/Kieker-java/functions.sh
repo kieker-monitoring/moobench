@@ -110,6 +110,7 @@ function executeBenchmarkBody() {
   recursion="$3"
   if [[ "${RECEIVER[$index]}" ]]; then
     debug "receiver ${RECEIVER[$index]}"
+    #sudo netstat -taupen | grep 2345
     checkReceiverPort
     ${RECEIVER[$index]} >> "${DATA_DIR}/kieker.receiver-${loop}-${index}.log" &
     RECEIVER_PID=$!
