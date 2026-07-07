@@ -29,8 +29,6 @@ affiliations:
 date: 12 March 2026
 bibliography: paper.bib
 rsecon26: accepted
-
-aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
 ---
 
 # Summary
@@ -51,7 +49,7 @@ Besides the microservice context, tracing overhead has been examined for operati
 
 The aforementioned studies utilize macrobenchmarks to examine overhead in realistic use cases. While macrobenchmarks provide an indication of overhead in similar scenarios, they often fail to isolate the baseline overhead or identify its specific sources. When looking at specific distributed cases, the overhead sources are influenced by the processes running in parallel, their scheduling, and the network behavior. MooBench addresses this by providing a microbenchmark that measures the fundamental overhead of observability frameworks in a controlled environment. Using different configurations, it enables factorial experiments that isolate root causes of overhead, specifically distinguishing between instrumentation, data collection, and data serialization.
 
-Furthermore, macrobenchmarks are also time-consuming to execute. The MooBench microbenchmark was included early in Kiekers CI setup [@waller2015including], enabling the detection of performance regressions and the check of performance improvements in daily development.
+Furthermore, macrobenchmarks are also time-consuming to execute. The MooBench microbenchmark was included early in the Kiekers CI setup [@waller2015including], enabling the detection of performance regressions and the check of performance improvements in daily development.
 
 # Software design
 
