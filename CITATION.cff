@@ -1,37 +1,50 @@
-# YAML 1.2
----
-abstract: "MooBench is a micro-benchmark for quantification of the performance overhead caused by observability frameworks. It consists of a minimal system under test for injection of observability frameworks, the automation of the overhead measurement process and analysis scripts."
+cff-version: "1.2.0"
 authors:
-  -
-    affiliation: "Lancaster University"
-    family-names: Reichelt
+- family-names: Reichelt
+  given-names: David Georg
+  orcid: "https://orcid.org/0000-0002-1772-1416"
+- family-names: Yang
+  given-names: Shinhyung
+  orcid: "https://orcid.org/0000-0002-8997-9942"
+- family-names: Hansson
+  given-names: Marcel
+  orcid: "https://orcid.org/0009-0000-6524-037X"
+- family-names: Hasselbring
+  given-names: Wilhelm
+  orcid: "https://orcid.org/0000-0001-6625-4335"
+contact:
+- family-names: Reichelt
+  given-names: David Georg
+  orcid: "https://orcid.org/0000-0002-1772-1416"
+doi: 10.5281/zenodo.21066457
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Reichelt
     given-names: David Georg
     orcid: "https://orcid.org/0000-0002-1772-1416"
-  -
-    affiliation: "Kiel University"
-    family-names: Yang
+  - family-names: Yang
     given-names: Shinhyung
     orcid: "https://orcid.org/0000-0002-8997-9942"
-  -
-    affiliation: "University of Hamburg"
-    family-names: Hansson
+  - family-names: Hansson
     given-names: Marcel
     orcid: "https://orcid.org/0009-0000-6524-037X"
-  -
-    affiliation: "Kiel University"
-    family-names: Hasselbring
+  - family-names: Hasselbring
     given-names: Wilhelm
     orcid: "https://orcid.org/0000-0001-6625-4335"
-cff-version: "1.2.0"
-doi: "10.5281/zenodo.19386366"
-keywords:
-  - "Observability Engineering"
-  - "Tracing"
-  - "Benchmark"
-  - "Application Performance Monitoring"
-  - "Monitoring Framework"
-license: "Apache-2.0"
-message: "If you use this software, please cite https://doi.org/10.5281/zenodo.19386366"
-repository-code: "https://github.com/kieker-monitoring/moobench"
-title: MooBench
-version: "1.0.1"
+  date-published: 2026-07-07
+  doi: 10.21105/joss.10400
+  issn: 2475-9066
+  issue: 123
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 10400
+  title: "MooBench: A micro-benchmark for performance overhead
+    measurement of observability tools"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.10400"
+  volume: 11
+title: "MooBench: A micro-benchmark for performance overhead measurement
+  of observability tools"
