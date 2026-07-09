@@ -192,7 +192,7 @@ function startCollectorAndWeb() {
    cd pinpoint
 
    if [ ! -f pinpoint-collector-starter-${PINPOINT_VERSION}-exec.jar ]; then
-      wget https://repo1.maven.org/maven2/com/navercorp/pinpoint/pinpoint-collector-starter/${PINPOINT_VERSION}/pinpoint-collector-starter-${PINPOINT_VERSION}-exec.jar
+	wget https://github.com/pinpoint-apm/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-collector-starter-${PINPOINT_VERSION}-exec.jar
   fi
 
    RATE_LIMIT=100000
@@ -213,10 +213,10 @@ function startCollectorAndWeb() {
     -Dpinpoint.metric.kafka.bootstrap.servers=localhost:9092 \
     -jar pinpoint-collector-starter-${PINPOINT_VERSION}-exec.jar &> ${BASE_DIR}/logs/collector.log &
 
-   waitForStartup ${BASE_DIR}/logs/collector.log "Started PinpointCollectorStarter in"
+  waitForStartup ${BASE_DIR}/logs/collector.log "Started PinpointCollectorStarter in"
 
-   if [ ! -f pinpoint-web-starter-${PINPOINT_VERSION}-exec.jar ]; then
-      wget https://repo1.maven.org/maven2/com/navercorp/pinpoint/pinpoint-web-starter/${PINPOINT_VERSION}/pinpoint-web-starter-${PINPOINT_VERSION}-exec.jar
+  if [ ! -f pinpoint-web-starter-${PINPOINT_VERSION}-exec.jar ]; then
+    wget  https://github.com/pinpoint-apm/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-web-starter-${PINPOINT_VERSION}-exec.jar
   fi
 
    java --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED -Dpinpoint.zookeeper.address=localhost -Dpinpoint.modules.realtime.enabled=false -jar pinpoint-web-starter-${PINPOINT_VERSION}-exec.jar &> ${BASE_DIR}/logs/web-starter.log &
