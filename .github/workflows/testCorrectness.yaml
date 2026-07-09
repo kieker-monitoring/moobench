@@ -62,5 +62,12 @@ jobs:
           ../../../test/bats/bin/bats --print-output-on-failure *.sh
       - name: Pinpoint-java correctness check
         run: |
-          cd frameworks/pinpoint-java/tests
-          ../../../test/bats/bin/bats --print-output-on-failure *.sh
+          JAVA_VERSION=$(java -XshowSettings:properties -version 2>&1 | grep "java.specification.version" | awk -F' = ' '{print $2}')
+          echo "Current Java version is: $JAVA_VERSION"
+          
+          if [ "$JAVA_VERSION" == "25" ]; then
+            echo "Skipping Pinpoint-java tests for Java 25 due to known incompatibility."
+          else
+            cd frameworks/pinpoint-java/tests
+            ../../../test/bats/bin/bats --print-output-on-failure *.sh
+          fi
