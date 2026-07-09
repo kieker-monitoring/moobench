@@ -14,6 +14,14 @@ if [ -z "$JAVA_HOME" ]; then
     exit 1
 fi
 
+JAVA_MAJOR_VERSION=$(java -version 2>&1 | sed -n ';s/.* version "\(.*\)\.\(.*\)\..*".*/\1/p;')
+
+if [ "$JAVA_MAJOR_VERSION" -eq 25 ]; then
+    echo "[WARN] Pinpoint currently does not support Java 25; skipping measurement"
+    echo "[WARN] Potential fix: Start pinpoint-collector and pinpoint-web-starter with different JDK than SuT"
+    exit 0
+fi
+
 #
 # source functionality
 #
