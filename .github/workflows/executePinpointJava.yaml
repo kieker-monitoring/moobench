@@ -15,7 +15,6 @@ jobs:
           - ubuntu-latest
         java:
           - 17
-          - 21
       fail-fast: false
     runs-on: ${{ matrix.os }}
     name: Java ${{ matrix.java }} OS ${{ matrix.os }} sample
