@@ -25,7 +25,7 @@ function getAgent() {
   "${PYTHON}" -m pip install --upgrade pip build
   "${PIP}" install decorator
   "${PYTHON}" -m build
-  "${PIP}" install dist/kieker_monitoring_for_python-0.0.1.tar.gz
+  "${PIP}" install dist/kieker_monitoring_for_python-0.0.2.tar.gz
   cd "${BASE_DIR}"
 }
 
@@ -66,11 +66,13 @@ connection_timeout = 10"
   fi
 
     cat > "${BASE_DIR}/monitoring.ini" << EOF
+[General]
+multiple_Connections = False
 [Main]
 mode = ${mode}
 ${tcp_section}
 [FileWriter]
-file_path = ${DATA_DIR}/kieker
+file_path = ${DATA_DIR}/kieker-0.dat
 EOF
 }
 
@@ -97,7 +99,9 @@ function executeExperiment() {
     createMonitoring ${mode} ${port}
     createConfig ${inactive} ${instrument} ${approach} ${loop}
 
+    pushd "${SUT_PYTHON_DIR}"
     "${PYTHON}" "${MOOBENCH_BIN_PY}" "${BASE_DIR}/config.ini"
+    popd
 
     if [ ! -f "${RESULT_FILE}" ]; then
         info "---------------------------------------------------"
