@@ -17,8 +17,9 @@ DATA_DIR="${BASE_DIR}/data"
 
 KIEKER_4_PYTHON_REPO_URL="https://github.com/kieker-monitoring/kieker-lang-pack-python.git"
 KIEKER_4_PYTHON_DIR="${BASE_DIR}/kieker-lang-pack-python"
-KIEKER_4_PYTHON_BRANCH="ast_import_hook"
+KIEKER_4_PYTHON_BRANCH="master"
 
 RECEIVER_ARCHIVE="${MAIN_DIR}/tools/receiver/build/distributions/receiver.tar"
 
-MOOBENCH_BIN_PY="${MAIN_DIR}/tools/SuT-python/benchmark.py"
+SUT_PYTHON_DIR="${MAIN_DIR}/tools/SuT-python"
+MOOBENCH_BIN_PY="./benchmark.py"

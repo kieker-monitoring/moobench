@@ -16,7 +16,7 @@ except ImportError:
     OTEL_AVAILABLE = False
 
 try:
-    from monitoring.controller import SingleMonitoringController
+    from monitoring.controller import MonitoringController
     from tools.importhookast import InstrumentOnImportFinder
     from tools.importhook import PostImportFinder
     KIEKER_AVAILABLE = True
@@ -46,7 +46,7 @@ except Exception as e:
 # Setup Kieker only if requested
 if KIEKER_AVAILABLE and instrumentation_on:
     # This segment runs only for the original Kieker framework logic
-    some_var = SingleMonitoringController(ini_path)
+    some_var = MonitoringController(ini_path)
     if approach == 2:
         sys.meta_path.insert(0, InstrumentOnImportFinder(ignore_list=[], empty=inactive, debug_on=False))
     else:
