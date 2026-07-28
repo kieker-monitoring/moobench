@@ -90,10 +90,16 @@ for i in range(total_calls):
     start_ns = time.time_ns()
 
     if OTEL_AVAILABLE and tracer:
-        with tracer.start_as_current_span("monitored_method"):
-            monitored_application.monitored_method(method_time, recursion_depth)
+        parent_span = tracer.start_span("monitored_method")
+        monitored_application.monitored_method(method_time, recursion_depth,
+                                               trace=trace,
+                                               tracer=tracer,
+                                               parent_span=parent_span)
     else:
-        monitored_application.monitored_method(method_time, recursion_depth)
+        monitored_application.monitored_method(method_time, recursion_depth,
+                                               trace=None,
+                                               tracer=None,
+                                               parent_span=None)
 
     stop_ns = time.time_ns()
 

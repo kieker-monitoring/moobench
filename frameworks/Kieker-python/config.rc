@@ -11,8 +11,6 @@ fi
 
 GIT=`which git`
 
-RSCRIPT_PATH="${BASE_DIR}/../statistics.r"
-
 DATA_DIR="${BASE_DIR}/data"
 
 KIEKER_4_PYTHON_REPO_URL="https://github.com/kieker-monitoring/kieker-lang-pack-python.git"
