@@ -22,6 +22,11 @@ source "$DIR/config.rc"
 source "$DIR/labels.sh"
 source "$DIR/functions.sh"
 
+if [ -z "$MOOBENCH_CONFIGURATIONS" ]; then
+  MOOBENCH_CONFIGURATIONS="0 1 2"
+  echo "Setting default configuration $MOOBENCH_CONFIGURATIONS"
+fi
+
 echo " # Preparing Environment..."
 if [ -d "$VENV_DIR" ]; then rm -rf "$VENV_DIR"; fi
 
