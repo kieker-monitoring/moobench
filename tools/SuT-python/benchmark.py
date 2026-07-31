@@ -94,10 +94,7 @@ for i in range(total_calls):
             monitored_application.monitored_method_otel(method_time, recursion_depth,
                                                         tracer=tracer)
     else:
-        monitored_application.monitored_method(method_time, recursion_depth,
-                                               trace=None,
-                                               tracer=None,
-                                               parent_span=None)
+        monitored_application.monitored_method(method_time, recursion_depth)
 
     stop_ns = time.time_ns()
 
