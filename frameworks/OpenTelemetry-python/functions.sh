@@ -6,7 +6,7 @@ function get_os_path {
 
 function createOtelConfig() {
     loop="$1"
-    filename=$2
+    filename="$2"
   cat > "${BASE_DIR}/config.ini" << EOF
 [Benchmark]
 total_calls = ${TOTAL_NUM_OF_CALLS}
@@ -28,6 +28,8 @@ function runNoInstrumentation {
     # Define Paths using variables from init.sh (RESULTS_DIR) and config.rc (RAWFN)
     local RAW_CSV="${RESULTS_DIR}/raw-${i}-${RECURSION_DEPTH}-${k}.csv"
     local CSV_FILE=$(get_os_path "$RAW_CSV")
+    createOtelConfig $i $CSV_FILE
+    
     local LOG_FILE="${RESULTS_DIR}/output-raw-${i}-${RECURSION_DEPTH}-${k}.txt"
 
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
@@ -42,6 +44,8 @@ function runOpenTelemetryNoExport {
 
     local RAW_CSV="${RESULTS_DIR}/raw-${i}-${RECURSION_DEPTH}-${k}.csv"
     local CSV_FILE=$(get_os_path "$RAW_CSV")
+    createOtelConfig $i $CSV_FILE
+    
     local LOG_FILE="${RESULTS_DIR}/output-raw-${i}-${RECURSION_DEPTH}-${k}.txt"
 
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
@@ -56,7 +60,10 @@ function runOpenTelemetryNoExport {
 function runOpenTelemetryZipkin {
     local k=$1
     local i=$2
-
+    
+    local RAW_CSV="${RESULTS_DIR}/raw-${i}-${RECURSION_DEPTH}-${k}.csv"
+    local CSV_FILE=$(get_os_path "$RAW_CSV")
+    createOtelConfig $i $CSV_FILE
     
     local LOG_FILE="${RESULTS_DIR}/output-raw-${i}-${RECURSION_DEPTH}-${k}.txt"
 
@@ -75,10 +82,6 @@ function runOpenTelemetryZipkin {
 }
 
 function executeBenchmark {
-   local RAW_CSV="${RESULTS_DIR}/raw-${i}-${RECURSION_DEPTH}-${k}.csv"
-   local CSV_FILE=$(get_os_path "$RAW_CSV")
-   createOtelConfig $i $CSV_FILE
-   
    for index in $MOOBENCH_CONFIGURATIONS; do
       case $index in
          0) runNoInstrumentation 0 $i ;;
