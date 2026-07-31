@@ -43,8 +43,6 @@ pip install -q --upgrade pip
 pip install -q -r "$REQUIREMENTS_FILE"
 opentelemetry-bootstrap -a install
 
-cp "$CONFIG_TEMPLATE" "$CONFIG_FILE"
-
 echo " # Starting Benchmark with $NUM_OF_LOOPS loops"
 executeAllLoops
 

@@ -1,13 +1,24 @@
-# helper to inject filename
-function updateConfigFilename {
-    local filename=$1
-    grep -v "output_filename" "$CONFIG_TEMPLATE" > "$CONFIG_FILE"
-    echo "output_filename = $filename" >> "$CONFIG_FILE"
-}
 
 function get_os_path {
     local raw_path=$1
     if command -v cygpath &> /dev/null; then cygpath -w "$raw_path"; else echo "$raw_path"; fi
+}
+
+function createOtelConfig() {
+    loop="$1"
+    filename=$2
+  cat > "${BASE_DIR}/config.ini" << EOF
+[Benchmark]
+total_calls = ${TOTAL_NUM_OF_CALLS}
+recursion_depth = ${RECURSION_DEPTH}
+method_time = ${METHOD_TIME}
+config_path = ${BASE_DIR}/monitoring.ini
+inactive = False
+instrumentation_on = False
+approach = 1
+output_filename = $filename
+EOF
+	# Setting instrumentation_on to False is required to disable Kieker
 }
 
 function runNoInstrumentation {
@@ -20,8 +31,6 @@ function runNoInstrumentation {
     local LOG_FILE="${RESULTS_DIR}/output-raw-${i}-${RECURSION_DEPTH}-${k}.txt"
 
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
-
-    updateConfigFilename "$CSV_FILE"
 
     ENABLE_OTEL="false" \
     python3 "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
@@ -36,7 +45,6 @@ function runOpenTelemetryNoExport {
     local LOG_FILE="${RESULTS_DIR}/output-raw-${i}-${RECURSION_DEPTH}-${k}.txt"
 
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
-    updateConfigFilename "$CSV_FILE"
 
     ENABLE_OTEL="true" \
     OTEL_TRACES_EXPORTER="none" \
@@ -49,13 +57,11 @@ function runOpenTelemetryZipkin {
     local k=$1
     local i=$2
 
-    local RAW_CSV="${RESULTS_DIR}/raw-${i}-${RECURSION_DEPTH}-${k}.csv"
-    local CSV_FILE=$(get_os_path "$RAW_CSV")
+    
     local LOG_FILE="${RESULTS_DIR}/output-raw-${i}-${RECURSION_DEPTH}-${k}.txt"
 
     startZipkin
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
-    updateConfigFilename "$CSV_FILE"
 
     ENABLE_OTEL="true" \
     OTEL_SERVICE_NAME="moobench-python" \
@@ -69,6 +75,10 @@ function runOpenTelemetryZipkin {
 }
 
 function executeBenchmark {
+   local RAW_CSV="${RESULTS_DIR}/raw-${i}-${RECURSION_DEPTH}-${k}.csv"
+   local CSV_FILE=$(get_os_path "$RAW_CSV")
+   createOtelConfig $i $CSV_FILE
+   
    for index in $MOOBENCH_CONFIGURATIONS; do
       case $index in
          0) runNoInstrumentation 0 $i ;;
