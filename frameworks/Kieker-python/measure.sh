@@ -17,7 +17,7 @@ source ${VENV_DIR}/bin/activate
 PYTHON=$(which python)
 PIP=$(which pip)
 
-pip install -r py-spy
+pip install py-spy
 
 # configure base dir
 BASE_DIR=$(cd "$(dirname "$0")"; pwd)
