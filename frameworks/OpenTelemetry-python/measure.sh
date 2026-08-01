@@ -12,6 +12,8 @@ source ${VENV_DIR}/bin/activate
 PYTHON=$(which python)
 PIP=$(which pip)
 
+pip install py-spy
+
 DIR=$(cd "$(dirname "$0")" && pwd)
 RAW_MAIN_DIR="$DIR/../../"
 
