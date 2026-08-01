@@ -100,7 +100,7 @@ function executeExperiment() {
     createConfig ${inactive} ${instrument} ${approach} ${loop}
 
     pushd "${SUT_PYTHON_DIR}"
-    "${PYTHON}" "${MOOBENCH_BIN_PY}" "${BASE_DIR}/config.ini"
+    "${PYTHON}" "${MOOBENCH_BIN_PY}" "${BASE_DIR}/config.ini" &> ${LOG_FILE}
     popd
 
     if [ ! -f "${RESULT_FILE}" ]; then
