@@ -6,7 +6,9 @@
 # Usage: benchmark.sh
 
 if [ -z "${PYTHON}" ]; then
-	PYTHON=`which python3`
+        PYTHON=`which python3`
+else
+        PYTHON=$(command -v "${PYTHON}")
 fi
 
 VENV_DIR=".venv"
