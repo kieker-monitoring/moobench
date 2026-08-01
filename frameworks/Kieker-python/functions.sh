@@ -9,8 +9,8 @@ fi
 function getAgent() {
   info "Setup Kieker4Python"
 
-  checkExecutable python "${PYTHON}"
-  checkExecutable pip "${PIP}"
+  checkExecutable python $(which ${PYTHON})
+  checkExecutable pip $(which ${PIP})
   checkExecutable git "${GIT}"
 
   # note: if it already exists
