@@ -1,3 +1,17 @@
+#!/bin/bash
+
+if [ -z "${PYTHON}" ]; then
+        PYTHON=`which python3`
+else
+        PYTHON=$(command -v "${PYTHON}")
+fi
+
+VENV_DIR=".venv"
+${PYTHON} -m venv ${VENV_DIR}
+source ${VENV_DIR}/bin/activate
+PYTHON=$(which python)
+PIP=$(which pip)
+
 DIR=$(cd "$(dirname "$0")" && pwd)
 RAW_MAIN_DIR="$DIR/../../"
 
@@ -25,23 +39,6 @@ source "$DIR/functions.sh"
 if [ -z "$MOOBENCH_CONFIGURATIONS" ]; then
   MOOBENCH_CONFIGURATIONS="0 1 2"
   echo "Setting default configuration $MOOBENCH_CONFIGURATIONS"
-fi
-
-echo " # Preparing Environment..."
-if [ -d "$VENV_DIR" ]; then rm -rf "$VENV_DIR"; fi
-
-# For Windows/Cygwin compatibility
-if command -v python3 &> /dev/null; then
-    PYTHON_EXE=python3
-else
-    PYTHON_EXE=python
-fi
-
-$PYTHON_EXE -m venv "$VENV_DIR"
-if [ -f "$VENV_DIR/Scripts/activate" ]; then
-    source "$VENV_DIR/Scripts/activate"
-else
-    source "$VENV_DIR/bin/activate"
 fi
 
 pip install -q --upgrade pip
