@@ -5,9 +5,15 @@
 #
 # Usage: benchmark.sh
 
+if [ -z "${PYTHON}" ]; then
+	PYTHON=`which python3`
+fi
+
 VENV_DIR=".venv"
 ${PYTHON} -m venv ${VENV_DIR}
 source ${VENV_DIR}/bin/activate
+PYTHON=$(which python)
+PIP=$(which pip)
 
 # configure base dir
 BASE_DIR=$(cd "$(dirname "$0")"; pwd)
