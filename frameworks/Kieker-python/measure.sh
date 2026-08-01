@@ -5,8 +5,8 @@
 #
 # Usage: benchmark.sh
 
-VENV_DIR="${HOME}/venv/moobench"
-python3 -m venv ${VENV_DIR}
+VENV_DIR=".venv"
+${PYTHON} -m venv ${VENV_DIR}
 source ${VENV_DIR}/bin/activate
 
 # configure base dir

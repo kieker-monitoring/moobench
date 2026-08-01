@@ -2,11 +2,15 @@
 
 source ${MAIN_DIR}/config.rc
 
-PYTHON=`which python3`
+if [ -z "${PYTHON}" ]; then
+	PYTHON=`which python3`
+fi
 
-PIP=`which pip`
-if [ ! -f "$PIP" ] ; then
-	PIP=`which pip3`
+if [ -z "${PIP}" ]; then
+	PIP=`which pip`
+	if [ ! -f "$PIP" ] ; then
+		PIP=`which pip3`
+	fi
 fi
 
 GIT=`which git`
