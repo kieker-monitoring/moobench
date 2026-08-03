@@ -35,7 +35,7 @@ function runNoInstrumentation {
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
 
     ENABLE_OTEL="false" \
-    py-spy record --reversed -o profile-${i}-${RECURSION_DEPTH}-${k}.svg -- "${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
+    py-spy record -o profile-${i}-${RECURSION_DEPTH}-${k}.svg -- "${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 }
 
 function runOpenTelemetryNoExport {
@@ -54,7 +54,7 @@ function runOpenTelemetryNoExport {
     OTEL_TRACES_EXPORTER="none" \
     OTEL_METRICS_EXPORTER="none" \
     OTEL_LOGS_EXPORTER="none" \
-    py-spy record --reversed -o profile-${i}-${RECURSION_DEPTH}-${k}.svg -- "${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
+    py-spy record -o profile-${i}-${RECURSION_DEPTH}-${k}.svg -- "${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 }
 
 function runOpenTelemetryZipkin {
@@ -76,7 +76,7 @@ function runOpenTelemetryZipkin {
     OTEL_EXPORTER_ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans" \
     OTEL_METRICS_EXPORTER="none" \
     OTEL_LOGS_EXPORTER="none" \
-    py-spy record --reversed -o profile-${i}-${RECURSION_DEPTH}-${k}.svg -- "${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
+    py-spy record -o profile-${i}-${RECURSION_DEPTH}-${k}.svg -- "${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 
     stopBackgroundProcess
 }
