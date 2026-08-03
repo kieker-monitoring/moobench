@@ -41,6 +41,8 @@ if [ -z "$MOOBENCH_CONFIGURATIONS" ]; then
   echo "Setting default configuration $MOOBENCH_CONFIGURATIONS"
 fi
 
+mkdir -p ${RESULTS_DIR}
+
 pip install -q --upgrade pip
 pip install -q -r "$REQUIREMENTS_FILE"
 opentelemetry-bootstrap -a install
