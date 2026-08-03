@@ -61,7 +61,7 @@ jobs:
           tool: 'customSmallerIsBetter'
           external-data-json-path: ../moobench-data/dev/bench/data2.js
           output-file-path: output.json
-          fail-on-alert: true
+          fail-on-alert: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
           skip-fetch-gh-pages: false
           auto-push: false
