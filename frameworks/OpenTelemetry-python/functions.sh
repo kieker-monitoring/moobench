@@ -30,7 +30,7 @@ function runNoInstrumentation {
     local CSV_FILE=$(get_os_path "$RAW_CSV")
     createOtelConfig $i $CSV_FILE
     
-    local LOG_FILE="${RESULTS_DIR}/output-raw-${i}-${RECURSION_DEPTH}-${k}.txt"
+    local LOG_FILE="${RESULTS_DIR}/output_${i}-${RECURSION_DEPTH}-${k}.txt"
 
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
 
@@ -46,7 +46,7 @@ function runOpenTelemetryNoExport {
     local CSV_FILE=$(get_os_path "$RAW_CSV")
     createOtelConfig $i $CSV_FILE
     
-    local LOG_FILE="${RESULTS_DIR}/output-raw-${i}-${RECURSION_DEPTH}-${k}.txt"
+    local LOG_FILE="${RESULTS_DIR}/output_${i}-${RECURSION_DEPTH}-${k}.txt"
 
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
 
@@ -65,7 +65,7 @@ function runOpenTelemetryZipkin {
     local CSV_FILE=$(get_os_path "$RAW_CSV")
     createOtelConfig $i $CSV_FILE
     
-    local LOG_FILE="${RESULTS_DIR}/output-raw-${i}-${RECURSION_DEPTH}-${k}.txt"
+    local LOG_FILE="${RESULTS_DIR}/output_${i}-${RECURSION_DEPTH}-${k}.txt"
 
     startZipkin
     echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
