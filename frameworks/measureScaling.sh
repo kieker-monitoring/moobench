@@ -86,7 +86,7 @@ MODE=${2:-DEPTH}
 
 echo "Running mode $MODE"
 
-if [[ -z "$RECURSION_DEPTH" ]]; then
+if [[ -n "$RECURSION_DEPTH" && "$MODE" == "DEPTH" ]]; then
   echo "Warning: \$RECURSION_DEPTH is set to $RECURSION_DEPTH"
 fi
 
