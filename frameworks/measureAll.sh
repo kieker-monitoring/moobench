@@ -22,7 +22,7 @@ fi
 cd "${BASE_DIR}"
 
 start=$(pwd)
-for framework in inspectIT-java OpenTelemetry-java Kieker-java Scouter-java elasticapm-java pinpoint-java Skywalking-java; do
+for framework in inspectIT-java OpenTelemetry-java Kieker-java Scouter-java elasticapm-java pinpoint-java Skywalking-java k-perf-kotlin; do
   echo "Running $framework"
         cd "${framework}"
         ./measure.sh &> "${start}/log_${framework}.txt"

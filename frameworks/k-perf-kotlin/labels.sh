@@ -1,0 +1,6 @@
+TITLE[0]="No instrumentation Java"
+TITLE[1]="Instrumentation Java with KPerf"
+TITLE[2]="No instrumentation Native"
+TITLE[3]="Instrumentation Native with KPerf"
+TITLE[4]="No instrumentation JS"
+TITLE[5]="Instrumentation JS with KPerf"
