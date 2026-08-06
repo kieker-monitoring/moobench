@@ -60,7 +60,7 @@ for (writer_idx in configs.indices) {
       results_fn_filepath <- paste(results_fn, "-", loop_counter, "-", recursion_depth, "-", writer_idx, ".csv", sep="")
       message(results_fn_filepath)
       results <- read.csv2(results_fn_filepath, nrows=numOfRowsToRead, skip=results.skip, quote="", colClasses=c("NULL","numeric", "numeric", "numeric"), comment.char="", col.names=c("thread_id", "duration_nsec", "gc", "t"), header=FALSE)
-      trx_idx <- c(1:numOfRowsToRead)
+      trx_idx <- (((loop_counter - 1) * numOfRowsToRead + 1):(loop_counter * numOfRowsToRead))
       resultsBIG[array_idx,trx_idx] <- results[["duration_nsec"]]
    }
 }
@@ -73,7 +73,7 @@ printDimensionNames <- list(c("mean","sd","ci95%","md25%","md50%","md75%","max",
 printvalues <- matrix(nrow=8, ncol=numberOfWriters, dimnames=printDimensionNames)
 
 for (writer_idx in configs.indices) {
-   idx_mult <- c(1:numOfRowsToRead)
+   idx_mult <- c(1:numberOfValues)
 
    array_idx <- writer_idx + 1 
 
