@@ -44,7 +44,8 @@ done
 
 for file in *.csv; do
   framework=$(echo "${file#results-}" | sed 's/\.csv$//' | awk -F'-' '{print $1"-"$2}')
-  echo -n "  \multicolumn{3}{c}{\textbf{$framework}} \\\\ "
+  fullPrefix=$(echo "${file#results-}" | sed 's/\.csv$//')
+  echo -n "  \multicolumn{3}{c}{\textbf{$fullPrefix}} \\\\ "
   source $start/../frameworks/$framework/labels.sh
   configurations=$(cat $file | awk '{print $1}' | sort | uniq)
   for configuration in $configurations; do
