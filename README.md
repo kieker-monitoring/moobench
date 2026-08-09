@@ -67,7 +67,7 @@ To use MooBench, please make sure the following tools are installed:
 
 ### Benchmark Execution
 
-Compile the application and install it in the repository root directory. This can be done automatically be calling `./setup.sh`. Afterwards, you can switch to the benchmark folder (`frameworks` and then `$AGENT-$TECHNOLOGY`, e.g., OpenTelemetry as observability agent in Java) and run `./benchmark.sh`.
+Compile the application and install it in the repository root directory. This can be done automatically be calling `./setup.sh`. Afterwards, you can switch to the framework folder (`frameworks` and then `$AGENT-$TECHNOLOGY`, e.g., OpenTelemetry as observability agent in Java) and run `./measure.sh`.
 
 For example, a simple benchmark execution is:
 ```
@@ -96,8 +96,7 @@ All experiments are started with the provided "External Controller" scripts.
 The following scripts are available for every supported framework ($FRAMEWORK) and language ($LANGUAGE):
 * In `frameworks/$FRAMEWORK-$LANGUAGE/measure.sh` a script is provided for regular
   execution (with default parameters)
-* In `frameworks/$FRAMEWORK-$LANGUAGE/runExponentialSizes.sh` a script is provided for
-  execution with different call tree depth sizes (exponentially growing from 2)
+* In `frameworks/measureScaling.sh` a script is provided for execution with increased workload. This can be called with the mode, e.g., `./measureScaling.sh Kieker-java DEPTH` for call tree depth (`DEPTH`, alternative: `THREADS`). 
 
 Each scripts will start different factorial experiments (started `$NUM_OF_LOOPS`
 times for repeatability), which will be:
