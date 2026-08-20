@@ -38,7 +38,7 @@ JAVA_VERSION=`java -version`
 
 info "Java version ${JAVA_VERSION}"
 
-./gradlew build -x :tools:SuT-kotlin:build
+./gradlew build
 
 # Optionally build Kotlin benchmark artifacts
 
@@ -47,16 +47,16 @@ if [[ "$1" == "withKotlin" ]]; then
 	mkdir -p frameworks/k-perf-kotlin/build/jsPlain/
 	mkdir -p frameworks/k-perf-kotlin/build/jsInstrumented/
 	mkdir -p frameworks/k-perf-kotlin/build/lib/
-
+	
 	# plain
-	./gradlew build :tools:SuT-kotlin:build -PkperfEnabled=false
+	./gradlew build :tools:SuT-kotlin:build -PwithKotlin -PkperfEnabled=false
 	cp tools/SuT-kotlin/build/jvmRuntimeClasspath/*.jar "frameworks/k-perf-kotlin/build/lib/deps/"
 	cp "tools/SuT-kotlin/build/libs/kotlin-plain.jar" "frameworks/k-perf-kotlin/build/lib/"
 	cp -r build/js/packages/kotlin-plain/kotlin/. \
 		  frameworks/k-perf-kotlin/build/jsPlain/
 
 	# instrumented
-	./gradlew build :tools:SuT-kotlin:build -PkperfEnabled=true -PkPerfMethods="application.MonitoredClassSimple.monitoredMethod"
+	./gradlew build :tools:SuT-kotlin:build -PwithKotlin -PkperfEnabled=true -PkPerfMethods="application.MonitoredClassSimple.monitoredMethod"
 	cp "tools/SuT-kotlin/build/libs/kotlin-instrumented.jar" "frameworks/k-perf-kotlin/build/lib/"
 	cp -r build/js/packages/kotlin-instrumented/kotlin/. \
 		  frameworks/k-perf-kotlin/build/jsInstrumented/
@@ -64,6 +64,7 @@ if [[ "$1" == "withKotlin" ]]; then
 	cp -r tools/SuT-kotlin/build/bin/. \
 		  frameworks/k-perf-kotlin/build/bin/
 fi
+
 
 checkFile moobench "${MOOBENCH_ARCHIVE}"
 tar -xpf "${MOOBENCH_ARCHIVE}"
