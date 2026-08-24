@@ -11,13 +11,19 @@
 /build/
 /benchmark/**
 /SuT-java/
+/.kotlin/
 
 # Ignore eclipse project files
 .project
 
 
 # Do not store compile results
+# Ignore every compile-results directory ...
 compile-results/
+# ... except /tools/compile-results/
+!/tools/compile-results/
+!/tools/compile-results/**
+/tools/compile-results/build/
 frameworks/Kieker-python/kieker-lang-pack-python/
 analysis/results_depth/
 analysis/results_threads
@@ -43,6 +49,7 @@ frameworks/elasticapm-java/results-elasticapm-java/
 frameworks/pinpoint-java/results-pinpoint-java/
 frameworks/pinpoint-java/exp-results-pinpoint-java/
 frameworks/bpftrace-java/results-bpftrace-java/
+frameworks/k-perf-kotlin/results-k-perf-kotlin/
 
 # Do not store pinpoint temporary data
 frameworks/pinpoint-java/logs/
@@ -62,3 +69,8 @@ frameworks/pinpoint-java/pinpoint/pinpoint-agent-*
 frameworks/pinpoint-java/pinpoint/pinpoint.tar.gz
 frameworks/pinpoint-java/scripts/*.json
 zipkin.jar
+
+# Kotlin specific
+frameworks/k-perf-kotlin/*.txt
+kotlin-js-store/
+DEBUG.txt
