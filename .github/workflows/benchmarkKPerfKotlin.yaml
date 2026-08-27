@@ -1,4 +1,4 @@
-name: Benchmark Kieker-java
+name: Benchmark k-perf-kotlin
 on:
   workflow_dispatch:
   push:
