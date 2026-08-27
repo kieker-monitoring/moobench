@@ -39,6 +39,7 @@ jobs:
           ./setup.sh withKotlin
           cd frameworks/k-perf-kotlin/
           export NUM_OF_LOOPS=10
+          export MOOBENCH_CONFIGURATIONS="0 1 2 3 4 5"
           ./measure.sh 
           cd results-k-perf-kotlin
           unzip results.zip 
