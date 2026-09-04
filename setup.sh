@@ -38,7 +38,7 @@ JAVA_VERSION=`java -version`
 
 info "Java version ${JAVA_VERSION}"
 
-./gradlew build
+./gradlew build --no-daemon
 
 # Optionally build Kotlin benchmark artifacts
 

@@ -3,7 +3,7 @@
 #
 # k-perf benchmark script
 #
-# Usage: benchmark.sh
+# Usage: measure.sh
 
 # configure base dir
 BASE_DIR=$(cd "$(dirname "$0")"; pwd)
