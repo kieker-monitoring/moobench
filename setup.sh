@@ -38,7 +38,9 @@ JAVA_VERSION=`java -version`
 
 info "Java version ${JAVA_VERSION}"
 
-./gradlew build --no-daemon
+# Use --no-daemon to avoid reusing potentially stale Gradle/Kotlin Multiplatform
+# daemon state. 
+./gradlew build
 
 # Optionally build Kotlin benchmark artifacts
 
