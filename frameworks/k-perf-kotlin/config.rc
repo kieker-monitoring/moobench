@@ -1,0 +1,46 @@
+# k-perf configuration parameter
+
+source ${MAIN_DIR}/config.rc
+
+JAVA_BIN="${JAVA_HOME}/bin/java"
+
+#JVM
+MOOBENCH_JAR_PLAIN="${BASE_DIR}/build/lib/kotlin-plain.jar:${BASE_DIR}/build/lib/deps/*"
+MOOBENCH_JAR_INSTRUMENTED="${BASE_DIR}/build/lib/kotlin-instrumented.jar:${BASE_DIR}/build/lib/deps/*"
+
+#NATIVE
+case "$(uname -s)" in
+   Linux*)
+      NATIVE_TARGET="linuxX64"
+      NATIVE_EXT="kexe"
+      ;;
+   MINGW*|MSYS*|CYGWIN*)
+      NATIVE_TARGET="mingwX64"
+      NATIVE_EXT="exe"
+      ;;
+   Darwin*)
+      if [ "$(uname -m)" = "arm64" ]; then
+         NATIVE_TARGET="macosArm64"
+      else
+         NATIVE_TARGET="macosX64"
+      fi
+      NATIVE_EXT="kexe"
+      ;;
+   *)
+      echo "Unsupported OS for Kotlin/Native: $(uname -s)"
+      exit 1
+      ;;
+esac
+
+MOOBENCH_NATIVE_PLAIN_BIN="${BASE_DIR}/build/bin/${NATIVE_TARGET}/releaseExecutable/kotlin-plain.${NATIVE_EXT}"
+MOOBENCH_NATIVE_INSTR_BIN="${BASE_DIR}/build/bin/${NATIVE_TARGET}/releaseExecutable/kotlin-instrumented.${NATIVE_EXT}"
+
+#JS
+NODE_BIN="${NODE_BIN:-node}"
+NODE_ARGS="${NODE_ARGS:-}"
+MOOBENCH_JS_PLAIN_BIN="${BASE_DIR}/build/jsPlain/kotlin-plain.js"
+MOOBENCH_JS_INSTR_BIN="${BASE_DIR}/build/jsInstrumented/kotlin-instrumented.js"
+
+
+#MORE_PARAMS="--quickstart"
+MORE_PARAMS="--application application.MonitoredClassSimple ${MORE_PARAMS}"

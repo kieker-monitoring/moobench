@@ -308,5 +308,4 @@ for (writer_idx in configs.indices) {
       mktext(printvalues["max",array_idx]), ",",
       mktext(printvalues["min",array_idx]), "]"), file=out_yaml_fn, append=TRUE)
 }
-
 # end
