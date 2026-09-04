@@ -31,8 +31,11 @@
 # divisor 1 = nano, 1000 = micro, 1000000 = milli seconds
 timeUnit <- 1000
 
+# Use outlier removal only when extreme measurements are expected to be unrelated
+# to the behavior being benchmarked.
+
 # if TRUE, drop the smallest and largest 0.5% of measurement values of each run
-drop_outliers <- False
+drop_outliers <- FALSE
 outlierFraction <- 0.005
 
 # number of Kieker writer configurations
