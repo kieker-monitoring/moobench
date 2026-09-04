@@ -24,6 +24,7 @@ compile-results/
 !/tools/compile-results/
 !/tools/compile-results/**
 /tools/compile-results/build/
+/tools/compile-results/bin/
 frameworks/Kieker-python/kieker-lang-pack-python/
 analysis/results_depth/
 analysis/results_threads
