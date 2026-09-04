@@ -12,3 +12,6 @@ rootProject.name = 'moobench'
 include 'tools:SuT-java'
 include 'tools:receiver'
 include 'tools:compile-results'
+if (providers.gradleProperty("withKotlin").present) {
+    include ':tools:SuT-kotlin'
+}

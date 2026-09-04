@@ -26,5 +26,7 @@ subprojects {
         maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
     
-    apply plugin: 'java'
+    if (project.path != ':tools:SuT-kotlin') {
+        apply plugin: 'java'
+    }
 }
