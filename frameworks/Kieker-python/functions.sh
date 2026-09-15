@@ -48,7 +48,7 @@ config_path = ${BASE_DIR}/monitoring.ini
 inactive = $inactive
 instrumentation_on = $instrument
 approach = $approach
-output_filename = ${RAWFN}-${loop}-${RECURSION_DEPTH}-${index}.csv
+output_filename = ${RAWFN}-${loop}-${RECURSION_DEPTH}-${config}.csv
 EOF
 }
 
@@ -80,20 +80,20 @@ EOF
 # function: execute an experiment
 function executeExperiment() {
     loop="$1"
-    index="$2"
-    title="${TITLE[$index]}"
+    config="$2"
+    title="${TITLE[$config]}"
 
     # Kieker-python specific parameters
-    mode="$(cut -d " " -f1 <<< ${MONITORING_CONFIG[$index]})"
-    inactive="$(cut -d " " -f2 <<< ${MONITORING_CONFIG[$index]})"
-    instrument="$(cut -d " " -f3 <<< ${MONITORING_CONFIG[$index]})"
-    approach="$(cut -d " " -f4 <<< ${MONITORING_CONFIG[$index]})"
-    port="$(cut -d " " -f5 <<< ${MONITORING_CONFIG[$index]})"
+    mode="$(cut -d " " -f1 <<< ${MONITORING_CONFIG[$config]})"
+    inactive="$(cut -d " " -f2 <<< ${MONITORING_CONFIG[$config]})"
+    instrument="$(cut -d " " -f3 <<< ${MONITORING_CONFIG[$config]})"
+    approach="$(cut -d " " -f4 <<< ${MONITORING_CONFIG[$config]})"
+    port="$(cut -d " " -f5 <<< ${MONITORING_CONFIG[$config]})"
 
-    info " # ${loop}.${RECURSION_DEPTH}.${index} ${title}"
+    info " # ${loop}.${RECURSION_DEPTH}.${config} ${title}"
 
-    RESULT_FILE="${RAWFN}-${loop}-${RECURSION_DEPTH}-${index}.csv"
-    LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
+    RESULT_FILE="${RAWFN}-${loop}-${RECURSION_DEPTH}-${config}.csv"
+    LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${config}.txt"
 
     createMonitoring ${mode} ${port}
     createConfig ${inactive} ${instrument} ${approach} ${loop}
@@ -121,16 +121,16 @@ function executeExperiment() {
 }
 
 function executeBenchmarkBody() {
-  index="$1"
+  config="$1"
   loop="$2"
-  if [[ "${RECEIVER[$index]}" ]]; then
-     debug "receiver ${RECEIVER[$index]}"
-     ${RECEIVER[$index]} >> "${DATA_DIR}/kieker.receiver-${loop}-${index}.log" &
+  if [[ "${RECEIVER[$config]}" ]]; then
+     debug "receiver ${RECEIVER[$config]}"
+     ${RECEIVER[$config]} >> "${DATA_DIR}/kieker.receiver-${loop}-${config}.log" &
      RECEIVER_PID=$!
      debug "PID ${RECEIVER_PID}"
   fi
 
-  executeExperiment "$loop" "$index"
+  executeExperiment "$loop" "$config"
 
   if [[ "${RECEIVER_PID}" ]]; then
     if ps -p "${RECEIVER_PID}" > /dev/null; then
@@ -141,8 +141,8 @@ function executeBenchmarkBody() {
 }
 
 function executeBenchmark() {
-    for index in $MOOBENCH_CONFIGURATIONS; do
-      executeBenchmarkBody $index $i
+    for config in $MOOBENCH_CONFIGURATIONS; do
+      executeBenchmarkBody $config $i
   done
 }
 

@@ -22,33 +22,33 @@ EOF
 }
 
 function runNoInstrumentation {
-    local index=$1
+    local config=$1
     local loop=$2
 
     # Define Paths using variables from init.sh (RESULTS_DIR) and config.rc (RAWFN)
-    local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${index}.csv"
+    local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${config}.csv"
     local CSV_FILE=$(get_os_path "$RAW_CSV")
     createOtelConfig $loop $CSV_FILE
     
-    local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${index}.txt"
+    local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${config}.txt"
 
-    echo " # Running Config $index: ${TITLE[$index]} (Iter $loop)"
+    echo " # Running Config $config: ${TITLE[$config]} (Iter $loop)"
 
     ENABLE_OTEL="false" \
     "${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 }
 
 function runOpenTelemetryNoExport {
-    local index=$1
+    local config=$1
     local loop=$2
 
-    local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${index}.csv"
+    local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${config}.csv"
     local CSV_FILE=$(get_os_path "$RAW_CSV")
     createOtelConfig $loop $CSV_FILE
     
-    local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${index}.txt"
+    local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${config}.txt"
 
-    echo " # Running Config $index: ${TITLE[$index]} (Iter $loop)"
+    echo " # Running Config $config: ${TITLE[$config]} (Iter $loop)"
 
     ENABLE_OTEL="true" \
     OTEL_TRACES_EXPORTER="none" \
@@ -58,17 +58,17 @@ function runOpenTelemetryNoExport {
 }
 
 function runOpenTelemetryZipkin {
-    local index=$1
+    local config=$1
     local loop=$2
     
-    local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${index}.csv"
+    local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${config}.csv"
     local CSV_FILE=$(get_os_path "$RAW_CSV")
     createOtelConfig $loop $CSV_FILE
     
-    local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${index}.txt"
+    local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${config}.txt"
 
     startZipkin
-    echo " # Running Config $index: ${TITLE[$index]} (Iter $loop)"
+    echo " # Running Config $config: ${TITLE[$config]} (Iter $loop)"
 
     ENABLE_OTEL="true" \
     OTEL_SERVICE_NAME="moobench-python" \
@@ -82,8 +82,8 @@ function runOpenTelemetryZipkin {
 }
 
 function executeBenchmark {
-   for index in $MOOBENCH_CONFIGURATIONS; do
-      case $index in
+   for config in $MOOBENCH_CONFIGURATIONS; do
+      case $config in
          0) runNoInstrumentation 0 $i ;;
          1) runOpenTelemetryNoExport 1 $i ;;
          2) runOpenTelemetryZipkin 2 $i ;;
