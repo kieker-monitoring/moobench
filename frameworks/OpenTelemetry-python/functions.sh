@@ -22,33 +22,33 @@ EOF
 }
 
 function runNoInstrumentation {
-    local k=$1
-    local i=$2
+    local index=$1
+    local loop=$2
 
     # Define Paths using variables from init.sh (RESULTS_DIR) and config.rc (RAWFN)
-    local RAW_CSV="${RESULTS_DIR}/raw-${i}-${RECURSION_DEPTH}-${k}.csv"
+    local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${index}.csv"
     local CSV_FILE=$(get_os_path "$RAW_CSV")
-    createOtelConfig $i $CSV_FILE
+    createOtelConfig $loop $CSV_FILE
     
-    local LOG_FILE="${RESULTS_DIR}/output_${i}-${RECURSION_DEPTH}-${k}.txt"
+    local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${index}.txt"
 
-    echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
+    echo " # Running Config $index: ${TITLE[$index]} (Iter $loop)"
 
     ENABLE_OTEL="false" \
     "${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
 }
 
 function runOpenTelemetryNoExport {
-    local k=$1
-    local i=$2
+    local index=$1
+    local loop=$2
 
-    local RAW_CSV="${RESULTS_DIR}/raw-${i}-${RECURSION_DEPTH}-${k}.csv"
+    local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${index}.csv"
     local CSV_FILE=$(get_os_path "$RAW_CSV")
-    createOtelConfig $i $CSV_FILE
+    createOtelConfig $loop $CSV_FILE
     
-    local LOG_FILE="${RESULTS_DIR}/output_${i}-${RECURSION_DEPTH}-${k}.txt"
+    local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${index}.txt"
 
-    echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
+    echo " # Running Config $index: ${TITLE[$index]} (Iter $loop)"
 
     ENABLE_OTEL="true" \
     OTEL_TRACES_EXPORTER="none" \
@@ -58,17 +58,17 @@ function runOpenTelemetryNoExport {
 }
 
 function runOpenTelemetryZipkin {
-    local k=$1
-    local i=$2
+    local index=$1
+    local loop=$2
     
-    local RAW_CSV="${RESULTS_DIR}/raw-${i}-${RECURSION_DEPTH}-${k}.csv"
+    local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${index}.csv"
     local CSV_FILE=$(get_os_path "$RAW_CSV")
-    createOtelConfig $i $CSV_FILE
+    createOtelConfig $loop $CSV_FILE
     
-    local LOG_FILE="${RESULTS_DIR}/output_${i}-${RECURSION_DEPTH}-${k}.txt"
+    local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${index}.txt"
 
     startZipkin
-    echo " # Running Config $k: ${TITLE[$k]} (Iter $i)"
+    echo " # Running Config $index: ${TITLE[$index]} (Iter $loop)"
 
     ENABLE_OTEL="true" \
     OTEL_SERVICE_NAME="moobench-python" \
