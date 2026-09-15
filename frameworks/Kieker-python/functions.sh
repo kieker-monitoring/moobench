@@ -80,8 +80,7 @@ EOF
 # function: execute an experiment
 function executeExperiment() {
     loop="$1"
-    recursion="$2"
-    index="$3"
+    index="$2"
     title="${TITLE[$index]}"
 
     # Kieker-python specific parameters
@@ -91,9 +90,9 @@ function executeExperiment() {
     approach="$(cut -d " " -f4 <<< ${MONITORING_CONFIG[$index]})"
     port="$(cut -d " " -f5 <<< ${MONITORING_CONFIG[$index]})"
 
-    info " # ${loop}.${recursion}.${index} ${title}"
+    info " # ${loop}.${RECURSION_DEPTH}.${index} ${title}"
 
-    RESULT_FILE="${RAWFN}-${loop}-${recursion}-${index}.csv"
+    RESULT_FILE="${RAWFN}-${loop}-${RECURSION_DEPTH}-${index}.csv"
     LOG_FILE="${RESULTS_DIR}/output_${loop}_${RECURSION_DEPTH}_${index}.txt"
 
     createMonitoring ${mode} ${port}
@@ -124,7 +123,6 @@ function executeExperiment() {
 function executeBenchmarkBody() {
   index="$1"
   loop="$2"
-  recursion="$3"
   if [[ "${RECEIVER[$index]}" ]]; then
      debug "receiver ${RECEIVER[$index]}"
      ${RECEIVER[$index]} >> "${DATA_DIR}/kieker.receiver-${loop}-${index}.log" &
@@ -132,7 +130,7 @@ function executeBenchmarkBody() {
      debug "PID ${RECEIVER_PID}"
   fi
 
-  executeExperiment "$loop" "$recursion" "$index"
+  executeExperiment "$loop" "$index"
 
   if [[ "${RECEIVER_PID}" ]]; then
     if ps -p "${RECEIVER_PID}" > /dev/null; then
@@ -143,10 +141,8 @@ function executeBenchmarkBody() {
 }
 
 function executeBenchmark() {
-    recursion="${RECURSION_DEPTH}"
-
     for index in $MOOBENCH_CONFIGURATIONS; do
-      executeBenchmarkBody $index $i $recursion
+      executeBenchmarkBody $index $i
   done
 }
 
