@@ -9,7 +9,7 @@ fi
 # Skywalking Java Agent version
 AGENT_VERSION="9.7.0"
 # Skywalking APM version
-APM_VERSION="10.4.0"
+APM_VERSION="11.0.0"
 # Skywalking BanyanDB version, check config/bydb.dependencies.properties in Skywalking apm for version
 BANYANDB_VERSION="0.10.1"
 
