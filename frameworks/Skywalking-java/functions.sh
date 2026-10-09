@@ -7,7 +7,7 @@ if [ "${BASH_SOURCE[0]}" -ef "$0" ]; then
 fi
 
 # Skywalking Java Agent version
-AGENT_VERSION="9.7.0"
+AGENT_VERSION="9.8.0"
 # Skywalking APM version
 APM_VERSION="11.0.0"
 # Skywalking BanyanDB version, check config/bydb.dependencies.properties in Skywalking apm for version
