@@ -4,17 +4,16 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public final class EnergySampling implements AutoCloseable{
 
 	private final FileChannel channel;
     private final ByteBuffer buffer;
-    private static final Path rapl_path = Paths.get("/sys/class/powercap/intel-rapl:0/energy_uj");
     
-    public EnergySampling() throws IOException{
-    	this.channel = FileChannel.open(rapl_path, StandardOpenOption.READ);
+    
+    public EnergySampling(final Path energy_path) throws IOException{
+    	this.channel = FileChannel.open(energy_path, StandardOpenOption.READ);
     	 this.buffer = ByteBuffer.allocate(32);
     }
 	public long read_rapl() throws IOException{
