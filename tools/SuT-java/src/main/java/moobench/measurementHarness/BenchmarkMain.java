@@ -28,6 +28,8 @@ import java.util.concurrent.TimeUnit;
 import moobench.application.MonitoredClass;
 import moobench.application.MonitoredClassThreaded;
 import moobench.energy.EnergySampling;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 
@@ -36,6 +38,10 @@ import moobench.energy.EnergySampling;
  */
 public final class BenchmarkMain {
     private static final String ENCODING = "UTF-8";
+    
+    private static final Path rapl_path = Paths.get("/sys/class/powercap/intel-rapl:0/energy_uj");
+    
+    private static final Path dram_path = Paths.get("/sys/class/powercap/intel-rapl:0:1/energy_uj");
 
     private static PrintStream ps = null;
 
@@ -47,6 +53,8 @@ public final class BenchmarkMain {
     }
 
     public static void main(final String[] args) throws InterruptedException {
+    	
+
 
         // 1. Preparations
         BenchmarkMain.parseAndInitializeArguments(args);
@@ -86,8 +94,14 @@ public final class BenchmarkMain {
                 Thread.sleep(5000);
             }
         }
-        try (EnergySampling pkg = new EnergySampling()) {
-        final long energyStart = pkg.read_rapl(); 
+        
+        
+        
+        
+        try (EnergySampling pkg = new EnergySampling(rapl_path);
+        		EnergySampling dkg = new EnergySampling(dram_path)) {
+        final long cpu_energy_start = pkg.read_rapl(); 
+        final long dram_energyStart = dkg.read_rapl(); 
         
         
         final long startTime = System.currentTimeMillis();
@@ -105,7 +119,8 @@ public final class BenchmarkMain {
             System.exit(-1);
         }
         final long totalTime = System.currentTimeMillis() - startTime;
-        final long energyEnd = pkg.read_rapl();
+        final long cpu_energy_end = pkg.read_rapl();
+        final long dram_energy_end = dkg.read_rapl(); 
         System.out.println(" #    done (" + TimeUnit.MILLISECONDS.toSeconds(totalTime) + " s)"); // NOPMD
         // (System.out)
         }catch (final IOException e) {
