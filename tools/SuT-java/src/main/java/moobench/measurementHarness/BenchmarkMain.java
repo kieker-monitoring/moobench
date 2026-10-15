@@ -20,12 +20,14 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import moobench.application.MonitoredClass;
 import moobench.application.MonitoredClassThreaded;
+import moobench.energy.EnergySampling;
 
 
 
@@ -84,6 +86,10 @@ public final class BenchmarkMain {
                 Thread.sleep(5000);
             }
         }
+        try (EnergySampling pkg = new EnergySampling()) {
+        final long energyStart = pkg.read_rapl(); 
+        
+        
         final long startTime = System.currentTimeMillis();
         System.out.println(" # 6. Starting benchmark ..."); // NOPMD (System.out)
         // 3. Starting Threads
@@ -99,9 +105,15 @@ public final class BenchmarkMain {
             System.exit(-1);
         }
         final long totalTime = System.currentTimeMillis() - startTime;
+        final long energyEnd = pkg.read_rapl();
         System.out.println(" #    done (" + TimeUnit.MILLISECONDS.toSeconds(totalTime) + " s)"); // NOPMD
         // (System.out)
-
+        }catch (final IOException e) {
+            System.out.println(" # Energy measurement failed: " + e.getMessage());
+        }
+      
+        
+        
         // 5. Print experiment statistics
         System.out.print(" # 7. Writing results ... "); // NOPMD (System.out)
         // CSV Format: configuration;order_index;Thread-ID;duration_nsec
@@ -123,6 +135,7 @@ public final class BenchmarkMain {
         if (parameter.isForceTerminate()) {
             System.exit(0);
         }
+        
     }
     
     public static long getFreeDiskSpaceKb() {
