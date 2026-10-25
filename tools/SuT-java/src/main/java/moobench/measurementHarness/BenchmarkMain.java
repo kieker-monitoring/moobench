@@ -68,6 +68,7 @@ public final class BenchmarkMain {
 
         long freeA = getFreeDiskSpaceKb();
         // 2. Initialize Threads and Classes
+        //Initializing the energy variables 
         BenchmarkingThreadEnergy pkg = null;
         long cpu_energy_start = 0L;
         long cpu_energy_end = 0L;
@@ -101,7 +102,7 @@ public final class BenchmarkMain {
         }
         
         
-        
+        //Gets the starting energy reading 
         if (parameter.getEnergyStatus()) {
         	pkg = new BenchmarkingThreadEnergy(rapl_path);
         	cpu_energy_start = pkg.read_rapl();}
@@ -124,6 +125,8 @@ public final class BenchmarkMain {
         }
         final long totalTime = System.currentTimeMillis() - startTime;
         final long totalTimeNano = System.nanoTime() - startTimeNano;
+        
+        //Gets the ending energy reading 
         if (parameter.getEnergyStatus()) {
        cpu_energy_end = pkg.read_rapl();}
         
@@ -143,7 +146,7 @@ public final class BenchmarkMain {
             }
         }
         BenchmarkMain.ps.close();
-        
+        //Writes into the energy csv file 
         BenchmarkMain.es.println("iteration;start_uj;end_uj;start_time;end_time;time_nano");
         BenchmarkMain.es.println(parameter.getOutputFile().getName()+";"+cpu_energy_start + ";" + cpu_energy_end +";" + totalTimeNano );
         BenchmarkMain.es.close();
