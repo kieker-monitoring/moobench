@@ -29,6 +29,7 @@ import moobench.application.MonitoredClass;
 import moobench.application.MonitoredClassThreaded;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 
 
@@ -142,8 +143,8 @@ public final class BenchmarkMain {
         }
         BenchmarkMain.ps.close();
         
-        BenchmarkMain.es.println("start_uj;end_uj;");
-        BenchmarkMain.es.println(cpu_energy_start + ";" + cpu_energy_end);
+        BenchmarkMain.es.println("iteration;start_uj;end_uj;");
+        BenchmarkMain.es.println(parameter.getOutputFile().getName()+";"+cpu_energy_start + ";" + cpu_energy_end);
         BenchmarkMain.es.close();
         
 
@@ -175,7 +176,7 @@ public final class BenchmarkMain {
                     false, BenchmarkMain.ENCODING);
             
             BenchmarkMain.es = new PrintStream(
-                    new BufferedOutputStream(Files.newOutputStream(parameter.getEnergyFile().toPath()), 8192 * 8),
+                    new BufferedOutputStream(Files.newOutputStream(parameter.getEnergyFile().toPath(),StandardOpenOption.CREATE, StandardOpenOption.APPEND), 8192 * 8),
                     false, BenchmarkMain.ENCODING);
             
             if (null != parameter.getApplicationClassname()) {
