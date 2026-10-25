@@ -105,6 +105,7 @@ public final class BenchmarkMain {
         if (parameter.getEnergyStatus()) {
         	pkg = new BenchmarkingThreadEnergy(rapl_path);
         	cpu_energy_start = pkg.read_rapl();}
+        	final long startTimeNano = System.nanoTime();
         
         
         final long startTime = System.currentTimeMillis();
@@ -122,7 +123,7 @@ public final class BenchmarkMain {
             System.exit(-1);
         }
         final long totalTime = System.currentTimeMillis() - startTime;
-        
+        final long totalTimeNano = System.nanoTime() - startTimeNano;
         if (parameter.getEnergyStatus()) {
        cpu_energy_end = pkg.read_rapl();}
         
@@ -143,8 +144,8 @@ public final class BenchmarkMain {
         }
         BenchmarkMain.ps.close();
         
-        BenchmarkMain.es.println("iteration;start_uj;end_uj;");
-        BenchmarkMain.es.println(parameter.getOutputFile().getName()+";"+cpu_energy_start + ";" + cpu_energy_end);
+        BenchmarkMain.es.println("iteration;start_uj;end_uj;start_time;end_time;time_nano");
+        BenchmarkMain.es.println(parameter.getOutputFile().getName()+";"+cpu_energy_start + ";" + cpu_energy_end +";" + totalTimeNano );
         BenchmarkMain.es.close();
         
 
