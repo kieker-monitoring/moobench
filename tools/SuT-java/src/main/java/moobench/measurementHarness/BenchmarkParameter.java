@@ -36,6 +36,13 @@ public class BenchmarkParameter {
 	@Parameter(names = { "--force-terminate", "-f" }, required = false, description = "Forces a termination at the end of the benchmark.")
 	boolean forceTerminate;
     
+	@Parameter(names = { "--Energy", "-e" }, required = false, description = "Starts energy benchmarking.")
+	boolean EnergyStatus;
+	
+	@Parameter(names = { "--energy-output", "-eo" }, required = false, converter = FileConverter.class, 
+			description = "Filename of energy results file. Output is appended if file exists.")
+	File energyFile = new File("energy.csv");
+	
 	@Parameter(names = { "--runnable", "-r" }, required = false,
 			description = "Class implementing the Runnable interface. run() method is executed before the benchmark starts.")
 	String runnableClassname;
@@ -77,5 +84,12 @@ public class BenchmarkParameter {
 
 	public String getApplicationClassname() {
 		return applicationClassname;
+	}
+	
+	public boolean getEnergyStatus() {
+		return EnergyStatus;
+	}
+	public File getEnergyFile() {
+		return energyFile;
 	}
 }

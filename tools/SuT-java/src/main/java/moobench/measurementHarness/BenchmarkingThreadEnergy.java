@@ -1,4 +1,4 @@
-package moobench.energy;
+package moobench.measurementHarness;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -6,13 +6,13 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
-public final class EnergySampling implements AutoCloseable{
+public class BenchmarkingThreadEnergy implements AutoCloseable{
 
 	private final FileChannel channel;
     private final ByteBuffer buffer;
     
     
-    public EnergySampling(final Path energy_path) throws IOException{
+    public BenchmarkingThreadEnergy(final Path energy_path) throws IOException{
     	this.channel = FileChannel.open(energy_path, StandardOpenOption.READ);
     	 this.buffer = ByteBuffer.allocate(32);
     }
@@ -38,4 +38,5 @@ public final class EnergySampling implements AutoCloseable{
 	}
 	
 	
+
 }

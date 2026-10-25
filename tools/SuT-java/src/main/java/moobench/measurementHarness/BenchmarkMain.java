@@ -27,7 +27,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import moobench.application.MonitoredClass;
 import moobench.application.MonitoredClassThreaded;
-import moobench.energy.EnergySampling;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -40,10 +39,10 @@ public final class BenchmarkMain {
     private static final String ENCODING = "UTF-8";
     
     private static final Path rapl_path = Paths.get("/sys/class/powercap/intel-rapl:0/energy_uj");
-    
-    private static final Path dram_path = Paths.get("/sys/class/powercap/intel-rapl:0:1/energy_uj");
 
     private static PrintStream ps = null;
+    
+    private static PrintStream es = null;
 
     private static BenchmarkParameter parameter = new BenchmarkParameter();
 
@@ -52,7 +51,7 @@ public final class BenchmarkMain {
     private BenchmarkMain() {
     }
 
-    public static void main(final String[] args) throws InterruptedException {
+    public static void main(final String[] args) throws InterruptedException, IOException {
     	
 
 
@@ -68,6 +67,11 @@ public final class BenchmarkMain {
 
         long freeA = getFreeDiskSpaceKb();
         // 2. Initialize Threads and Classes
+        BenchmarkingThreadEnergy pkg = null;
+        long cpu_energy_start = 0L;
+        long cpu_energy_end = 0L;
+        
+        
         final CountDownLatch doneSignal = new CountDownLatch(parameter.getTotalThreads());
         final BenchmarkingThread[] benchmarkingThreads = new BenchmarkingThread[parameter.getTotalThreads()];
         final Thread[] threads = new Thread[parameter.getTotalThreads()];
@@ -97,11 +101,9 @@ public final class BenchmarkMain {
         
         
         
-        
-        try (EnergySampling pkg = new EnergySampling(rapl_path);
-        		EnergySampling dkg = new EnergySampling(dram_path)) {
-        final long cpu_energy_start = pkg.read_rapl(); 
-        final long dram_energyStart = dkg.read_rapl(); 
+        if (parameter.getEnergyStatus()) {
+        	pkg = new BenchmarkingThreadEnergy(rapl_path);
+        	cpu_energy_start = pkg.read_rapl();}
         
         
         final long startTime = System.currentTimeMillis();
@@ -119,13 +121,12 @@ public final class BenchmarkMain {
             System.exit(-1);
         }
         final long totalTime = System.currentTimeMillis() - startTime;
-        final long cpu_energy_end = pkg.read_rapl();
-        final long dram_energy_end = dkg.read_rapl(); 
+        
+        if (parameter.getEnergyStatus()) {
+       cpu_energy_end = pkg.read_rapl();}
+        
+        
         System.out.println(" #    done (" + TimeUnit.MILLISECONDS.toSeconds(totalTime) + " s)"); // NOPMD
-        // (System.out)
-        }catch (final IOException e) {
-            System.out.println(" # Energy measurement failed: " + e.getMessage());
-        }
       
         
         
@@ -140,6 +141,11 @@ public final class BenchmarkMain {
             }
         }
         BenchmarkMain.ps.close();
+        
+        BenchmarkMain.es.println("start_uj;end_uj;");
+        BenchmarkMain.es.println(cpu_energy_start + ";" + cpu_energy_end);
+        BenchmarkMain.es.close();
+        
 
         System.out.println("done"); // NOPMD (System.out)
         System.out.println(" # "); // NOPMD (System.out)
@@ -167,6 +173,11 @@ public final class BenchmarkMain {
             BenchmarkMain.ps = new PrintStream(
                     new BufferedOutputStream(Files.newOutputStream(parameter.getOutputFile().toPath()), 8192 * 8),
                     false, BenchmarkMain.ENCODING);
+            
+            BenchmarkMain.es = new PrintStream(
+                    new BufferedOutputStream(Files.newOutputStream(parameter.getEnergyFile().toPath()), 8192 * 8),
+                    false, BenchmarkMain.ENCODING);
+            
             if (null != parameter.getApplicationClassname()) {
                 monitoredClass = (MonitoredClass) Class.forName(parameter.getApplicationClassname()).getDeclaredConstructor().newInstance();
             } else {
