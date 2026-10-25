@@ -41,7 +41,7 @@ public class BenchmarkParameter {
 	
 	@Parameter(names = { "--energy-output", "-eo" }, required = false, converter = FileConverter.class, 
 			description = "Filename of energy results file. Output is appended if file exists.")
-	File energyFile = new File("energy.csv");
+	File energyFile;
 	
 	@Parameter(names = { "--runnable", "-r" }, required = false,
 			description = "Class implementing the Runnable interface. run() method is executed before the benchmark starts.")
