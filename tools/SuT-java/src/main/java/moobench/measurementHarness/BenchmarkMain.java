@@ -20,14 +20,16 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import moobench.application.MonitoredClass;
 import moobench.application.MonitoredClassThreaded;
-
-
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 /**
  * @author Jan Waller
@@ -35,7 +37,11 @@ import moobench.application.MonitoredClassThreaded;
 public final class BenchmarkMain {
     private static final String ENCODING = "UTF-8";
 
+    private static final Path rapl_path = Paths.get("/sys/class/powercap/intel-rapl:0/energy_uj");
+
     private static PrintStream ps = null;
+
+    private static PrintStream energyStream = null;
 
     private static BenchmarkParameter parameter = new BenchmarkParameter();
 
@@ -44,8 +50,7 @@ public final class BenchmarkMain {
     private BenchmarkMain() {
     }
 
-    public static void main(final String[] args) throws InterruptedException {
-
+    public static void main(final String[] args) throws InterruptedException, IOException {
         // 1. Preparations
         BenchmarkMain.parseAndInitializeArguments(args);
 
@@ -57,7 +62,11 @@ public final class BenchmarkMain {
         System.out.println(" # 5. Method-Time " + parameter.getMethodTime()); // NOPMD (System.out)
 
         long freeA = getFreeDiskSpaceKb();
+
         // 2. Initialize Threads and Classes
+        BenchmarkingThreadEnergy pkg = null;
+        long cpu_energy_start = 0L;
+        long cpu_energy_end = 0L;
         final CountDownLatch doneSignal = new CountDownLatch(parameter.getTotalThreads());
         final BenchmarkingThread[] benchmarkingThreads = new BenchmarkingThread[parameter.getTotalThreads()];
         final Thread[] threads = new Thread[parameter.getTotalThreads()];
@@ -70,22 +79,30 @@ public final class BenchmarkMain {
             for (int l = 0; l < 4; l++) {
                 { // NOCS (reserve mem only within the block)
                     final long freeMemChunks = Runtime.getRuntime().freeMemory() >> 27;
-            // System.out.println("Free-Mem: " + Runtime.getRuntime().freeMemory());
-            final int memSize = 128 * 1024 * 128; // memSize * 8 = total Bytes -> 128MB
-            for (int j = 0; j < freeMemChunks; j++) {
-                final long[] grabMemory = new long[memSize];
-                for (int i = 0; i < memSize; i++) {
-                    grabMemory[i] = System.nanoTime();
-                }
-            }
-            // System.out.println("done grabbing memory...");
-            // System.out.println("Free-Mem: " + Runtime.getRuntime().freeMemory());
+                    // System.out.println("Free-Mem: " + Runtime.getRuntime().freeMemory());
+                    final int memSize = 128 * 1024 * 128; // memSize * 8 = total Bytes -> 128MB
+                    for (int j = 0; j < freeMemChunks; j++) {
+                        final long[] grabMemory = new long[memSize];
+                        for (int i = 0; i < memSize; i++) {
+                            grabMemory[i] = System.nanoTime();
+                        }
+                    }
+                    // System.out.println("done grabbing memory...");
+                    // System.out.println("Free-Mem: " + Runtime.getRuntime().freeMemory());
                 }
                 Thread.sleep(5000);
             }
         }
+
+        if (parameter.getEnergyStatus()) {
+            pkg = new BenchmarkingThreadEnergy(rapl_path);
+            cpu_energy_start = pkg.read_rapl();
+        }
+        final long startTimeNano = System.nanoTime();
+
         final long startTime = System.currentTimeMillis();
         System.out.println(" # 6. Starting benchmark ..."); // NOPMD (System.out)
+
         // 3. Starting Threads
         for (int i = 0; i < parameter.getTotalThreads(); i++) {
             threads[i].start();
@@ -99,8 +116,13 @@ public final class BenchmarkMain {
             System.exit(-1);
         }
         final long totalTime = System.currentTimeMillis() - startTime;
+        final long totalTimeNano = System.nanoTime() - startTimeNano;
+
+        if (parameter.getEnergyStatus()) {
+            cpu_energy_end = pkg.read_rapl();
+        }
+
         System.out.println(" #    done (" + TimeUnit.MILLISECONDS.toSeconds(totalTime) + " s)"); // NOPMD
-        // (System.out)
 
         // 5. Print experiment statistics
         System.out.print(" # 7. Writing results ... "); // NOPMD (System.out)
@@ -114,20 +136,27 @@ public final class BenchmarkMain {
         }
         BenchmarkMain.ps.close();
 
+        if (parameter.getEnergyStatus()) {
+            BenchmarkMain.energyStream.println("iteration;start_uj;end_uj;start_time;end_time;time_nano");
+            BenchmarkMain.energyStream.println(parameter.getOutputFile().getName() + ";" + cpu_energy_start + ";"
+                    + cpu_energy_end + ";" + totalTimeNano);
+            BenchmarkMain.energyStream.close();
+        }
+
         System.out.println("done"); // NOPMD (System.out)
         System.out.println(" # "); // NOPMD (System.out)
 
         long freeB = getFreeDiskSpaceKb();
         System.out.println("Disk usage: " + (freeA - freeB) + " kB");
-        
+
         if (parameter.isForceTerminate()) {
             System.exit(0);
         }
     }
-    
+
     public static long getFreeDiskSpaceKb() {
-      File f = new File(".");
-      return f.getFreeSpace() / 1024;
+        File f = new File(".");
+        return f.getFreeSpace() / 1024;
     }
 
     public static void parseAndInitializeArguments(final String[] argv) {
@@ -139,13 +168,21 @@ public final class BenchmarkMain {
             BenchmarkMain.ps = new PrintStream(
                     new BufferedOutputStream(Files.newOutputStream(parameter.getOutputFile().toPath()), 8192 * 8),
                     false, BenchmarkMain.ENCODING);
+            if (parameter.getEnergyStatus()) {
+                BenchmarkMain.energyStream = new PrintStream(
+                        new BufferedOutputStream(Files.newOutputStream(parameter.getEnergyFile().toPath(),
+                                StandardOpenOption.CREATE, StandardOpenOption.APPEND), 8192 * 8),
+                        false, BenchmarkMain.ENCODING);
+            }
             if (null != parameter.getApplicationClassname()) {
-                monitoredClass = (MonitoredClass) Class.forName(parameter.getApplicationClassname()).getDeclaredConstructor().newInstance();
+                monitoredClass = (MonitoredClass) Class.forName(parameter.getApplicationClassname())
+                        .getDeclaredConstructor().newInstance();
             } else {
                 monitoredClass = new MonitoredClassThreaded();
             }
             if (null != parameter.getRunnableClassname()) {
-                ((Runnable) Class.forName(parameter.getRunnableClassname()).getDeclaredConstructor().newInstance()).run();
+                ((Runnable) Class.forName(parameter.getRunnableClassname()).getDeclaredConstructor().newInstance())
+                        .run();
             }
         } catch (final ParameterException ex) {
             if (commander != null) {
