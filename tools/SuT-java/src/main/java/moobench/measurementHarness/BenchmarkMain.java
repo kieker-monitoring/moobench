@@ -51,6 +51,7 @@ public final class BenchmarkMain {
     }
 
     public static void main(final String[] args) throws InterruptedException, IOException {
+    	
         // 1. Preparations
         BenchmarkMain.parseAndInitializeArguments(args);
 
@@ -62,7 +63,6 @@ public final class BenchmarkMain {
         System.out.println(" # 5. Method-Time " + parameter.getMethodTime()); // NOPMD (System.out)
 
         long freeA = getFreeDiskSpaceKb();
-
         // 2. Initialize Threads and Classes
         BenchmarkingThreadEnergy pkg = null;
         long cpu_energy_start = 0L;
@@ -93,21 +93,17 @@ public final class BenchmarkMain {
                 Thread.sleep(5000);
             }
         }
-
         if (parameter.getEnergyStatus()) {
             pkg = new BenchmarkingThreadEnergy(rapl_path);
             cpu_energy_start = pkg.read_rapl();
         }
-
-
         final long startTime = System.currentTimeMillis();
         System.out.println(" # 6. Starting benchmark ..."); // NOPMD (System.out)
-
         // 3. Starting Threads
         for (int i = 0; i < parameter.getTotalThreads(); i++) {
             threads[i].start();
         }
-
+        
         // 4. Wait for all Threads
         try {
             doneSignal.await();
@@ -116,14 +112,11 @@ public final class BenchmarkMain {
             System.exit(-1);
         }
         final long totalTime = System.currentTimeMillis() - startTime;
-
-
         if (parameter.getEnergyStatus()) {
             cpu_energy_end = pkg.read_rapl();
         }
-
         System.out.println(" #    done (" + TimeUnit.MILLISECONDS.toSeconds(totalTime) + " s)"); // NOPMD
-
+        
         // 5. Print experiment statistics
         System.out.print(" # 7. Writing results ... "); // NOPMD (System.out)
         // CSV Format: configuration;order_index;Thread-ID;duration_nsec
@@ -135,14 +128,12 @@ public final class BenchmarkMain {
             }
         }
         BenchmarkMain.ps.close();
-
         if (parameter.getEnergyStatus()) {
             BenchmarkMain.energyStream.println("iteration;start_uj;end_uj;start_time;end_time;time_nano");
             BenchmarkMain.energyStream.println(parameter.getOutputFile().getName() + ";" + cpu_energy_start + ";"
                     + cpu_energy_end + ";" + totalTime);
             BenchmarkMain.energyStream.close();
         }
-
         System.out.println("done"); // NOPMD (System.out)
         System.out.println(" # "); // NOPMD (System.out)
 
