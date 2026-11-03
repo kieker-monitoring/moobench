@@ -8,12 +8,12 @@ import java.nio.file.StandardOpenOption;
 /**
  * @author Mohamed Khaled
  */
-public class BenchmarkingThreadEnergy implements AutoCloseable {
+public class EnergyReader implements AutoCloseable {
 
     private final FileChannel channel;
     private final ByteBuffer buffer;
 
-    public BenchmarkingThreadEnergy(final Path energy_path) throws IOException {
+    public EnergyReader(final Path energy_path) throws IOException {
         this.channel = FileChannel.open(energy_path, StandardOpenOption.READ);
         this.buffer = ByteBuffer.allocate(32);
     }

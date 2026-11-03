@@ -64,7 +64,7 @@ public final class BenchmarkMain {
 
         long freeA = getFreeDiskSpaceKb();
         // 2. Initialize Threads and Classes
-        BenchmarkingThreadEnergy pkg = null;
+        EnergyReader pkg = null;
         long cpu_energy_start = 0L;
         long cpu_energy_end = 0L;
         final CountDownLatch doneSignal = new CountDownLatch(parameter.getTotalThreads());
@@ -94,7 +94,7 @@ public final class BenchmarkMain {
             }
         }
         if (parameter.getEnergyStatus()) {
-            pkg = new BenchmarkingThreadEnergy(rapl_path);
+            pkg = new EnergyReader(rapl_path);
             cpu_energy_start = pkg.read_rapl();
         }
         final long startTime = System.currentTimeMillis();
