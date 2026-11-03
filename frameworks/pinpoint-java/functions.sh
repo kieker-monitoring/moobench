@@ -152,22 +152,11 @@ function waitForStartup {
 export PINOT_VERSION=1.6.0
 function startPinot() {
    echo "Starting Pinot $PINOT_VERSION"
-   if [ ! -d apache-pinot-$PINOT_VERSION-bin ]; then
-      PINOT_URL=https://downloads.apache.org/pinot/apache-pinot-$PINOT_VERSION/apache-pinot-$PINOT_VERSION-bin.tar.gz
-      echo "Downloading $PINOT_URL"
-      wget $PINOT_URL
-      #curl --output apache-pinot-$PINOT_VERSION-bin.tar.gz $
-
-      tar -zxf apache-pinot-$PINOT_VERSION-bin.tar.gz
-  else
-      rm -rf apache-pinot-$PINOT_VERSION-bin/pinot-temp-dir
-  fi
-
-   cd apache-pinot-$PINOT_VERSION-bin
-   mkdir -p pinot-temp-dir
-   ./bin/pinot-admin.sh QuickStart -type batch \
-     -dataDir $(pwd)/pinot-temp-dir \
-    &> ${BASE_DIR}/logs/pinot.log &
+   docker run -d \
+      --name pinot-quickstart \
+      --net=host \
+      apachepinot/pinot:$PINOT_VERSION QuickStart -type batch
+   docker logs -f pinot-quickstart > ${BASE_DIR}/logs/pinot.log 2>&1 &
 
    waitForStartup ${BASE_DIR}/logs/pinot.log "***** Bootstrap tables *****"
 
@@ -179,13 +168,7 @@ function startPinot() {
 }
 
 function stopPinot {
-   kill -9 $(pgrep -f apache-pinot)
-
-   rm /tmp/.pinotAdmin*
-   rm /tmp/pinot-* -r
-   rm -rf /tmp/Pinot*
-   rm /tmp/PinotMinion -r
-   rm apache-pinot-$PINOT_VERSION-bin/pinot-temp-dir -r
+   docker rm -f pinot-quickstart
 }
 
 function startCollectorAndWeb() {
