@@ -20,14 +20,16 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import moobench.application.MonitoredClass;
 import moobench.application.MonitoredClassThreaded;
-
-
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 /**
  * @author Jan Waller
@@ -35,7 +37,11 @@ import moobench.application.MonitoredClassThreaded;
 public final class BenchmarkMain {
     private static final String ENCODING = "UTF-8";
 
+    private static final Path rapl_path = Paths.get("/sys/class/powercap/intel-rapl:0/energy_uj");
+
     private static PrintStream ps = null;
+
+    private static PrintStream energyStream = null;
 
     private static BenchmarkParameter parameter = new BenchmarkParameter();
 
@@ -44,7 +50,7 @@ public final class BenchmarkMain {
     private BenchmarkMain() {
     }
 
-    public static void main(final String[] args) throws InterruptedException {
+    public static void main(final String[] args) throws InterruptedException, IOException {
 
         // 1. Preparations
         BenchmarkMain.parseAndInitializeArguments(args);
@@ -58,6 +64,9 @@ public final class BenchmarkMain {
 
         long freeA = getFreeDiskSpaceKb();
         // 2. Initialize Threads and Classes
+        EnergyReader pkg = null;
+        long cpu_energy_start = 0L;
+        long cpu_energy_end = 0L;
         final CountDownLatch doneSignal = new CountDownLatch(parameter.getTotalThreads());
         final BenchmarkingThread[] benchmarkingThreads = new BenchmarkingThread[parameter.getTotalThreads()];
         final Thread[] threads = new Thread[parameter.getTotalThreads()];
@@ -84,6 +93,10 @@ public final class BenchmarkMain {
                 Thread.sleep(5000);
             }
         }
+        if (parameter.getEnergyStatus()) {
+            pkg = new EnergyReader(rapl_path);
+            cpu_energy_start = pkg.read_rapl();
+        }
         final long startTime = System.currentTimeMillis();
         System.out.println(" # 6. Starting benchmark ..."); // NOPMD (System.out)
         // 3. Starting Threads
@@ -99,6 +112,9 @@ public final class BenchmarkMain {
             System.exit(-1);
         }
         final long totalTime = System.currentTimeMillis() - startTime;
+        if (parameter.getEnergyStatus()) {
+            cpu_energy_end = pkg.read_rapl();
+        }
         System.out.println(" #    done (" + TimeUnit.MILLISECONDS.toSeconds(totalTime) + " s)"); // NOPMD
         // (System.out)
 
@@ -113,7 +129,12 @@ public final class BenchmarkMain {
             }
         }
         BenchmarkMain.ps.close();
-
+        if (parameter.getEnergyStatus()) {
+            BenchmarkMain.energyStream.println("iteration;start_uj;end_uj;start_time;end_time;time_nano");
+            BenchmarkMain.energyStream.println(parameter.getOutputFile().getName() + ";" + cpu_energy_start + ";"
+                    + cpu_energy_end + ";" + totalTime);
+            BenchmarkMain.energyStream.close();
+        }
         System.out.println("done"); // NOPMD (System.out)
         System.out.println(" # "); // NOPMD (System.out)
 
@@ -139,6 +160,12 @@ public final class BenchmarkMain {
             BenchmarkMain.ps = new PrintStream(
                     new BufferedOutputStream(Files.newOutputStream(parameter.getOutputFile().toPath()), 8192 * 8),
                     false, BenchmarkMain.ENCODING);
+            if (parameter.getEnergyStatus()) {
+                BenchmarkMain.energyStream = new PrintStream(
+                        new BufferedOutputStream(Files.newOutputStream(parameter.getEnergyFile().toPath(),
+                                StandardOpenOption.CREATE, StandardOpenOption.APPEND), 8192 * 8),
+                        false, BenchmarkMain.ENCODING);
+            }
             if (null != parameter.getApplicationClassname()) {
                 monitoredClass = (MonitoredClass) Class.forName(parameter.getApplicationClassname()).getDeclaredConstructor().newInstance();
             } else {
