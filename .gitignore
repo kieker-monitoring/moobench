@@ -75,3 +75,4 @@ zipkin.jar
 frameworks/k-perf-kotlin/*.txt
 kotlin-js-store/
 DEBUG.txt
+/tools/compile-results/.project
