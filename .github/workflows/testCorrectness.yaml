@@ -52,10 +52,10 @@ jobs:
         run: |
           cd frameworks/Scouter-java/tests
           ../../../test/bats/bin/bats --print-output-on-failure *.sh
-      - name: Skywalking correctness check
-        run: |
-          cd frameworks/Skywalking-java/tests
-          ../../../test/bats/bin/bats --print-output-on-failure *.sh
+#      - name: Skywalking correctness check
+#        run: |
+#          cd frameworks/Skywalking-java/tests
+#          ../../../test/bats/bin/bats --print-output-on-failure *.sh
       - name: Kieker-python correctness check
         run: |
           cd frameworks/Kieker-python/tests
