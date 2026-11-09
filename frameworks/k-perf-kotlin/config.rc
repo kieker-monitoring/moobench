@@ -4,10 +4,6 @@ source ${MAIN_DIR}/config.rc
 
 JAVA_BIN="${JAVA_HOME}/bin/java"
 
-# Drop the smallest and largest 0.5% of each run's measurements in statistics.r.
-# Enabled only for this framework; can still be overridden via the environment.
-DROP_OUTLIERS="${DROP_OUTLIERS:-true}"
-
 #JVM
 MOOBENCH_JAR_PLAIN="${BASE_DIR}/build/lib/kotlin-plain.jar:${BASE_DIR}/build/lib/deps/*"
 MOOBENCH_JAR_INSTRUMENTED="${BASE_DIR}/build/lib/kotlin-instrumented.jar:${BASE_DIR}/build/lib/deps/*"

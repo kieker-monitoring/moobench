@@ -117,7 +117,7 @@ The execution may be parameterized by the following environment variables:
 * `TOTAL_NUM_OF_CALLS`   the duration of the benchmark (deafult 2,000,000 calls)
 * `METHOD_TIME`          the time per monitored call (default 0 ns or 500 us)
 * `DROP_OUTLIERS`        drop the smallest and largest 0.5% of each run's measurements
-                         in the statistics (default false; enabled by `k-perf-kotlin`)
+                         in the statistics (default false)
 * `TIME_UNIT`            divisor for the reported times: 1 = ns, 1000 = µs, 1000000 = ms
                          (default 1; previously fixed to 1000)
 * `REPORT_METHOD_TIME`   true: report the time per method call (recursion chain time divided
