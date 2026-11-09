@@ -18,13 +18,17 @@ function cleanup {
     echo "No trace_* or symbols_* files found."
   else
     echo "Found ${#files_to_delete[@]} trace/symbol file(s):"
+    file_number=1
     for file in "${files_to_delete[@]}"; do
       size_bytes=$(stat -c '%s' "$file")
       size_human=$(numfmt --to=iec-i --suffix=B "$size_bytes")
       line_count=$(wc -l < "$file")
+      echo "File #${file_number}: ${file}"
       echo "  Size:  ${size_bytes} bytes (${size_human})"
       echo "  Lines: ${line_count}"
+      ((file_number++))
     done
+    echo "Deleting ${#files_to_delete[@]} file(s)..."
     rm -f -- "${files_to_delete[@]}"
     echo "Cleanup completed."
   fi
