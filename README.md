@@ -118,6 +118,14 @@ The execution may be parameterized by the following environment variables:
 * `METHOD_TIME`          the time per monitored call (default 0 ns or 500 us)
 * `DROP_OUTLIERS`        drop the smallest and largest 0.5% of each run's measurements
                          in the statistics (default false; enabled by `k-perf-kotlin`)
+* `TIME_UNIT`            divisor for the reported times: 1 = ns, 1000 = µs, 1000000 = ms
+                         (default 1; previously fixed to 1000)
+* `REPORT_METHOD_TIME`   true: report the time per method call (recursion chain time divided
+                         by `RECURSION_DEPTH`); false: report the time per recursion chain
+                         (default true; previously always false)
+
+To reproduce the statistics of earlier MooBench versions (recursion chain time in µs),
+use `TIME_UNIT=1000 REPORT_METHOD_TIME=false`.
 
 If they are unset, the values are set via `frameworks/common-function.sh`.
 

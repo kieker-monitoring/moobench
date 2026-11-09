@@ -20,7 +20,9 @@
 #configs.framework_name="kieker-java"
 #results.count=2000000
 #results.skip=1000000
-#configs.drop_outliers=FALSE   (optional; set from DROP_OUTLIERS, defaults to FALSE if absent)
+#configs.drop_outliers=FALSE        (optional; set from DROP_OUTLIERS, defaults to FALSE if absent)
+#configs.time_unit=1               (optional; set from TIME_UNIT, defaults to 1 if absent)
+#configs.report_method_time=TRUE   (optional; set from REPORT_METHOD_TIME, defaults to TRUE if absent)
 
 #bars.minval=500
 #bars.maxval=600
@@ -30,7 +32,21 @@
 # Process configuration
 
 # divisor 1 = nano, 1000 = micro, 1000000 = milli seconds
-timeUnit <- 1
+# Controlled by configs.time_unit (shell variable TIME_UNIT); 1 if not set.
+timeUnit <- if (exists("configs.time_unit")) configs.time_unit else 1
+
+timeUnitName <- switch(
+   as.character(timeUnit),
+   "1" = "nanoseconds",
+   "1000" = "microseconds",
+   "1000000" = "milliseconds",
+   stop("Unsupported timeUnit (configs.time_unit / TIME_UNIT): use 1, 1000 or 1000000")
+)
+
+# if TRUE, report the run time per method call (recursion chain time / recursion depth);
+# if FALSE, report the run time per recursion chain (i.e., per measured top-level call).
+# Controlled by configs.report_method_time (shell variable REPORT_METHOD_TIME); TRUE if not set.
+report_method_time <- !exists("configs.report_method_time") || isTRUE(configs.report_method_time)
 
 # if TRUE, drop the smallest and largest 0.5% of measurement values of each run.
 # Controlled by configs.drop_outliers (shell variable DROP_OUTLIERS); FALSE if not set.
@@ -121,7 +137,10 @@ for (writer_idx in configs.indices) {
 
    array_idx <- writer_idx + 1
 
-   valuesBIG <- resultsBIG[array_idx,idx_mult] / timeUnit / recursion_depth
+   valuesBIG <- resultsBIG[array_idx,idx_mult] / timeUnit
+   if (report_method_time) {
+      valuesBIG <- valuesBIG / recursion_depth
+   }
 
    printvalues["mean",array_idx] <- mean(valuesBIG)
    printvalues["sd",array_idx] <- sd(valuesBIG)
@@ -154,14 +173,6 @@ formatCount <- function(value) {
 ##########
 # Print benchmark settings and number of values
 
-timeUnitName <- switch(
-   as.character(timeUnit),
-   "1" = "nanoseconds",
-   "1000" = "microseconds",
-   "1000000" = "milliseconds",
-   stop("Unsupported timeUnit")
-)
-
 warmupFraction <- results.skip / results.count
 
 # The following counts are per writer configuration, across all runs.
@@ -185,10 +196,17 @@ outlierMethodCalls <- outlierRecursionChains * recursion_depth
 interpretationMethodCalls <- interpretationRecursionChains * recursion_depth
 
 
-write(sprintf(
-   "run time per method call (not recursion chain!) in %s",
-   timeUnitName
-), stdout())
+if (report_method_time) {
+   write(sprintf(
+      "run time per method call (not recursion chain!) in %s",
+      timeUnitName
+   ), stdout())
+} else {
+   write(sprintf(
+      "run time per recursion chain (not method call!) in %s",
+      timeUnitName
+   ), stdout())
+}
 
 write("", stdout())
 
