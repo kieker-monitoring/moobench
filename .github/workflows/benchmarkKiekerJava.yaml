@@ -25,6 +25,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 21
+          cache: gradle
       - name: Start ssh-agent and add private key
         uses: webfactory/ssh-agent@v0.10.0
         with:
