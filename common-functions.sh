@@ -62,6 +62,16 @@ function runStatistics() {
   fi
    INDICES=$(echo $MOOBENCH_CONFIGURATIONS | tr " " ",")
    echo "Indices: $INDICES"
+   if [ "${DROP_OUTLIERS,,}" == "true" ]; then
+      R_DROP_OUTLIERS=TRUE
+   else
+      R_DROP_OUTLIERS=FALSE
+   fi
+   if [ "${REPORT_METHOD_TIME,,}" == "true" ]; then
+      R_REPORT_METHOD_TIME=TRUE
+   else
+      R_REPORT_METHOD_TIME=FALSE
+   fi
   R --vanilla --silent << EOF
 results_fn="${RAWFN}"
 out_yaml_fn="${RESULTS_DIR}/results.yaml"
@@ -72,6 +82,9 @@ configs.framework_name="${FRAMEWORK_NAME}"
 configs.indices=c($INDICES)
 results.count=${TOTAL_NUM_OF_CALLS}
 results.skip=${SKIP}
+configs.drop_outliers=${R_DROP_OUTLIERS}
+configs.time_unit=${TIME_UNIT:-1000}
+configs.report_method_time=${R_REPORT_METHOD_TIME}
 source("${RSCRIPT_PATH}")
 EOF
 }
@@ -123,6 +136,9 @@ TOTAL_NUM_OF_CALLS=${TOTAL_NUM_OF_CALLS}
 METHOD_TIME=${METHOD_TIME}
 THREADS=${THREADS}
 RECURSION_DEPTH=${RECURSION_DEPTH}
+DROP_OUTLIERS=${DROP_OUTLIERS}
+TIME_UNIT=${TIME_UNIT}
+REPORT_METHOD_TIME=${REPORT_METHOD_TIME}
 EOF
   sync
 }
@@ -357,4 +373,7 @@ function showParameter() {
   info "TOTAL_NUM_OF_CALLS ${TOTAL_NUM_OF_CALLS}"
   info "METHOD_TIME ${METHOD_TIME}"
   info "DEBUG ${DEBUG}"
+  info "DROP_OUTLIERS ${DROP_OUTLIERS}"
+  info "TIME_UNIT ${TIME_UNIT}"
+  info "REPORT_METHOD_TIME ${REPORT_METHOD_TIME}"
 }

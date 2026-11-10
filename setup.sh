@@ -58,7 +58,7 @@ if [[ "$1" == "withKotlin" ]]; then
 		  frameworks/k-perf-kotlin/build/jsPlain/
 
 	# instrumented
-	./gradlew build :tools:SuT-kotlin:build -PwithKotlin -PkperfEnabled=true -PkPerfMethods="application.MonitoredClassSimple.monitoredMethod"
+	./gradlew build :tools:SuT-kotlin:build -PwithKotlin -PkperfEnabled=true -PkperfMethods="application.MonitoredClassSimple.monitoredMethod"
 	cp "tools/SuT-kotlin/build/libs/kotlin-instrumented.jar" "frameworks/k-perf-kotlin/build/lib/"
 	cp -r build/js/packages/kotlin-instrumented/kotlin/. \
 		  frameworks/k-perf-kotlin/build/jsInstrumented/

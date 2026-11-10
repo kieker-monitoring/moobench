@@ -116,6 +116,13 @@ The execution may be parameterized by the following environment variables:
 * `RECURSION_DEPTH`      recursion up to this depth (default 10)
 * `TOTAL_NUM_OF_CALLS`   the duration of the benchmark (deafult 2,000,000 calls)
 * `METHOD_TIME`          the time per monitored call (default 0 ns or 500 us)
+* `DROP_OUTLIERS`        drop the smallest and largest 0.5% of each run's measurements
+                         in the statistics (default false)
+* `TIME_UNIT`            divisor for the reported times: 1 = ns, 1000 = µs, 1000000 = ms
+                         (default 1000)
+* `REPORT_METHOD_TIME`   true: report the time per method call (recursion chain time divided
+                         by `RECURSION_DEPTH`); false: report the time per recursion chain
+                         (default false)
 
 If they are unset, the values are set via `frameworks/common-function.sh`.
 
