@@ -49,12 +49,12 @@ if [ -z $DROP_OUTLIERS ]; then
 	DROP_OUTLIERS=false	## false
 fi
 
-# Statistics time unit divisor: 1 = ns, 1000 = us, 1000000 = ms (previously 1000)
+# Statistics time unit divisor: 1 = ns, 1000 = us, 1000000 = ms
 if [ -z $TIME_UNIT ]; then
 	TIME_UNIT=1000	## 1000
 fi
 
-# true: report time per method call, false: report time per recursion chain (previously false)
+# true: report time per method call, false: report time per recursion chain
 if [ -z $REPORT_METHOD_TIME ]; then
 	REPORT_METHOD_TIME=false	## false
 fi

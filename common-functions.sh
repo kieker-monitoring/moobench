@@ -67,10 +67,10 @@ function runStatistics() {
    else
       R_DROP_OUTLIERS=FALSE
    fi
-   if [ "${REPORT_METHOD_TIME,,}" == "false" ]; then
-      R_REPORT_METHOD_TIME=FALSE
-   else
+   if [ "${REPORT_METHOD_TIME,,}" == "true" ]; then
       R_REPORT_METHOD_TIME=TRUE
+   else
+      R_REPORT_METHOD_TIME=FALSE
    fi
   R --vanilla --silent << EOF
 results_fn="${RAWFN}"
@@ -83,7 +83,7 @@ configs.indices=c($INDICES)
 results.count=${TOTAL_NUM_OF_CALLS}
 results.skip=${SKIP}
 configs.drop_outliers=${R_DROP_OUTLIERS}
-configs.time_unit=${TIME_UNIT:-1}
+configs.time_unit=${TIME_UNIT:-1000}
 configs.report_method_time=${R_REPORT_METHOD_TIME}
 source("${RSCRIPT_PATH}")
 EOF

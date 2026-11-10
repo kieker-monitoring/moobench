@@ -21,8 +21,8 @@
 #results.count=2000000
 #results.skip=1000000
 #configs.drop_outliers=FALSE        (optional; set from DROP_OUTLIERS, defaults to FALSE if absent)
-#configs.time_unit=1               (optional; set from TIME_UNIT, defaults to 1 if absent)
-#configs.report_method_time=TRUE   (optional; set from REPORT_METHOD_TIME, defaults to TRUE if absent)
+#configs.time_unit=1000            (optional; set from TIME_UNIT, defaults to 1000 if absent)
+#configs.report_method_time=FALSE  (optional; set from REPORT_METHOD_TIME, defaults to FALSE if absent)
 
 #bars.minval=500
 #bars.maxval=600
@@ -32,8 +32,8 @@
 # Process configuration
 
 # divisor 1 = nano, 1000 = micro, 1000000 = milli seconds
-# Controlled by configs.time_unit (shell variable TIME_UNIT); 1 if not set.
-timeUnit <- if (exists("configs.time_unit")) configs.time_unit else 1
+# Controlled by configs.time_unit (shell variable TIME_UNIT); 1000 if not set.
+timeUnit <- if (exists("configs.time_unit")) configs.time_unit else 1000
 
 timeUnitName <- switch(
    as.character(timeUnit),
@@ -45,8 +45,8 @@ timeUnitName <- switch(
 
 # if TRUE, report the run time per method call (recursion chain time / recursion depth);
 # if FALSE, report the run time per recursion chain (i.e., per measured top-level call).
-# Controlled by configs.report_method_time (shell variable REPORT_METHOD_TIME); TRUE if not set.
-report_method_time <- !exists("configs.report_method_time") || isTRUE(configs.report_method_time)
+# Controlled by configs.report_method_time (shell variable REPORT_METHOD_TIME); FALSE if not set.
+report_method_time <- exists("configs.report_method_time") && isTRUE(configs.report_method_time)
 
 # if TRUE, drop the smallest and largest 0.5% of measurement values of each run.
 # Controlled by configs.drop_outliers (shell variable DROP_OUTLIERS); FALSE if not set.
