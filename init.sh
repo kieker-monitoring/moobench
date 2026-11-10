@@ -51,12 +51,12 @@ fi
 
 # Statistics time unit divisor: 1 = ns, 1000 = us, 1000000 = ms (previously 1000)
 if [ -z $TIME_UNIT ]; then
-	TIME_UNIT=1	## 1
+	TIME_UNIT=1000	## 1000
 fi
 
 # true: report time per method call, false: report time per recursion chain (previously false)
 if [ -z $REPORT_METHOD_TIME ]; then
-	REPORT_METHOD_TIME=true	## true
+	REPORT_METHOD_TIME=false	## false
 fi
 
 if [ -f "${BASE_DIR}/functions.sh" ] ; then

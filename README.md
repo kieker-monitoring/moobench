@@ -124,9 +124,6 @@ The execution may be parameterized by the following environment variables:
                          by `RECURSION_DEPTH`); false: report the time per recursion chain
                          (default true; previously always false)
 
-To reproduce the statistics of earlier MooBench versions (recursion chain time in µs),
-use `TIME_UNIT=1000 REPORT_METHOD_TIME=false`.
-
 If they are unset, the values are set via `frameworks/common-function.sh`.
 
 
