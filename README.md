@@ -63,15 +63,17 @@ By one execution of the MooBench, we can measure the overhead of one observabili
 To use MooBench, please make sure the following tools are installed:
 - A linux system, capable of running bash 5.x (or newer), including `curl` and `awk` (`sudo dnf install gawk curl`)
 - A recent R installation (Rocky Linux: `sudo dnf install epel-release; sudo dnf config-manager --set-enabled crb; sudo dnf install R`)
-- For Pinpoint and Skywalking: Docker 28.0.0 or newer (for containers that manage observability data persistence)
-- For Java agents (Kieker, OpenTelemetry, Pinpoint, inspectIT, Skywalking)
+- For Elastic APM, Pinpoint, and Skywalking: Docker 28.0.0 or newer (for containers that manage observability data persistence)
+- For Java agents (Kieker, OpenTelemetry, Elastic APM, Pinpoint, Scouter, inspectIT, Skywalking)
     * A recent JDK installation (OpenJDK 17 or newer); `$JAVA_HOME` needs to be set
 - For Python agents (Kieker, OpenTelemetry)
     * Python 3.11 or newer
+- Fot Kotlin: 
+    * Node.js
 
 ### Benchmark Execution
 
-Compile the application and install it in the repository root directory. This can be done automatically be calling `./setup.sh`. Afterwards, you can switch to the framework folder (`frameworks` and then `$AGENT-$TECHNOLOGY`, e.g., OpenTelemetry as observability agent in Java) and run `./measure.sh`.
+Compile the application and install it in the repository root directory. This can be done automatically be calling `./setup.sh` (for Kotlin configurations: `./setup.sh withKotlin`. Afterwards, you can switch to the framework folder (`frameworks` and then `$AGENT-$TECHNOLOGY`, e.g., OpenTelemetry as observability agent in Java) and run `./measure.sh`.
 
 For example, a simple benchmark execution is:
 ```
