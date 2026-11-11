@@ -61,14 +61,15 @@ By one execution of the MooBench, we can measure the overhead of one observabili
 ### Prerequisites
 
 To use MooBench, please make sure the following tools are installed:
-- A linux system, capable of running bash 5.x (or newer), including `curl` and `awk` (`sudo dnf install gawk curl`)
+- A linux system, capable of running bash 5.x (or newer), including `curl`, `wget`, `awk`, `nc` (netcat), and `gnuplot` (`sudo dnf install gawk curl wget nmap-ncat gnuplot`)
 - A recent R installation (Rocky Linux: `sudo dnf install epel-release; sudo dnf config-manager --set-enabled crb; sudo dnf install R`)
 - For Elastic APM, Pinpoint, and Skywalking: Docker 28.0.0 or newer (for containers that manage observability data persistence)
 - For Java agents (Kieker, OpenTelemetry, Elastic APM, Pinpoint, Scouter, inspectIT, Skywalking)
     * A recent JDK installation (OpenJDK 17 or newer); `$JAVA_HOME` needs to be set
 - For Python agents (Kieker, OpenTelemetry)
     * Python 3.11 or newer
-- For Kotlin: 
+- For Kotlin:
+    * A recent JDK installation (OpenJDK 21 or newer)
     * Node.js
 
 ### Benchmark Execution
