@@ -15,9 +15,13 @@ Currenly (fully) supported observability frameworks are:
 * Elastic APM with Java (https://github.com/elastic/apm-agent-java)
 * inspectIT with Java (https://inspectit.rocks/)
 * Kieker with Java (http://kieker-monitoring.net)
+* Kieker with Python (http://kieker-monitoring.net)
+* k-perf with Kotlin
 * OpenTelemetry with Java (https://opentelemetry.io/)
+* OpenTelemetry with Python (https://opentelemetry.io/)
 * PinPoint with Java (https://github.com/pinpoint-apm/pinpoint)
 * Scouter with Java (https://github.com/scouter-project/scouter)
+* Skywalking with Java (https://skywalking.apache.org/)
 
 For all combinations of supported observability frameworks $FRAMEWORK and languages $LANGUAGE, the folder `frameworks` contains a folder $FRAMEWORK-$LANGUAGE.
 
@@ -124,7 +128,7 @@ The execution may be parameterized by the following environment variables:
                          by `RECURSION_DEPTH`); false: report the time per recursion chain
                          (default false)
 
-If they are unset, the values are set via `frameworks/common-function.sh`.
+If they are unset, the values are set via `init.sh` in the repository root.
 
 
 
