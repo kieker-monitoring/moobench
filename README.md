@@ -141,9 +141,7 @@ All shell files should be formatted using `shfmt -w -i 2 -sr -kp`.
 ## Data Analysis
 
 Each benchmark execution calls an R script providing mean, standard deviation
-and confidence intervals for the benchmark variants. If you want to get these
-values again, switch to `frameworks` and call `runR.sh $FRAMEWORK`, where
-framework is the folder name of the framework (e.g. Kieker).
+and confidence intervals for the benchmark variants.
 
 If you got data from a run with exponential growing call tree depth, unzip them
 first (`for file in *.zip; do unzip $file; done`), copy all `results-$framework`
