@@ -54,11 +54,15 @@ sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=re
 info "Get Kieker-python log"
 sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}/Kieker-python-log.yaml
 
+info "Get Kieker-java log"
+sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}/Kieker-c-log.yaml
+
 info "Get OpenTelemetry log"
 sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}/OpenTelemetry-java-log.yaml
 
 info "Get inspectIT log"
 sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}/inspectIT-java-log.yaml
+
 cd ..
 
 # Compute logs and charts

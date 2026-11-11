@@ -51,12 +51,17 @@ function instrumentBenchmark() {
   # no instrumentation
 
   gcc monitored_application.c -c
-  gcc benchmark.o monitored_application.o -o benchmark -l glib-2.0 -g
+  gcc benchmark.o monitored_application.o -o "${MOOBENCH_BIN_C_NOINSTR}" -l glib-2.0 -g
 
   # instrumentation
   gcc monitored_application.c -c -finstrument-functions
 
-  gcc benchmark.o monitored_application.o -o benchmark -l glib-2.0 -g -l kieker -L "${MONITORING_LIB_DIR}/lib/" -o benchmark-instr -finstrument-functions -finstrument-functions-exclude-file-list=benchmark.c
+  gcc benchmark.o monitored_application.o -o benchmark -l glib-2.0 -g -l kieker -L "${MONITORING_LIB_DIR}/lib/" -o "${MOOBENCH_BIN_C_INSTR}" -finstrument-functions -finstrument-functions-exclude-file-list=benchmark.c
+
+  # instrumentation with optimization
+  gcc monitored_application.c -c -finstrument-functions
+
+  gcc benchmark.o monitored_application.o -o benchmark -l glib-2.0 -g -l kieker -L "${MONITORING_LIB_DIR}/lib/" -o "${MOOBENCH_BIN_C_INSTR_OPT}" -O3 -finstrument-functions -finstrument-functions-exclude-file-list=benchmark.c
   cd "${dir}"
 }
 
@@ -124,10 +129,15 @@ function executeExperiment() {
     createConfig ${instrument} ${selector} ${loop}
 
     pushd "${SUT_C_DIR}"
-    if [ $mode == "dummy" ] ; then
+    if [ "${selector}" == "plain" ] ; then
       MOOBENCH_BIN_C="${MOOBENCH_BIN_C_NOINSTR}"
-    else
+    elif [ "${selector}" == "instr" ] ; then
       MOOBENCH_BIN_C="${MOOBENCH_BIN_C_INSTR}"
+    elif [ "${selector}" == "instr-o3" ] ; then
+      MOOBENCH_BIN_C="${MOOBENCH_BIN_C_INSTR_OP}"
+    else
+      error "Selector ${selector} not supported."
+      exit 1
     fi
 
     "${MOOBENCH_BIN_C}" "${CONFIG_INI_DIR}" &> ${LOG_FILE}

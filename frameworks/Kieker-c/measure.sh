@@ -87,9 +87,11 @@ declare -a TITLE
 # - selector executable
 # - port for tcp
 #
-MONITORING_CONFIG[0]="dummy False 0 0"
-MONITORING_CONFIG[1]="tcp True 1 5678"
+MONITORING_CONFIG[0]="dummy False plain 0"
+MONITORING_CONFIG[1]="tcp True instr 5678"
+MONITORING_CONFIG[2]="tcp True instr-o3 5678"
 RECEIVER[1]="java -jar receiver/receiver.jar 5678"
+RECEIVER[2]="java -jar receiver/receiver.jar 5678"
 
 executeAllLoops
 
