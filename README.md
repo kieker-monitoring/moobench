@@ -9,7 +9,7 @@ MooBench can measure the overhead that is created by obtaining any of these thre
 
 Continuous measurement results are available here:
 * Kiel University Server (Intel Xeon CPU E5620 @ 2.40 GHz, Debian 12): https://kieker-monitoring.net/performance-benchmarks/
-* GH Actions Runner (Ubuntu 24.04 -- see `.github/workflows/benchmark*.yaml` for curent version): https://kieker-monitoring.github.io/moobench-data/dev/bench/
+* GH Actions Runner (Ubuntu 26.04 -- see `.github/workflows/benchmark*.yaml` for curent version): https://kieker-monitoring.github.io/moobench-data/dev/bench/
 
 Currenly (fully) supported observability frameworks are:
 * Elastic APM with Java (https://github.com/elastic/apm-agent-java)
