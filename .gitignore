@@ -87,6 +87,7 @@ frameworks/Kieker-c/receiver/**
 frameworks/Kieker-c/results-Kieker-c/**
 tools/SuT-c/benchmark
 tools/SuT-c/benchmark-instr
+tools/SuT-c/benchmark-instr-op
 tools/SuT-c/benchmark.o
 tools/SuT-c/config.ini
 tools/SuT-c/logging.data

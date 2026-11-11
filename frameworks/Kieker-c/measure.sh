@@ -38,7 +38,7 @@ else
 fi
 
 if [ -z "$MOOBENCH_CONFIGURATIONS" ]; then
-  MOOBENCH_CONFIGURATIONS="0 1"
+  MOOBENCH_CONFIGURATIONS="0 1 2"
   echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (everything)"
 fi
 echo "Running configurations: $MOOBENCH_CONFIGURATIONS"

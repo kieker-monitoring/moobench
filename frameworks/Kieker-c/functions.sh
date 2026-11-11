@@ -49,19 +49,19 @@ function instrumentBenchmark() {
   gcc benchmark.c -c -I /usr/include/glib-2.0/ -I /usr/lib/x86_64-linux-gnu/glib-2.0/include/
 
   # no instrumentation
-
+  info "C benchmark plain ${MOOBENCH_BIN_C_NOINSTR}"
   gcc monitored_application.c -c
   gcc benchmark.o monitored_application.o -o "${MOOBENCH_BIN_C_NOINSTR}" -l glib-2.0 -g
 
   # instrumentation
+  info "C benchmark intrumented ${MOOBENCH_BIN_C_INSTR}"
   gcc monitored_application.c -c -finstrument-functions
-
   gcc benchmark.o monitored_application.o -o benchmark -l glib-2.0 -g -l kieker -L "${MONITORING_LIB_DIR}/lib/" -o "${MOOBENCH_BIN_C_INSTR}" -finstrument-functions -finstrument-functions-exclude-file-list=benchmark.c
 
   # instrumentation with optimization
+  info "C benchmark instrumented and optimized ${MOOBENCH_BIN_C_INSTR_OP}"
   gcc monitored_application.c -c -finstrument-functions
-
-  gcc benchmark.o monitored_application.o -o benchmark -l glib-2.0 -g -l kieker -L "${MONITORING_LIB_DIR}/lib/" -o "${MOOBENCH_BIN_C_INSTR_OPT}" -O3 -finstrument-functions -finstrument-functions-exclude-file-list=benchmark.c
+  gcc benchmark.o monitored_application.o -o benchmark -l glib-2.0 -g -l kieker -L "${MONITORING_LIB_DIR}/lib/" -o "${MOOBENCH_BIN_C_INSTR_OP}" -O3 -finstrument-functions -finstrument-functions-exclude-file-list=benchmark.c
   cd "${dir}"
 }
 
@@ -166,11 +166,29 @@ function executeBenchmarkBody() {
   loop="$2"
   if [[ "${RECEIVER[$config]}" ]]; then
      debug "receiver ${RECEIVER[$config]}"
-     ${RECEIVER[$config]} >> "${DATA_DIR}/kieker.receiver-${loop}-${config}.log" &
-     RECEIVER_PID=$!
-     # sleep is relevant to allow the receiver to come up before the C program is started
-     sleep 5
-     debug "PID ${RECEIVER_PID}"
+     started="false"
+     count=0
+     OLD_PID=`ps auxw | grep reciever | grep java | cut -d' ' -f2`
+     if [ "${OLD_PID}" != "" ] ; then
+       kill -term "${OLD_PID}"
+     fi
+     while [ "$started" == "false" ] ; do
+       ${RECEIVER[$config]} 2>&1 >> "${DATA_DIR}/kieker.receiver-${loop}-${config}.log" &
+       RECEIVER_PID=$!
+       # sleep is relevant to allow the receiver to come up before the C program is started
+       sleep 10
+       if ps -p "${RECEIVER_PID}" > /dev/null ; then
+         info "receiver running"
+         started="true"
+       else
+         error "receiver could not start"
+         count=`expr $count + 1`
+         if [ "$count" == "5" ] ; then
+           error "fatal cannot start receiver"
+         fi
+       fi
+       debug "PID ${RECEIVER_PID}"
+     done
   fi
 
   executeExperiment "$loop" "$config"
