@@ -9,9 +9,9 @@ MooBench can measure the overhead that is created by obtaining any of these thre
 
 Continuous measurement results are available here:
 * Kiel University Server (Intel Xeon CPU E5620 @ 2.40 GHz, Debian 12): https://kieker-monitoring.net/performance-benchmarks/
-* GH Actions Runner (Ubuntu 26.04 -- see `.github/workflows/benchmark*.yaml` for curent version): https://kieker-monitoring.github.io/moobench-data/dev/bench/
+* GH Actions Runner (Ubuntu 26.04 -- see `.github/workflows/benchmark*.yaml` for current version): https://kieker-monitoring.github.io/moobench-data/dev/bench/
 
-Currenly (fully) supported observability frameworks are:
+Currently (fully) supported observability frameworks are:
 * Elastic APM with Java (https://github.com/elastic/apm-agent-java)
 * inspectIT with Java (https://inspectit.rocks/)
 * Kieker with Java (http://kieker-monitoring.net)
@@ -27,7 +27,7 @@ For all combinations of supported observability frameworks $FRAMEWORK and langua
 
 ## Approach
 
-MooBenchs measures the overhead of gathering observability data by executing an example workload using different configurations, including *no instrumentation* (and hence no data gathering) at all, full distributed tracing and data serialization via *binary writer*. The example workload consists of `$RECURSION_DEPTH` recursive calls of a function to itself. For example, the following graph shows the execution of MooBench in the *no instrumentation* configuration:
+MooBench measures the overhead of gathering observability data by executing an example workload using different configurations, including *no instrumentation* (and hence no data gathering) at all, full distributed tracing and data serialization via *binary writer*. The example workload consists of `$RECURSION_DEPTH` recursive calls of a function to itself. For example, the following graph shows the execution of MooBench in the *no instrumentation* configuration:
 
 ```mermaid
 graph TD;
@@ -68,12 +68,12 @@ To use MooBench, please make sure the following tools are installed:
     * A recent JDK installation (OpenJDK 17 or newer); `$JAVA_HOME` needs to be set
 - For Python agents (Kieker, OpenTelemetry)
     * Python 3.11 or newer
-- Fot Kotlin: 
+- For Kotlin: 
     * Node.js
 
 ### Benchmark Execution
 
-Compile the application and install it in the repository root directory. This can be done automatically be calling `./setup.sh` (for Kotlin configurations: `./setup.sh withKotlin`. Afterwards, you can switch to the framework folder (`frameworks` and then `$AGENT-$TECHNOLOGY`, e.g., OpenTelemetry as observability agent in Java) and run `./measure.sh`.
+Compile the application and install it in the repository root directory. This can be done automatically be calling `./setup.sh` (for Kotlin configurations: `./setup.sh withKotlin`). Afterwards, you can switch to the framework folder (`frameworks` and then `$AGENT-$TECHNOLOGY`, e.g., OpenTelemetry as observability agent in Java) and run `./measure.sh`.
 
 For example, a simple benchmark execution is:
 ```
@@ -95,7 +95,7 @@ md75% "  0.2800" "  8.0450"  "      NA" " 11.5620" " 12.5040" "      NA"
 max   "  6.5920" "8135.7560" "      NA" " 89.2280" " 99.5470" "      NA"
 min   "  0.1800" "  4.0970"  "      NA" "  7.5140" "  7.0230" "      NA"
 ```
-For each configuration (1-6), this gives us statistics of the execution. For example, here we see that configuration 4 (Writing OpenTelemetry traces to Zipkin) has a mean execution time of 10.5748 microseconds and configuration 0 (baseline, no instrumentation at all) has an a mean execution time of 0.2300 microseconds. 
+For each configuration (1-6), this gives us statistics of the execution. For example, here we see that configuration 4 (Writing OpenTelemetry traces to Zipkin) has a mean execution time of 10.5748 microseconds and configuration 0 (baseline, no instrumentation at all) has a mean execution time of 0.2300 microseconds. 
 
 
 All experiments are started with the provided "External Controller" scripts.
@@ -111,7 +111,7 @@ times for repeatability), which will be:
 - execution with serialization to hard disc (currently not available for
   inspectIT)
 - execution with serialization to tcp receiver, which might be a simple receiver
-  (Kieker), or Zikpin and Prometheus (OpenTelemetry and inspectIT)
+  (Kieker), or Zipkin and Prometheus (OpenTelemetry and inspectIT)
 
 All scripts have been tested on Ubuntu, Rocky 9.6 and Raspbian. 
 
@@ -120,7 +120,7 @@ The execution may be parameterized by the following environment variables:
 * `NUM_OF_LOOPS`         number of repetitions (default 10)
 * `THREADS`              concurrent benchmarking threads (default 1)
 * `RECURSION_DEPTH`      recursion up to this depth (default 10)
-* `TOTAL_NUM_OF_CALLS`   the duration of the benchmark (deafult 2,000,000 calls)
+* `TOTAL_NUM_OF_CALLS`   count of root method invocations per SuT start (default 2,000,000 calls)
 * `METHOD_TIME`          the time per monitored call (default 0 ns or 500 us)
 * `DROP_OUTLIERS`        drop the smallest and largest 0.5% of each run's measurements
                          in the statistics (default false)
