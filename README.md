@@ -152,9 +152,3 @@ of the traces (zipkin for OpenTelemetry and inspectIT, TCP for Kieker).
 In the folder /bin/r are some R scripts provided to generate graphs to visualize
 the results. In the top the files, one can configure the required paths and the
 configuration used to analyze the data.
-
-## Quality Control
-
-We also use MooBench as a performance regression test which is run periodically
-when new features are added to Kieker.
-
