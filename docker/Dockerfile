@@ -6,5 +6,6 @@ ARG UID
 RUN echo "jenkins:x:${UID}:100:guest:/home/jenkins:/sbin/nologin" >> /etc/passwd && \
     mkdir /home/jenkins && chmod 777 /home/jenkins && \ 
     apt -y update && apt -y upgrade && \
-    apt -y install git openssh-server zip unzip r-base-core bash curl python3-pip python3-venv
+    apt -y install git openssh-server zip unzip r-base-core bash curl python3-pip python3-venv && \
+    apt -y install libglib2.0-dev gcc autoconf automake autotools-dev libtool binutils-dev
 

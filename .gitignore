@@ -76,3 +76,22 @@ frameworks/k-perf-kotlin/*.txt
 kotlin-js-store/
 DEBUG.txt
 /tools/compile-results/.project
+
+# Do not store Kieker-c stuff
+frameworks/Kieker-c/config.ini
+frameworks/Kieker-c/config.rc
+frameworks/Kieker-c/data/**
+frameworks/Kieker-c/kieker-lang-pack-c/
+frameworks/Kieker-c/monitoring.ini
+frameworks/Kieker-c/receiver/**
+frameworks/Kieker-c/results-Kieker-c/**
+tools/SuT-c/benchmark
+tools/SuT-c/benchmark-instr
+tools/SuT-c/benchmark.o
+tools/SuT-c/config.ini
+tools/SuT-c/logging.data
+tools/SuT-c/monitored_application.o
+
+# Do not store Kieker-python stuff
+tools/SuT-python/record-map.log
+

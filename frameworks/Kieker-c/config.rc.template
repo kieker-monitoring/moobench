@@ -1,0 +1,8 @@
+# benchmark setup script
+
+PYTHON=`which python3`
+PIP=`which pip`
+GIT=`which git`
+
+
+
