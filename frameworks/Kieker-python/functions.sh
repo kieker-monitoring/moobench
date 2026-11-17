@@ -13,20 +13,8 @@ function getAgent() {
   checkExecutable pip $(which ${PIP})
   checkExecutable git "${GIT}"
 
-  # note: if it already exists
-  if [ -d "${KIEKER_4_PYTHON_DIR}" ]; then
-    rm -rf "${KIEKER_4_PYTHON_DIR}"
-  fi
-  "${GIT}" clone "${KIEKER_4_PYTHON_REPO_URL}"
-  checkDirectory kieker-python "${KIEKER_4_PYTHON_DIR}"
-  cd "${KIEKER_4_PYTHON_DIR}"
-
-  "${GIT}" checkout "${KIEKER_4_PYTHON_BRANCH}"
-  "${PYTHON}" -m pip install --upgrade pip build
-  "${PIP}" install decorator
-  "${PYTHON}" -m build
-  "${PIP}" install dist/kieker_monitoring_for_python-0.0.2.tar.gz
-  cd "${BASE_DIR}"
+  "${PYTHON}" -m pip install --upgrade pip
+  "${PYTHON}" -m pip install ${KIEKER_4_PYTHON_PYPI_PACKAGE}==${KIEKER_4_PYTHON_VERSION}
 }
 
 # experiment setups
