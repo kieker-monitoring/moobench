@@ -1,0 +1,7 @@
+[Benchmark]
+total_calls = 100000
+recursion_depth = 10
+method_time = 500000
+output_filename = logging.data
+
+

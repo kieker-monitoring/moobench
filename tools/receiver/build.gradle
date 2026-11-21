@@ -33,5 +33,9 @@ jar {
 		    from jar
 		    into "../../frameworks/Kieker-python/receiver/"
 	    }
+	    copy {
+		    from jar
+		    into "../../frameworks/Kieker-c/receiver/"
+	    }
 	}
 }

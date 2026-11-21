@@ -49,7 +49,12 @@ pipeline {
              sh './frameworks/Kieker-python/measure.sh'
              sh 'cp frameworks/Kieker-python/results-Kieker-python/results.yaml Kieker-python-results.yaml'
           }
-          
+
+          catchError {
+             sh './frameworks/Kieker-c/measure.sh'
+             sh 'cp frameworks/Kieker-c/results-Kieker-c/results.yaml Kieker-c-results.yaml'
+          }
+
           catchError {
              sh './frameworks/Kieker-java/measure.sh'
              sh 'cp frameworks/Kieker-java/results-Kieker-java/results.yaml Kieker-java-results.yaml'
@@ -64,7 +69,7 @@ pipeline {
              sh './frameworks/inspectIT-java/measure.sh'
              sh 'cp frameworks/inspectIT-java/results-inspectIT-java/results.yaml inspectIT-java-results.yaml'
           }
-          
+
           stash includes: '*-results.yaml', name: 'yaml'
        }
     }
