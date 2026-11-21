@@ -11,7 +11,7 @@ AGENT_VERSION="9.8.0"
 # Skywalking APM version
 APM_VERSION="11.0.0"
 # Skywalking BanyanDB version, check config/bydb.dependencies.properties in Skywalking apm for version
-BANYANDB_VERSION="0.10.1"
+BANYANDB_VERSION="0.11.1"
 
 # Gets the skywalking agent and APM server
 # Commented code uses archive.apache.org which is too slow for Github actions but should be always available.
@@ -39,8 +39,16 @@ function startSkywalkingServer {
 	./oapService.sh &
 	SKYWALKING_PID=$!
 	cd "${BASE_DIR}"
+	sleep 2
+	timeout=60
+	elapsed=0
 	while ! nc -z localhost 11800; do
+		 if [ "$elapsed" -ge "$timeout" ]; then
+			echo "Timeout: localhost:11800 is not available after 60 seconds. It seems the Skywalking server did not start correctly."
+			exit 1
+		fi
 		sleep 2
+		elapsed=$((elapsed + 2))
 	done
 }
 
