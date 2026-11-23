@@ -63,6 +63,7 @@ function runNoInstrumentation {
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
 }
 
@@ -76,6 +77,7 @@ function runOpenTelemetryNoLogging {
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
 }
 
@@ -89,6 +91,7 @@ function runOpenTelemetryLogging {
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
     if [ ! "$DEBUG" = true ]; then
         rm "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
@@ -108,6 +111,7 @@ function runOpenTelemetryZipkin {
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
     stopBackgroundProcess
     sleep "${SLEEP_TIME}"
@@ -125,6 +129,7 @@ function runOpenTelemetryZipkinCassandra {
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
     stopCassandra
     stopBackgroundProcess
@@ -142,6 +147,7 @@ function runOpenTelemetryJaeger {
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
     stopBackgroundProcess
     sleep "${SLEEP_TIME}"
@@ -158,6 +164,7 @@ function runOpenTelemetryPrometheus {
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
     stopBackgroundProcess
     sleep $SLEEP_TIME

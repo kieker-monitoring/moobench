@@ -51,6 +51,7 @@ function runNoInstrumentation {
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
 }
 
@@ -68,6 +69,7 @@ function runInspectITDeactivated {
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
         --force-terminate \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
     sleep "${SLEEP_TIME}"
 }
@@ -86,6 +88,7 @@ function runInspectITNullWriter {
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
         --force-terminate \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
     sleep "${SLEEP_TIME}"
 }
@@ -106,6 +109,7 @@ function runInspectITZipkin {
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
         --force-terminate \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
     stopBackgroundProcess
     sleep "${SLEEP_TIME}"
@@ -127,6 +131,7 @@ function runInspectITPrometheus {
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
         --force-terminate \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
     stopBackgroundProcess
     sleep $SLEEP_TIME

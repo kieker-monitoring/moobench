@@ -101,6 +101,7 @@ done
 # Create R labels
 LABELS=$(createRLabels)
 runStatistics
+runEnergyStatistics
 
 cleanupResults
 

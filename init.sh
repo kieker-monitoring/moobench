@@ -59,6 +59,17 @@ if [ -z $REPORT_METHOD_TIME ]; then
 	REPORT_METHOD_TIME=false	## false
 fi
 
+
+# true: measure energy consumption via RAPL (Java frameworks only)
+if [ -z $ENERGY ]; then
+	ENERGY=false	## false
+fi
+
+# Energy measurement needs readable RAPL counters
+if [ "${ENERGY,,}" == "true" ]; then
+	bash "${MAIN_DIR}/enable-rapl.sh" || exit 1
+fi
+
 if [ -f "${BASE_DIR}/functions.sh" ] ; then
 	source "${BASE_DIR}/functions.sh"
 else
