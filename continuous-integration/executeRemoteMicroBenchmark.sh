@@ -4,8 +4,8 @@
 # We recommend to use SSH keys for the access and to install Java (>= 1.6) and R (> 3.0) on the remote node.
 REMOTE_NODE=jenkins@blade1
 
-# The following constant specifies location and name of the benchmarked jar file relative to the workspace. 
-BENCHMARKED_JAR=dist/kieker-1.10-SNAPSHOT_aspectj.jar 
+# The following constant specifies location and name of the benchmarked jar file relative to the workspace.
+BENCHMARKED_JAR=dist/kieker-1.10-SNAPSHOT_aspectj.jar
 
 # The following constants specify location and name of the MooBench folder
 MOOBENCH_FOLDER=examples/OverheadEvaluationMicrobenchmark/MooBench
@@ -15,7 +15,6 @@ RESULTS_FOLDER_NAME=results-kieker
 
 # This constant specifies the target file for the results
 RESULTS_TARGET_FILE=plot.csv
-
 
 # Copy the benchmarked file and MooBench to the remote node
 scp -r ${MOOBENCH_FOLDER} ${REMOTE_NODE}:MooBench

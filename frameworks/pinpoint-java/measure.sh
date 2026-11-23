@@ -6,20 +6,23 @@
 # Usage: benchmark.sh
 
 # configure base dir
-BASE_DIR=$(cd "$(dirname "$0")"; pwd)
+BASE_DIR=$(
+	cd "$(dirname "$0")"
+	pwd
+)
 MAIN_DIR="${BASE_DIR}/../.."
 
 if [ -z "$JAVA_HOME" ]; then
-    echo "Pinpoint dependencies need JAVA_HOME to be set; please set it to start the benchmark"
-    exit 1
+	echo "Pinpoint dependencies need JAVA_HOME to be set; please set it to start the benchmark"
+	exit 1
 fi
 
 JAVA_MAJOR_VERSION=$(java -version 2>&1 | sed -n ';s/.* version "\(.*\)\.\(.*\)\..*".*/\1/p;')
 
 if [ "$JAVA_MAJOR_VERSION" -eq 25 ]; then
-    echo "[WARN] Pinpoint currently does not support Java 25; skipping measurement"
-    echo "[WARN] Potential fix: Start pinpoint-collector and pinpoint-web-starter with different JDK than SuT"
-    exit 0
+	echo "[WARN] Pinpoint currently does not support Java 25; skipping measurement"
+	echo "[WARN] Potential fix: Start pinpoint-collector and pinpoint-web-starter with different JDK than SuT"
+	exit 0
 fi
 
 #
@@ -27,20 +30,20 @@ fi
 #
 
 if [ ! -d "${BASE_DIR}" ]; then
-  echo "Base directory ${BASE_DIR} does not exist."
-  exit 1
+	echo "Base directory ${BASE_DIR} does not exist."
+	exit 1
 fi
 
 if [ -f "${MAIN_DIR}/init.sh" ]; then
-  source "${MAIN_DIR}/init.sh"
+	source "${MAIN_DIR}/init.sh"
 else
-  echo "Missing library: ${MAIN_DIR}/init.sh"
-  exit 1
+	echo "Missing library: ${MAIN_DIR}/init.sh"
+	exit 1
 fi
 
 if [ -z "$MOOBENCH_CONFIGURATIONS" ]; then
-  MOOBENCH_CONFIGURATIONS="0 1 2 3 4"
-  echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (all Pinpoint configurations)"
+	MOOBENCH_CONFIGURATIONS="0 1 2 3 4"
+	echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (all Pinpoint configurations)"
 fi
 echo "Running configurations: $MOOBENCH_CONFIGURATIONS"
 #
@@ -90,12 +93,12 @@ info "----------------------------------"
 
 ## Execute Benchmark
 for ((i = 1; i <= ${NUM_OF_LOOPS}; i += 1)); do
-    k=0
-    info "## Starting iteration ${i}/${NUM_OF_LOOPS}"
-    echo "## Starting iteration ${i}/${NUM_OF_LOOPS}" >> "${BASE_DIR}/OpenTelemetry.log"
+	k=0
+	info "## Starting iteration ${i}/${NUM_OF_LOOPS}"
+	echo "## Starting iteration ${i}/${NUM_OF_LOOPS}" >>"${BASE_DIR}/OpenTelemetry.log"
 
-    executeBenchmark
-    printIntermediaryResults "${i}"
+	executeBenchmark
+	printIntermediaryResults "${i}"
 done
 
 # Create R labels
@@ -105,7 +108,7 @@ runStatistics
 cleanupResults
 
 mv "${BASE_DIR}/OpenTelemetry.log" "${RESULTS_DIR}/OpenTelemetry.log"
-[ -f "${RESULTS_DIR}/hotspot-1-${RECURSION_DEPTH}-1.log" ] && grep "<task " "${RESULTS_DIR}/"hotspot-*.log > "${RESULTS_DIR}/java.log"
+[ -f "${RESULTS_DIR}/hotspot-1-${RECURSION_DEPTH}-1.log" ] && grep "<task " "${RESULTS_DIR}/"hotspot-*.log >"${RESULTS_DIR}/java.log"
 [ -f "${BASE_DIR}/errorlog.txt" ] && mv "${BASE_DIR}/errorlog.txt" "${RESULTS_DIR}"
 
 checkFile results.yaml "${RESULTS_DIR}/results.yaml"

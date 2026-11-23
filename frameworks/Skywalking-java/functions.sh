@@ -2,8 +2,8 @@
 
 # ensure the script is sourced
 if [ "${BASH_SOURCE[0]}" -ef "$0" ]; then
-	echo  "Hey, you should source this script, not execute it!"
-	exit  1
+	echo "Hey, you should source this script, not execute it!"
+	exit 1
 fi
 
 # Skywalking Java Agent version
@@ -48,37 +48,37 @@ function startSkywalkingServer {
 function stopSkywalkingServer {
 	if [[ -n "$SKYWALKING_PID" ]]; then
 		kill "$SKYWALKING_PID"
-		wait "$SKYWALKING_PID" 2> /dev/null
+		wait "$SKYWALKING_PID" 2>/dev/null
 	fi
 	# Empty the logs to avoid interference with next run
-	echo "" > "${BASE_DIR}/apache-skywalking-apm-bin/logs/skywalking-oap-server.log"
+	echo "" >"${BASE_DIR}/apache-skywalking-apm-bin/logs/skywalking-oap-server.log"
 	docker stop banyandb
 	docker rm banyandb
 	sleep 3
 }
 
 function executeBenchmark {
-	for index in  $MOOBENCH_CONFIGURATIONS; do
-		runExperiment    $index
+	for index in $MOOBENCH_CONFIGURATIONS; do
+		runExperiment $index
 	done
 }
 
 function runExperiment {
 	# No instrumentation
 	k=$1
-	info  " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
-	if  [[ "$k" -gt 0 ]]; then
+	info " # ${i}.$RECURSION_DEPTH.${k} ${TITLE[$k]}"
+	if [[ "$k" -gt 0 ]]; then
 		startSkywalkingServer
 	fi
-	export  SU_T_JAVA_OPTS="${SKYWALKING_CONFIG[$k]}"
+	export SU_T_JAVA_OPTS="${SKYWALKING_CONFIG[$k]}"
 	"${MOOBENCH_BIN}" \
 		--output-filename "${RAWFN}-${i}-$RECURSION_DEPTH-${k}.csv" \
-		--total-calls     "${TOTAL_NUM_OF_CALLS}" \
-		--method-time     "${METHOD_TIME}" \
-		--total-threads     "${THREADS}" \
-		--recursion-depth     "${RECURSION_DEPTH}" \
-		${MORE_PARAMS}     &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
-	if  [[ "$k" -gt 0 ]]; then
+		--total-calls "${TOTAL_NUM_OF_CALLS}" \
+		--method-time "${METHOD_TIME}" \
+		--total-threads "${THREADS}" \
+		--recursion-depth "${RECURSION_DEPTH}" \
+		${MORE_PARAMS} &>"${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
+	if [[ "$k" -gt 0 ]]; then
 		stopSkywalkingServer
 	fi
 
