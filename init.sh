@@ -1,10 +1,10 @@
 #!/bin/bash
 
-if [ -f "${MAIN_DIR}/common-functions.sh" ] ; then
-        source "${MAIN_DIR}/common-functions.sh"
+if [ -f "${MAIN_DIR}/common-functions.sh" ]; then
+	source "${MAIN_DIR}/common-functions.sh"
 else
-        echo "Missing library: ${MAIN_DIR}/common-functions.sh"
-        exit 1
+	echo "Missing library: ${MAIN_DIR}/common-functions.sh"
+	exit 1
 fi
 
 FRAMEWORK_NAME=$(basename -- "${BASE_DIR}")
@@ -13,31 +13,29 @@ RAWFN="${RESULTS_DIR}/raw"
 
 # Initialize all unset parameters
 if [ -z $SLEEP_TIME ]; then
-	SLEEP_TIME=30           ## 30
+	SLEEP_TIME=30 ## 30
 fi
 if [ -z $NUM_OF_LOOPS ]; then
-	NUM_OF_LOOPS=10           ## 10
+	NUM_OF_LOOPS=10 ## 10
 fi
 if [ -z $THREADS ]; then
-	THREADS=1              ## 1
+	THREADS=1 ## 1
 fi
 if [ -z $RECURSION_DEPTH ]; then
-	RECURSION_DEPTH=10      ## 10
+	RECURSION_DEPTH=10 ## 10
 fi
 if [ -z $TOTAL_NUM_OF_CALLS ]; then
-	TOTAL_NUM_OF_CALLS=2000000     ## 2000000
+	TOTAL_NUM_OF_CALLS=2000000 ## 2000000
 fi
 if [ -z $METHOD_TIME ]; then
-	METHOD_TIME=0      ## 500000
+	METHOD_TIME=0 ## 500000
 fi
 if [ -z $DEBUG ]; then
-	DEBUG=false		## false
+	DEBUG=false ## false
 fi
 
-
-
 # load configuration and common functions
-if [ -f "${BASE_DIR}/config.rc" ] ; then
+if [ -f "${BASE_DIR}/config.rc" ]; then
 	source "${BASE_DIR}/config.rc"
 else
 	echo "Missing configuration: ${BASE_DIR}/config.rc"
@@ -46,26 +44,26 @@ fi
 
 # Defaults that a framework's config.rc may override (hence set after loading it)
 if [ -z $DROP_OUTLIERS ]; then
-	DROP_OUTLIERS=false	## false
+	DROP_OUTLIERS=false ## false
 fi
 
 # Statistics time unit divisor: 1 = ns, 1000 = us, 1000000 = ms
 if [ -z $TIME_UNIT ]; then
-	TIME_UNIT=1000	## 1000
+	TIME_UNIT=1000 ## 1000
 fi
 
 # true: report time per method call, false: report time per recursion chain
 if [ -z $REPORT_METHOD_TIME ]; then
-	REPORT_METHOD_TIME=false	## false
+	REPORT_METHOD_TIME=false ## false
 fi
 
-if [ -f "${BASE_DIR}/functions.sh" ] ; then
+if [ -f "${BASE_DIR}/functions.sh" ]; then
 	source "${BASE_DIR}/functions.sh"
 else
 	echo "Missing: ${BASE_DIR}/functions.sh"
 	exit 1
 fi
-if [ -f "${BASE_DIR}/labels.sh" ] ; then
+if [ -f "${BASE_DIR}/labels.sh" ]; then
 	source "${BASE_DIR}/labels.sh"
 else
 	echo "Missing file: ${BASE_DIR}/labels.sh"

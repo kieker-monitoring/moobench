@@ -14,20 +14,20 @@ MAIN_DIR="${BASE_DIR}/../.."
 #
 
 if [ ! -d "${BASE_DIR}" ]; then
-  echo "Base directory ${BASE_DIR} does not exist."
-  exit 1
+	echo "Base directory ${BASE_DIR} does not exist."
+	exit 1
 fi
 
 if [ -f "${MAIN_DIR}/init.sh" ]; then
-  source "${MAIN_DIR}/init.sh"
+	source "${MAIN_DIR}/init.sh"
 else
-  echo "Missing library: ${MAIN_DIR}/init.sh"
-  exit 1
+	echo "Missing library: ${MAIN_DIR}/init.sh"
+	exit 1
 fi
 
 if [ -z "$MOOBENCH_CONFIGURATIONS" ]; then
-  MOOBENCH_CONFIGURATIONS="0 1 2 4 5"
-  echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (without TextLogStreamHandler)"
+	MOOBENCH_CONFIGURATIONS="0 1 2 4 5"
+	echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (without TextLogStreamHandler)"
 fi
 echo "Running configurations: $MOOBENCH_CONFIGURATIONS"
 

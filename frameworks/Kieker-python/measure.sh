@@ -6,9 +6,9 @@
 # Usage: benchmark.sh
 
 if [ -z "${PYTHON}" ]; then
-        PYTHON=`which python3`
+	PYTHON=$(which python3)
 else
-        PYTHON=$(command -v "${PYTHON}")
+	PYTHON=$(command -v "${PYTHON}")
 fi
 
 VENV_DIR=".venv"
@@ -18,7 +18,10 @@ PYTHON=$(which python)
 PIP=$(which pip)
 
 # configure base dir
-BASE_DIR=$(cd "$(dirname "$0")"; pwd)
+BASE_DIR=$(
+	cd "$(dirname "$0")"
+	pwd
+)
 MAIN_DIR="${BASE_DIR}/../.."
 
 #
@@ -26,20 +29,20 @@ MAIN_DIR="${BASE_DIR}/../.."
 #
 
 if [ ! -d "${BASE_DIR}" ]; then
-  echo "Base directory ${BASE_DIR} does not exist."
-  exit 1
+	echo "Base directory ${BASE_DIR} does not exist."
+	exit 1
 fi
 
 if [ -f "${MAIN_DIR}/init.sh" ]; then
-  source "${MAIN_DIR}/init.sh"
+	source "${MAIN_DIR}/init.sh"
 else
-  echo "Missing library: ${MAIN_DIR}/init.sh"
-  exit 1
+	echo "Missing library: ${MAIN_DIR}/init.sh"
+	exit 1
 fi
 
 if [ -z "$MOOBENCH_CONFIGURATIONS" ]; then
-  MOOBENCH_CONFIGURATIONS="0 1 2 3 4 5 6 7 8"
-  echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (everything)"
+	MOOBENCH_CONFIGURATIONS="0 1 2 3 4 5 6 7 8"
+	echo "Setting default configuration $MOOBENCH_CONFIGURATIONS (everything)"
 fi
 echo "Running configurations: $MOOBENCH_CONFIGURATIONS"
 

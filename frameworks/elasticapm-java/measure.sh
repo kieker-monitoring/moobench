@@ -6,7 +6,10 @@
 # Usage: benchmark.sh
 
 # configure base dir
-BASE_DIR=$(cd "$(dirname "$0")"; pwd)
+BASE_DIR=$(
+	cd "$(dirname "$0")"
+	pwd
+)
 MAIN_DIR="${BASE_DIR}/../.."
 
 #
@@ -14,20 +17,20 @@ MAIN_DIR="${BASE_DIR}/../.."
 #
 
 if [ ! -d "${BASE_DIR}" ]; then
-  echo "Base directory ${BASE_DIR} does not exist."
-  exit 1
+	echo "Base directory ${BASE_DIR} does not exist."
+	exit 1
 fi
 
 if [ -f "${MAIN_DIR}/init.sh" ]; then
-  source "${MAIN_DIR}/init.sh"
+	source "${MAIN_DIR}/init.sh"
 else
-  echo "Missing library: ${MAIN_DIR}/init.sh"
-  exit 1
+	echo "Missing library: ${MAIN_DIR}/init.sh"
+	exit 1
 fi
 
 if [ -z "$MOOBENCH_CONFIGURATIONS" ]; then
-  MOOBENCH_CONFIGURATIONS="0 1 2 3"
-  echo "Setting default configuration $MOOBENCH_CONFIGURATIONS"
+	MOOBENCH_CONFIGURATIONS="0 1 2 3"
+	echo "Setting default configuration $MOOBENCH_CONFIGURATIONS"
 fi
 echo "Running configurations: $MOOBENCH_CONFIGURATIONS"
 
@@ -43,7 +46,7 @@ cd "${BASE_DIR}"
 
 # load agent
 if [ ! -f $AGENT_JAR ]; then
-  getAgent
+	getAgent
 fi
 
 checkDirectory data-dir "${DATA_DIR}" create

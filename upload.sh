@@ -6,7 +6,10 @@
 # Usage: upload.sh
 
 # configure base dir
-BASE_DIR=$(cd "$(dirname "$0")"; pwd)
+BASE_DIR=$(
+	cd "$(dirname "$0")"
+	pwd
+)
 
 KEYSTORE="$1"
 UPDATE_SITE_URL="$2"
@@ -15,31 +18,31 @@ UPDATE_SITE_URL="$2"
 # source functionality
 #
 
-if [ ! -d "${BASE_DIR}" ] ; then
-        echo "Base directory ${BASE_DIR} does not exist."
-        exit 1
+if [ ! -d "${BASE_DIR}" ]; then
+	echo "Base directory ${BASE_DIR} does not exist."
+	exit 1
 fi
 
 # load configuration and common functions
-if [ -f "${BASE_DIR}/config.rc" ] ; then
-        source "${BASE_DIR}/config.rc"
+if [ -f "${BASE_DIR}/config.rc" ]; then
+	source "${BASE_DIR}/config.rc"
 else
-        echo "Missing configuration: ${BASE_DIR}/config.rc"
-        exit 1
+	echo "Missing configuration: ${BASE_DIR}/config.rc"
+	exit 1
 fi
 
-if [ -f "${BASE_DIR}/common-functions.sh" ] ; then
-        source "${BASE_DIR}/common-functions.sh"
+if [ -f "${BASE_DIR}/common-functions.sh" ]; then
+	source "${BASE_DIR}/common-functions.sh"
 else
-        echo "Missing library: ${BASE_DIR}/common-functions.sh"
-        exit 1
+	echo "Missing library: ${BASE_DIR}/common-functions.sh"
+	exit 1
 fi
 
 checkExecutable compile-results "${COMPILE_RESULTS_BIN}"
 checkFile keystore "${KEYSTORE}"
 checkDirectory results "${BASE_DIR}/results" recreate
 
-if [ "${UPDATE_SITE_URL}" == "" ] ; then
+if [ "${UPDATE_SITE_URL}" == "" ]; then
 	error "Missing UPDATE_SITE_URL"
 	info "Usage: $0 KEYSTORE UPDATE_SITE_URL"
 	exit 1
@@ -69,9 +72,9 @@ info "Compute new logs and charts"
 info "Push logs and results"
 
 cd results
-echo "put *.yaml" | sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo  -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}
-echo "put *.html" | sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo  -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}
-echo "put *.json" | sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo  -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}
+echo "put *.yaml" | sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}
+echo "put *.html" | sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}
+echo "put *.json" | sftp -oNoHostAuthenticationForLocalhost=yes -oStrictHostKeyChecking=no -oUser=repo -F /dev/null -i ${KEYSTORE} ${UPDATE_SITE_URL}
 cd ..
 
 info "Done"

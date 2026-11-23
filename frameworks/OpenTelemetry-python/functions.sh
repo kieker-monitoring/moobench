@@ -1,13 +1,12 @@
-
 function get_os_path {
-    local raw_path=$1
-    if command -v cygpath &> /dev/null; then cygpath -w "$raw_path"; else echo "$raw_path"; fi
+	local raw_path=$1
+	if command -v cygpath &>/dev/null; then cygpath -w "$raw_path"; else echo "$raw_path"; fi
 }
 
 function createOtelConfig() {
-    loop="$1"
-    filename="$2"
-  cat > "${BASE_DIR}/config.ini" << EOF
+	loop="$1"
+	filename="$2"
+	cat >"${BASE_DIR}/config.ini" <<EOF
 [Benchmark]
 total_calls = ${TOTAL_NUM_OF_CALLS}
 recursion_depth = ${RECURSION_DEPTH}
@@ -22,72 +21,72 @@ EOF
 }
 
 function runNoInstrumentation {
-    local config=$1
-    local loop=$2
+	local config=$1
+	local loop=$2
 
-    # Define Paths using variables from init.sh (RESULTS_DIR) and config.rc (RAWFN)
-    local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${config}.csv"
-    local CSV_FILE=$(get_os_path "$RAW_CSV")
-    createOtelConfig $loop $CSV_FILE
-    
-    local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${config}.txt"
+	# Define Paths using variables from init.sh (RESULTS_DIR) and config.rc (RAWFN)
+	local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${config}.csv"
+	local CSV_FILE=$(get_os_path "$RAW_CSV")
+	createOtelConfig $loop $CSV_FILE
 
-    echo " # Running Config $config: ${TITLE[$config]} (Iter $loop)"
+	local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${config}.txt"
 
-    ENABLE_OTEL="false" \
-    "${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
+	echo " # Running Config $config: ${TITLE[$config]} (Iter $loop)"
+
+	ENABLE_OTEL="false" \
+		"${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" >"$LOG_FILE" 2>&1
 }
 
 function runOpenTelemetryNoExport {
-    local config=$1
-    local loop=$2
+	local config=$1
+	local loop=$2
 
-    local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${config}.csv"
-    local CSV_FILE=$(get_os_path "$RAW_CSV")
-    createOtelConfig $loop $CSV_FILE
-    
-    local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${config}.txt"
+	local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${config}.csv"
+	local CSV_FILE=$(get_os_path "$RAW_CSV")
+	createOtelConfig $loop $CSV_FILE
 
-    echo " # Running Config $config: ${TITLE[$config]} (Iter $loop)"
+	local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${config}.txt"
 
-    ENABLE_OTEL="true" \
-    OTEL_TRACES_EXPORTER="none" \
-    OTEL_METRICS_EXPORTER="none" \
-    OTEL_LOGS_EXPORTER="none" \
-    "${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
+	echo " # Running Config $config: ${TITLE[$config]} (Iter $loop)"
+
+	ENABLE_OTEL="true" \
+		OTEL_TRACES_EXPORTER="none" \
+		OTEL_METRICS_EXPORTER="none" \
+		OTEL_LOGS_EXPORTER="none" \
+		"${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" >"$LOG_FILE" 2>&1
 }
 
 function runOpenTelemetryZipkin {
-    local config=$1
-    local loop=$2
-    
-    local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${config}.csv"
-    local CSV_FILE=$(get_os_path "$RAW_CSV")
-    createOtelConfig $loop $CSV_FILE
-    
-    local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${config}.txt"
+	local config=$1
+	local loop=$2
 
-    startZipkin
-    echo " # Running Config $config: ${TITLE[$config]} (Iter $loop)"
+	local RAW_CSV="${RESULTS_DIR}/raw-${loop}-${RECURSION_DEPTH}-${config}.csv"
+	local CSV_FILE=$(get_os_path "$RAW_CSV")
+	createOtelConfig $loop $CSV_FILE
 
-    ENABLE_OTEL="true" \
-    OTEL_SERVICE_NAME="moobench-python" \
-    OTEL_TRACES_EXPORTER="zipkin" \
-    OTEL_EXPORTER_ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans" \
-    OTEL_METRICS_EXPORTER="none" \
-    OTEL_LOGS_EXPORTER="none" \
-    "${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" > "$LOG_FILE" 2>&1
+	local LOG_FILE="${RESULTS_DIR}/output_${loop}-${RECURSION_DEPTH}-${config}.txt"
 
-    stopBackgroundProcess
+	startZipkin
+	echo " # Running Config $config: ${TITLE[$config]} (Iter $loop)"
+
+	ENABLE_OTEL="true" \
+		OTEL_SERVICE_NAME="moobench-python" \
+		OTEL_TRACES_EXPORTER="zipkin" \
+		OTEL_EXPORTER_ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans" \
+		OTEL_METRICS_EXPORTER="none" \
+		OTEL_LOGS_EXPORTER="none" \
+		"${PYTHON}" "$MOOBENCH_BIN_PY" "$CONFIG_FILE" >"$LOG_FILE" 2>&1
+
+	stopBackgroundProcess
 }
 
 function executeBenchmark {
-   for config in $MOOBENCH_CONFIGURATIONS; do
-      case $config in
-         0) runNoInstrumentation 0 $i ;;
-         1) runOpenTelemetryNoExport 1 $i ;;
-         2) runOpenTelemetryZipkin 2 $i ;;
-    esac
-      sleep 1
-  done
+	for config in $MOOBENCH_CONFIGURATIONS; do
+		case $config in
+		0) runNoInstrumentation 0 $i ;;
+		1) runOpenTelemetryNoExport 1 $i ;;
+		2) runOpenTelemetryZipkin 2 $i ;;
+		esac
+		sleep 1
+	done
 }

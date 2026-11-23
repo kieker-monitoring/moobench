@@ -1,85 +1,85 @@
 #!/bin/bash
 
 function runAll {
-  MODE=$1
-  start=$(pwd)
-  for framework in inspectIT-java OpenTelemetry-java Kieker-java Scouter-java elasticapm-java pinpoint-java Skywalking-java; do
-    echo "Running Depth Scaling $framework"
-    if [ "$MODE" = "DEPTH" ]; then
-      runDepthScaling "$framework"
-    else
-      runThreadScaling "$framework"
-    fi
-  done
+	MODE=$1
+	start=$(pwd)
+	for framework in inspectIT-java OpenTelemetry-java Kieker-java Scouter-java elasticapm-java pinpoint-java Skywalking-java; do
+		echo "Running Depth Scaling $framework"
+		if [ "$MODE" = "DEPTH" ]; then
+			runDepthScaling "$framework"
+		else
+			runThreadScaling "$framework"
+		fi
+	done
 }
 
 function runThreadScaling {
-  framework=$1
-  cd "${framework}"
+	framework=$1
+	cd "${framework}"
 
-  RESULTS_DIR="parallel-results-${framework}"
-  checkDirectory RESULTS_DIR "${RESULTS_DIR}" create
+	RESULTS_DIR="parallel-results-${framework}"
+	checkDirectory RESULTS_DIR "${RESULTS_DIR}" create
 
-  for threads in 1 2 3 4; do
-    export THREADS=$threads
-    echo "Running $threads"
-    ./measure.sh &> ${RESULTS_DIR}/parallel_$threads.txt
-    if [ ! -f results-$framework/results.zip ]; then
-      echo "File results-$framework/results.zip missing; aborting"
-      exit 1
-    fi
-    mv results-$framework/results.zip ${RESULTS_DIR}/results-$threads.zip
-  done
+	for threads in 1 2 3 4; do
+		export THREADS=$threads
+		echo "Running $threads"
+		./measure.sh &>${RESULTS_DIR}/parallel_$threads.txt
+		if [ ! -f results-$framework/results.zip ]; then
+			echo "File results-$framework/results.zip missing; aborting"
+			exit 1
+		fi
+		mv results-$framework/results.zip ${RESULTS_DIR}/results-$threads.zip
+	done
 
-  cd "${start}"
+	cd "${start}"
 }
 
 function runDepthScaling {
-  framework=$1
-  cd "${framework}"
+	framework=$1
+	cd "${framework}"
 
-  RESULTS_DIR="exp-results-${framework}"
-  checkDirectory RESULTS_DIR "${RESULTS_DIR}" create
+	RESULTS_DIR="exp-results-${framework}"
+	checkDirectory RESULTS_DIR "${RESULTS_DIR}" create
 
-  for depth in 2 4 8 16 32 64 128; do
-    export RECURSION_DEPTH=$depth
-    echo "Running $depth"
-    ./measure.sh &> ${RESULTS_DIR}/depth_$depth.txt
-    if [ ! -f results-$framework/results.zip ]; then
-      echo "File results-$framework/results.zip missing; aborting"
-      exit 1
-    fi
+	for depth in 2 4 8 16 32 64 128; do
+		export RECURSION_DEPTH=$depth
+		echo "Running $depth"
+		./measure.sh &>${RESULTS_DIR}/depth_$depth.txt
+		if [ ! -f results-$framework/results.zip ]; then
+			echo "File results-$framework/results.zip missing; aborting"
+			exit 1
+		fi
 
-    zip -jqr ${RESULTS_DIR}/output-$RECURSION_DEPTH.zip results-$framework/output_*
-    rm results-$framework/output_*
+		zip -jqr ${RESULTS_DIR}/output-$RECURSION_DEPTH.zip results-$framework/output_*
+		rm results-$framework/output_*
 
-    mv results-$framework/results.zip ${RESULTS_DIR}/results-$RECURSION_DEPTH.zip
-  done
+		mv results-$framework/results.zip ${RESULTS_DIR}/results-$RECURSION_DEPTH.zip
+	done
 
-  cd "${start}"
+	cd "${start}"
 }
 
 if [ -z "$JAVA_HOME" ]; then
-    echo "Pinpoint dependencies need JAVA_HOME to be set; please set it before starting all benchmarks"
-    exit 1
+	echo "Pinpoint dependencies need JAVA_HOME to be set; please set it before starting all benchmarks"
+	exit 1
 fi
 
 # configure base dir
 BASE_DIR=$(
-           cd "$(dirname "$0")"
-                                 pwd
+	cd "$(dirname "$0")"
+	pwd
 )
 
 if [ -f "${BASE_DIR}/../common-functions.sh" ]; then
-  . "${BASE_DIR}/../common-functions.sh"
+	. "${BASE_DIR}/../common-functions.sh"
 else
-  echo "Missing configuration: ${BASE_DIR}/../common-functions.sh"
-  exit 1
+	echo "Missing configuration: ${BASE_DIR}/../common-functions.sh"
+	exit 1
 fi
 
 if [[ -z "$1" ]]; then
-  echo "Usage: $0 <ALL|foldername> <DEPTH|THREADS>"
-  exit 1
+	echo "Usage: $0 <ALL|foldername> <DEPTH|THREADS>"
+	exit 1
 fi
 
 MODE=${2:-DEPTH}
@@ -87,19 +87,19 @@ MODE=${2:-DEPTH}
 echo "Running mode $MODE"
 
 if [[ -n "$RECURSION_DEPTH" && "$MODE" == "DEPTH" ]]; then
-  echo "Warning: \$RECURSION_DEPTH is set to $RECURSION_DEPTH"
+	echo "Warning: \$RECURSION_DEPTH is set to $RECURSION_DEPTH"
 fi
 
 case "$1" in
- ALL)
-  runAll $MODE
-  ;;
- *)
-  benchmark=$1
-  if [ "$MODE" = "DEPTH" ]; then
-    runDepthScaling "$benchmark"
-  else
-    runThreadScaling "$benchmark"
-  fi
-  ;;
+ALL)
+	runAll $MODE
+	;;
+*)
+	benchmark=$1
+	if [ "$MODE" = "DEPTH" ]; then
+		runDepthScaling "$benchmark"
+	else
+		runThreadScaling "$benchmark"
+	fi
+	;;
 esac
