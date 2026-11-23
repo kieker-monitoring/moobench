@@ -130,7 +130,6 @@ public final class BenchmarkMain {
         }
         BenchmarkMain.ps.close();
         if (parameter.getEnergyStatus()) {
-            BenchmarkMain.energyStream.println("iteration;start_uj;end_uj;start_time;end_time;time_nano");
             BenchmarkMain.energyStream.println(parameter.getOutputFile().getName() + ";" + cpu_energy_start + ";"
                     + cpu_energy_end + ";" + totalTime);
             BenchmarkMain.energyStream.close();
@@ -161,10 +160,15 @@ public final class BenchmarkMain {
                     new BufferedOutputStream(Files.newOutputStream(parameter.getOutputFile().toPath()), 8192 * 8),
                     false, BenchmarkMain.ENCODING);
             if (parameter.getEnergyStatus()) {
+            final boolean newFile = !parameter.getEnergyFile().exists()
+                        || parameter.getEnergyFile().length() == 0;
                 BenchmarkMain.energyStream = new PrintStream(
                         new BufferedOutputStream(Files.newOutputStream(parameter.getEnergyFile().toPath(),
                                 StandardOpenOption.CREATE, StandardOpenOption.APPEND), 8192 * 8),
                         false, BenchmarkMain.ENCODING);
+                if (newFile) {
+                    BenchmarkMain.energyStream.println("iteration;start_uj;end_uj;total_time");
+                }
             }
             if (null != parameter.getApplicationClassname()) {
                 monitoredClass = (MonitoredClass) Class.forName(parameter.getApplicationClassname()).getDeclaredConstructor().newInstance();

@@ -83,7 +83,7 @@ function executeExperiment() {
     --method-time "${METHOD_TIME}" \
     --total-threads $THREADS \
     --recursion-depth "${recursion}" \
-    --energy-output "${RAWFN}-energy.csv"\
+    $(energyParams) \
     ${MORE_PARAMS} &> "${LOG_FILE}"
 
   if [ ! -f "${RESULT_FILE}" ]; then

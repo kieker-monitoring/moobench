@@ -51,6 +51,7 @@ function runExperiment {
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
     if [[ "$k" -gt 0 ]]; then
      stopScouterServer

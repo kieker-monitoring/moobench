@@ -3,6 +3,7 @@ COMPILE_RESULTS_ARCHIVE="${BASE_DIR}/tools/compile-results/build/distributions/c
 COMPILE_RESULTS_BIN="${BASE_DIR}/compile-results/bin/compile-results"
 MOOBENCH_BIN="${BASE_DIR}/../../SuT-java/bin/SuT-java"
 RSCRIPT_PATH="${BASE_DIR}/../statistics.r"
+ENERGY_RSCRIPT_PATH="${BASE_DIR}/../energy_statistics.r"
 
 # path setup
 JAVA_BIN=`which java`

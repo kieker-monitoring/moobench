@@ -89,6 +89,37 @@ source("${RSCRIPT_PATH}")
 EOF
 }
 
+## Generate Energy Results file
+function runEnergyStatistics() {
+  ENERGY_FILE="${RAWFN}-energy.csv"
+  if [ ! -s "${ENERGY_FILE}" ]; then
+    return
+  fi
+  ENERGY_INDICES=$(echo $MOOBENCH_CONFIGURATIONS | tr " " ",")
+  RAPL_MAX_RANGE=$(cat /sys/class/powercap/intel-rapl:0/max_energy_range_uj 2>/dev/null || echo 0)
+  R --vanilla --silent <<EOF
+energy_fn="${ENERGY_FILE}"
+out_report_fn="${RESULTS_DIR}/energy-report.txt"
+out_csv_fn="${RESULTS_DIR}/energy-summary.csv"
+configs.labels=c($LABELS)
+configs.indices=c($ENERGY_INDICES)
+configs.framework_name="${FRAMEWORK_NAME}"
+configs.threads=${THREADS}
+configs.recursion=${RECURSION_DEPTH}
+configs.rapl_max_range=${RAPL_MAX_RANGE}
+results.count=${TOTAL_NUM_OF_CALLS}
+source("${ENERGY_RSCRIPT_PATH}")
+EOF
+}
+
+
+## Energy parameters for the benchmark call
+function energyParams() {
+  if [ "${ENERGY,,}" == "true" ]; then
+    echo "--Energy --energy-output ${RAWFN}-energy.csv"
+  fi
+}
+
 function startZipkin {
   if [ ! -d "${BASE_DIR}/zipkin" ] || [ ! -f "${BASE_DIR}/zipkin/zipkin.jar" ]; then
     mkdir -p "${BASE_DIR}/zipkin"
@@ -207,11 +238,25 @@ function getStatisticsOfMeasurementFile {
 
 function printIntermediaryResults {
    loop="$1"
+   ENERGY_FILE="${RAWFN}-energy.csv"
    for index in $MOOBENCH_CONFIGURATIONS; do
       RESULT_FILE="${RAWFN}-${loop}-${RECURSION_DEPTH}-${index}.csv"
       checkFile result "${RESULT_FILE}"
       info_n "Intermediary results "${TITLE[$index]}" (in ns) "
-      getStatisticsOfMeasurementFile ${RESULT_FILE}
+      STATS=$(getStatisticsOfMeasurementFile ${RESULT_FILE}) || {
+         echo "${STATS}"
+         exit 1
+      }
+
+      ENERGY_TEXT=""
+      if [ -s "${ENERGY_FILE}" ]; then
+         RESULT_NAME=$(basename "${RESULT_FILE}")
+         ENERGY_UJ=$(awk -F';' -v name="${RESULT_NAME}" '$1 == name {printf "%.0f\n", $3 - $2}' "${ENERGY_FILE}" | tail -n 1)
+         if [ -n "${ENERGY_UJ}" ]; then
+            ENERGY_TEXT=" Energy: ${ENERGY_UJ} µJ"
+         fi
+      fi
+      echo "${STATS}${ENERGY_TEXT}"
   done
 }
 
@@ -248,6 +293,7 @@ function executeAllLoops {
   # Create R labels
   LABELS=$(createRLabels)
   runStatistics
+  runEnergyStatistics
 
   cleanupResults
 

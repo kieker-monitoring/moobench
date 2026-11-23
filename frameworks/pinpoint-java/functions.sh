@@ -244,6 +244,7 @@ function runNoInstrumentation {
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
+        $(energyParams) \
         ${MORE_PARAMS} &> "${RESULTS_DIR}/output_${i}_${RECURSION_DEPTH}_${k}.txt"
 }
 
@@ -305,6 +306,7 @@ function runPinpointBasic {
         --method-time "${METHOD_TIME}" \
         --total-threads "${THREADS}" \
         --recursion-depth "${RECURSION_DEPTH}" \
+        $(energyParams) \
         ${MORE_PARAMS}
    stopPinpointServers
 }
