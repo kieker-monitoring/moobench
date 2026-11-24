@@ -7,7 +7,7 @@ GIT=`which git`
 DATA_DIR="${BASE_DIR}/data"
 
 KIEKER_4_PYTHON_PYPI_PACKAGE="kieker-monitoring-for-python"
-KIEKER_4_PYTHON_VERSION="0.0.3"
+KIEKER_4_PYTHON_VERSION="0.0.10"
 
 RECEIVER_ARCHIVE="${MAIN_DIR}/tools/receiver/build/distributions/receiver.tar"
 
