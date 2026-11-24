@@ -6,10 +6,7 @@
 # Usage: benchmark.sh
 
 # configure base dir
-BASE_DIR=$(
-	cd "$(dirname "$0")"
-	pwd
-)
+BASE_DIR=$(cd "$(dirname "$0")"; pwd)
 MAIN_DIR="${BASE_DIR}/../.."
 
 #

@@ -6,10 +6,7 @@
 # Usage: setup.sh
 
 # configure base dir
-BASE_DIR=$(
-	cd "$(dirname "$0")"
-	pwd
-)
+BASE_DIR=$(cd "$(dirname "$0")"; pwd)
 
 #
 # source functionality

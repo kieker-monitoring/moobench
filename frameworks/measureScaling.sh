@@ -65,10 +65,7 @@ if [ -z "$JAVA_HOME" ]; then
 fi
 
 # configure base dir
-BASE_DIR=$(
-	cd "$(dirname "$0")"
-	pwd
-)
+BASE_DIR=$(cd "$(dirname "$0")"; pwd)
 
 if [ -f "${BASE_DIR}/../common-functions.sh" ]; then
 	. "${BASE_DIR}/../common-functions.sh"

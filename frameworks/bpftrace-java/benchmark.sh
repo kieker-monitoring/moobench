@@ -6,10 +6,7 @@
 # Usage: benchmark.sh
 
 # configure base dir
-BASE_DIR=$(
-	cd "$(dirname "$0")"
-	pwd
-)
+BASE_DIR=$(cd "$(dirname "$0")"; pwd)
 
 if [ ! -d "${BASE_DIR}" ]; then
 	echo "Base directory ${BASE_DIR} does not exist."

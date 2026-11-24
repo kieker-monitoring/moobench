@@ -6,10 +6,7 @@
 # Usage: upload.sh
 
 # configure base dir
-BASE_DIR=$(
-	cd "$(dirname "$0")"
-	pwd
-)
+BASE_DIR=$(cd "$(dirname "$0")"; pwd)
 
 KEYSTORE="$1"
 UPDATE_SITE_URL="$2"
